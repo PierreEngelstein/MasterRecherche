@@ -119,8 +119,108 @@ $|\frac{1}{\sqrt{2^{n}}}\displaystyle\sum_{x=0}^{2^n-1}(-1)^{f(x)}|$
 
 Si on obtient 0, alors $f(x)$ est constante. Si on obtient 1, alors $f(x)$ est équilibrée.
 
+
+\subsection{Example}
+
+Prenons une fonction $f$ comme définie précédemment, sans savoir si elle est constante ou équilibrée.
+
+\subsubsection{Etape 1}
+
+On commence avec $\ket{u_0} = \ket{001}$. La première étape est l'application de la porte d'hadamard à $\ket{u_0}$: 
+\medbreak
+$
+\ket{u_1} = H\ket{u_0} = H\ket{0} \otimes H\ket{0} \otimes H\ket{1}
+$
+
+$
+\ket{u_1} = \frac{1}{2\sqrt{2}}\{ (\ket{0} + \ket{1})\otimes(\ket{0} + \ket{1})\otimes(\ket{0} - \ket{1}) \}
+$
+
+$
+\ket{u_1} = \frac{1}{2\sqrt{2}}\{\ket{000} - \ket{001} + \ket{010} - \ket{011} + \ket{100} - \ket{101} + \ket{110} - \ket{111}\}
+$
+
+On peut factoriser le tout par $(\ket{0} - \ket{1})$: 
+
+$
+\ket{u_1} = \frac{1}{2\sqrt{2}}\{\ket{00}(\ket{0} - \ket{1}) + \ket{01}(\ket{0} - \ket{1}) + \ket{10}(\ket{0} - \ket{1}) + \ket{11}(\ket{0} - \ket{1})\}
+$
+
+\subsubsection{Etape 2: oracle quantique}
+
+On applique à $\ket{u_1}$ l'oracle quantique $\ket{x}\ket{y}\rightarrow\ket{x}\ket{y\oplus f(x)}:$
+
+$
+\ket{u_2} = \frac{1}{2\sqrt{2}}[ \\ 
+\ket{00}(\ket{0 \oplus f(00)} - \ket{1 \oplus f(00)}) + \\
+\ket{01}(\ket{0 \oplus f(01)} - \ket{1 \oplus f(01)}) + \\
+\ket{10}(\ket{0 \oplus f(10)} - \ket{1 \oplus f(10)}) + \\
+\ket{11}(\ket{0 \oplus f(11)} - \ket{1 \oplus f(11)})]
+$
+
+\medbreak
+On peut alors réécrire l'équation de la façon suivante: 
+
+$
+\ket{u_2} = \frac{1}{2\sqrt{2}}[ \\
+(-1)^{f(00)} \ket{00}  (\ket{0} - \ket{1}) + \\
+(-1)^{f(01)} \ket{01}  (\ket{0} - \ket{1}) + \\
+(-1)^{f(10)} \ket{10}  (\ket{0} - \ket{1}) + \\
+(-1)^{f(11)} \ket{11}  (\ket{0} - \ket{1}) ]
+$
+
+Par la suite, on va appliquer une porte de Hadamard à $\ket{u_2}$. Le qubit $\ket{0} - \ket{1}$ donne $\ket{1}$ par la cette porte, il est donc constant par rapport à $\ket{u_0}$. On peut donc le retirer de l'équation, ce qui nous donne pour $\ket{u_2}$ :
+\medbreak
+$
+\ket{u_2} = \frac{1}{2\sqrt{2}}[(-1)^{f(00)} \ket{00} + (-1)^{f(01)} \ket{01} + (-1)^{f(10)} \ket{10} + (-1)^{f(11)} \ket{11} ]
+$
+
+\subsubsection{Etape 3: porte de Hadamard}
+
+On applique donc une porte de hadamard à $\ket{u_2}$:
+
+$
+\ket{u_3} = \frac{1}{2\sqrt{2}} H [(-1)^{f(00)} \ket{00} + (-1)^{f(01)} \ket{01} + (-1)^{f(10)} \ket{10} + (-1)^{f(11)} \ket{11} ]
+$
+
+Nous sommes sur une porte de hadamard pour 2 qubits, ce qui donne l'équation matricielle suivante pour l'état $A$ de $\ket{u_3}$:
+
+$
+A=
+\frac{1}{4\sqrt{2}} 
+\begin{bmatrix}
+  1 & 1 & 1 & 1 \\
+  1 & -1 & 1 & -1 \\
+  1 & 1 & -1 & -1 \\
+  1 & -1 & -1 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  (-1)^{f(00)} \\ (-1)^{f(01)} \\ (-1)^{f(10)} \\ (-1)^{f(11)}
+\end{bmatrix}=
+\frac{1}{4\sqrt{2}} 
+\begin{bmatrix}
+  (-1)^{f(00)} + (-1)^{f(01)} + (-1)^{f(10)} + (-1)^{f(11)} \\
+  (-1)^{f(00)} - (-1)^{f(01)} + (-1)^{f(10)} - (-1)^{f(11)} \\
+  (-1)^{f(00)} + (-1)^{f(01)} - (-1)^{f(10)} - (-1)^{f(11)} \\
+  (-1)^{f(00)} - (-1)^{f(01)} - (-1)^{f(10)} + (-1)^{f(11)} \\
+\end{bmatrix}
+$
+\medbreak
+Si f est constante, alors $(-1)^{f(00)} = (-1)^{f(01)} = (-1)^{f(10)} = (-1)^{f(11)} = 1$. On a donc : 
+
+$
+A=
+\frac{1}{\sqrt{2}} 
+\begin{bmatrix}
+  1 \\ 0 \\ 0 \\ 0
+\end{bmatrix}
+$
+
+Et donc une probabilité de $1$ de mesurer l'état $\ket{00}$.
+
+\medbreak
+En revanche, si f est équilibrée, la moitié des valeurs vont valoir $(-1)^{0} = 1$ et l'autre moitié $(-1)^{1} = 0$. La première ligne du vecteur $A$ donne donc systématiquement 0, on ne mesure donc jamais l'état $\ket{00}$.
+
+\medbreak
+
 \end{document}
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% End:
