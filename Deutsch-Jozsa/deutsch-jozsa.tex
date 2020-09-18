@@ -1,0 +1,126 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1 \delimsize\vert #2}
+
+\usepackage{amsthm}
+
+
+\usepackage{lmodern} % police européennes  vectorielles  CM
+\usepackage[utf8]{inputenc} % encodage à privilégier pour la  portabilité et +
+\usepackage[frenchb]{babel} % francisation  de  libellés et de la typographie
+\usepackage[T1]{fontenc} % encodage européen des caractères (Cork)8
+
+
+
+\newtheorem{definition}{Définition}
+\newtheorem{pb}{Problème}
+
+\title{Algorithme de Deutsch-Jozsa}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+\section{Problème à résoudre}
+Soit une fonction $f$ définie par 
+\[
+  f: \{0, 1\}^n \to \{ 0, 1 \} \]
+\[ 
+(x_0, x_1, \dots , x_n) \mapsto y = f(x_0, x_1, \dots , x_n), 
+\]
+
+\begin{definition}
+  Une fonction est dite équilibrée si $f$ retourne 0 pour la moitié de ses entrées.
+\end{definition}
+
+\begin{definition}
+  Une fonction est dite constante si elle retourne 0 pour toutes ses
+  entrées.
+\end{definition}
+
+
+\begin{pb}
+Etant donnée une fonction $f$ qui est soit équilibrée, soit constante.
+Le problème de Deutsch-Jozsa est de déterminer si $f$ est constante ou
+non.  
+\end{pb}
+
+\subsection{Solution classique}
+Dans le cas classique, il faut effectuer au pire $2^{n-1}+1$
+évaluations pour déterminer si $f$ est constante ou équilibrée. Tout
+d'abord, dès que deux évaluations sont différentes, $f$ est
+nécessairement équilibrée. De plus, si après avoir évalué $2^{n-1}$
+entrées et obtenu la même valeur, une évaluation supplémentaire nous
+permet de connaitre dans quelle catégorie $f$ se trouve.
+
+\subsection{Solution quantique}
+Dans le cas quantique, ce problème se résout en une seule évaluation
+quantique de $f$.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.2]{Deutsch-Jozsa_Algorithm.png}
+    \caption{Schéma de l'algorithme}
+    \label{fig:univerise}
+\end{figure}
+
+\subsubsection{Initialisation}
+On commence avec :
+$\ket{u_0} = \ket{0}^{\bigotimes n}\ket{1}$
+: n-qubits à $\ket{0}$ et 1-qubit à $\ket{1}$
+
+\subsubsection{Etape 1}
+
+On applique une porte de Hadamard à $\ket{u_0}$ pour avoir un état équiprobable:
+$\ket{u_1} = H\ket{u_0} = \frac{1}{\sqrt{2^{n + 1}}}
+\displaystyle\sum_{x=0}^{2^n-1} \ket{x}(\ket{0} - \ket{1})$
+
+\subsubsection{Etape 2}
+On applique l'oracle quantique suivant à $\ket{u_1}$: $\ket{x}\ket{y}\rightarrow\ket{x}\ket{y\oplus f(x)}$
+
+Prenons le cas à 1 qubit:
+\[
+f(x) = 0: \ket{x}(\ket{0} - \ket{1}) \rightarrow \ket{x}(\ket{0} - \ket{1})
+\]
+\[
+f(x) = 1: \ket{x}(\ket{0} - \ket{1}) \rightarrow \ket{x}(\ket{1} - \ket{0})
+\]
+\[
+f(x) quelconque: \ket{x}(\ket{0} - \ket{1}) \rightarrow (-1)^{f(x)}\ket{x}(\ket{0} - \ket{1})
+\]
+
+En généralisant:
+
+$\ket{u_2} = \frac{1}{\sqrt{2^{n + 1}}}
+\displaystyle\sum_{x=0}^{2^n-1} (-1)^{f(x)}\ket{x}(\ket{0} - \ket{1})$
+
+On peut ignorer le dernier qubit ($\ket{0} - \ket{1}$) comme il est
+constant. Finalement, on en déduit :
+
+$\ket{u_2} = \frac{1}{\sqrt{2^{n + 1}}}
+\displaystyle\sum_{x=0}^{2^n-1} (-1)^{f(x)}\ket{x}$
+
+\subsubsection{Etape 3}
+On réapplique une porte Hadamard à chaque qubit sortant, ce qui donne:
+
+$\ket{u_3} = \frac{1}{\sqrt{2^{n}}}
+\displaystyle\sum_{x=0}^{2^n-1} (-1)^{f(x)} \displaystyle\sum_{y=0}^{2^n-1} (-1)^{x.y}\ket{y}$
+
+$\ket{u_3} = \frac{1}{\sqrt{2^{n}}}
+\displaystyle\sum_{x=0}^{2^n-1} \displaystyle\sum_{y=0}^{2^n-1}(-1)^{f(x)} (-1)^{x.y}\ket{y}$
+
+La probabilité de mesurer $\ket{0}^{\bigotimes n}$ est : 
+$|\frac{1}{\sqrt{2^{n}}}\displaystyle\sum_{x=0}^{2^n-1}(-1)^{f(x)}|$
+
+Si on obtient 0, alors $f(x)$ est constante. Si on obtient 1, alors $f(x)$ est équilibrée.
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
