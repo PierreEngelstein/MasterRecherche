@@ -1,0 +1,82 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1 \delimsize\vert #2}
+
+\title{Utilisation de Q\# pour la programmation quantique}
+\author{Pierre Engelstein}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Plusieurs constructeurs mettent à disposition des outils pour tester les algorithmes quantiques dévelopés. Deux techniques existent afin de pouvoir programmer un algorithme quantique. On peut tout d'abord utiliser un ordinateur quantique réel. Plusieurs entreprises fournissent des portails en ligne permettant l'accès à ce genre de solution. L'autre solution est consiste à émuler un processeur quantique sur un processeur classique. Dans le premier cas on est certes sur un vrai processeur quantique, on tire donc pleinement partit des phénomènes quantiques. On est néanmoins limités par la quantité de qubits présents dans le processeur. En revanche, la solution d'émulation elle pas limitée à la quantité de qubits disponibles et est plus simple à mettre en oeuvre. néanmoins, les phénomènes aléatoires sont ici seulement pseudo-aléatoires (par exemple la mesure d'un qubit qui ne va pas vraiment être aléatoire suivant les poids).
+
+Nous allons voir la solution que propose Microsoft. Dans le cadre de son environnement DotNet, Microsoft fourni un nouveau langage, Q\#. Montré lors d'une conférence en 2017, il permet l'écriture de programmes dans un langage haut niveau, compatible avec son langage principal C\#. Sa force est de fournir un seul langage à la fois sur un ordinateur classique donc en émulation, et à la fois sur des processeurs quantiques grâce à sa plateforme Azure.
+
+\section{Exemple: Génération d'un nombre aléatoire}
+Pour illustrer les capacités de Q\#, nous allons voir la génération d'un nombre aléatoire en utilisant les techniques quantiques. Classiquement, la génération de nombre aléatoire se base sur des calculs effectués à partir d'une graine, et afin de simuler du vrai aléatoire on peut se baser sur le timestamp actuel.
+
+Dans le cadre quantique, on peut à la place utiliser une porte de Hadamard appliquée à un qubit initialisé à $\ket{0}$. On obtient: $\ket{u_1} = \frac{1}{2} \times \ket{0} + \frac{1}{2} \times \ket{1}$. Lors de la mesure, on va obtenir soit 0, soit 1 équiprobablement. On peut donc générer un vrai nombre aléatoire de la façon suivante, en utilisant Q\#:
+
+\begin{lstlisting}
+operation GenerateRandomBit(): Result {
+    using(q= Qubit()) {
+        H(q);
+        return MResetZ(q);
+    }
+}
+\end{lstlisting}
+
+Cette première opération vient créer un qubit, appliquer la porte de Hadamard avec l'opérateur \texttt{H(q)}, et enfin effectuer la mesure. L'opérateur \texttt{MResetZ} vient effectuer la mesure et forcer le qubit à retourner dans l'état $\ket{0}$. Ceci représente la seule partie quantique du programme, qu'on peut venir combiner avec de la logique classique pour générer un nombre aléatoire:
+
+\begin{lstlisting}
+operation RndInRange(min: Int, max: Int): Int {
+    mutable output = 0;
+    repeat{
+        mutable bits = new Result[0];
+        for(idxBit in 1..BitSizeI(max)){
+            set bits += [GenerateRandomBit()];
+        }
+        set output = ResultArrayAsInt(bits);
+    }until((output <= max) and (output >= min));
+    return output;
+}
+\end{lstlisting}
+
+Un point d'entrée peut être inclus avec la procédure suivante: 
+
+\begin{lstlisting}
+@EntryPoint()
+operation RandomNumber(): Int{
+    let max = 50;
+    let max = 40;
+    return RndInRange(min, max);
+}
+\end{lstlisting}
+
+Pour exécuter le programme, plusieurs options s'offrent à nous. On peut tout d'abord exécuter le programme Q\# en standalone, mais on peut aussi utiliser un programme hôte comme python ou C\# dans lesquels on vient appeler les fonctions exposées.
+
+\section{Références}
+
+\begin{enumerate}
+    \item Microsoft, Microsoft Quantum Documentation, \url{https://docs.microsoft.com/en-us/quantum/?view=qsharp-preview}
+    \item Microsoft, QuantumKatas, \url{https://github.com/Microsoft/QuantumKatas}
+\end{enumerate}
+
+% Bibliographie: 
+% https://github.com/Microsoft/QuantumKatas
+
+\end{document}
