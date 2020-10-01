@@ -109,16 +109,27 @@ $\ket{u_2} = \frac{1}{\sqrt{2^{n + 1}}}
 On réapplique une porte Hadamard à chaque qubit sortant, ce qui donne:
 
 $\ket{u_3} = \frac{1}{\sqrt{2^{n}}}
-\displaystyle\sum_{x=0}^{2^n-1} (-1)^{f(x)} \displaystyle\sum_{y=0}^{2^n-1} (-1)^{x.y}\ket{y}$
+\displaystyle\sum_{x=0}^{2^n-1} (-1)^{f(x)} [\frac{1}{\sqrt{2^{n}}} \displaystyle\sum_{y=0}^{2^n-1} (-1)^{x.y}\ket{y} ]$
 
-$\ket{u_3} = \frac{1}{\sqrt{2^{n}}}
+$\ket{u_3} = \frac{1}{2^{n}}
 \displaystyle\sum_{x=0}^{2^n-1} \displaystyle\sum_{y=0}^{2^n-1}(-1)^{f(x)} (-1)^{x.y}\ket{y}$
 
 La probabilité de mesurer $\ket{0}^{\bigotimes n}$ est : 
-$|\frac{1}{\sqrt{2^{n}}}\displaystyle\sum_{x=0}^{2^n-1}(-1)^{f(x)}|$
+$|\frac{1}{2^{n}}\displaystyle\sum_{x=0}^{2^n-1}(-1)^{f(x)}|$
 
-Si on obtient 0, alors $f(x)$ est constante. Si on obtient 1, alors $f(x)$ est équilibrée.
+On note $p = \frac{1}{2^{n}}\displaystyle\sum_{x=0}^{2^n-1}(-1)^{f(x)}$
 
+Si on a une fonction $f(x)$ constante, alors chaque élément de la somme retourne la même valeur (1 ou -1 suivant que $f(x)$ retourne 0 ou 1), la somme va donc valoir $\pm 2^{n}$. Dans le cas où la fonction est équilibrée, on va avoir alternativement 1 et -1, la somme est donc nulle.
+
+On a donc les valeurs suivantes dépendant du type de $f(x)$ :
+\begin{enumerate}
+  \item Si $f(x)$ est constante :  $p = \pm \frac{1}{2^n} \times 2^{n} = \pm 1$
+  \item Si $f(x)$ est équilibrée : $p = \pm \frac{1}{2^n} \times 0 = 0$
+\end{enumerate}
+
+Dans le cas constant, on ne peut donc que mesurer $\ket{0}^{\bigotimes n}$ puisqu'il a une probabilité de 1 d'apparaître. Dans le cas équilibré, on ne mesure jamais $\ket{0}^{\bigotimes n}$ puisque sa probabilité est nulle.
+
+On en conclu que, lorsqu'on effectue une mesure, si on tombe sur $\ket{0}^{\bigotimes n}$ alors la fonction est constante, sinon elle est équilibrée.
 
 \subsection{Example}
 
