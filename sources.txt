@@ -1,0 +1,21 @@
+- Shor:
+  - https://arxiv.org/pdf/quant-ph/9508027.pdf
+  - https://documents.epfl.ch/groups/i/ip/ipg/www/2014-2015/Traitement%20Quantique%20de%20l%27Information/algoshor2013-14.pdf
+- Deutsch-Jozsa:
+  - https://scihub.wikicn.top/https://doi.org/10.1098/rspa.1992.0167
+- Grover:
+  - https://arxiv.org/pdf/quant-ph/9605043.pdf
+
+
+-----------------------------------------------------
+
+Sources quantum programming: 
+- Quantum Programming Language: A Systematic Review of Research Topic and Top Cited Languages (https://doi.org/10.1007/s11831-019-09372-6)
+- http://quantumalgorithmzoo.org/
+- http://tph.tuwien.ac.at/~oemer/qcl.html
+    - http://tph.tuwien.ac.at/~oemer/doc/quprog.pdf
+    - http://tph.tuwien.ac.at/~oemer/doc/structquprog.pdf
+    	- From page 113: QCL quick reference
+
+
+
