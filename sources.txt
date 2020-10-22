@@ -19,3 +19,5 @@ Sources quantum programming:
 
 
 
+Idée constance fonction:
+   - calculer moyenne + ecart type : si ecart type = 0 => constant / si moyenne = 0 ou 1 => constant

@@ -1,5 +1,5 @@
 import math
-n = 8
+n = 3
 N = math.factorial(2**n)
 R = math.factorial(2**(n-1))
 D=R**2
