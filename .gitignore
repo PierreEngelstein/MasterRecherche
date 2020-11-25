@@ -6,3 +6,8 @@
 *.snm
 bin/*
 obj/*
+.vscode
+obj
+bin
+.ipynb_checkpoints*
+*.pyc

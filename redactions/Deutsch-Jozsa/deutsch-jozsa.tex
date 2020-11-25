@@ -12,7 +12,8 @@
 \usepackage[utf8]{inputenc} % encodage à privilégier pour la  portabilité et +
 \usepackage[frenchb]{babel} % francisation  de  libellés et de la typographie
 \usepackage[T1]{fontenc} % encodage européen des caractères (Cork)8
-
+\usepackage{subcaption}
+\usepackage{caption}
 
 
 \newtheorem{definition}{Définition}
@@ -96,7 +97,7 @@ codée en listant les emplacements où elle est vraie, ici $\{1,2\}$.
 \begin{pb}[Deutsch-Jozsa]
 Etant donnée une fonction $f$ qui est soit équilibrée, soit constante.
 Le problème de Deutsch-Jozsa est de déterminer si $f$ est constante ou
-non.  
+équilibrée.  
 \end{pb}
 
 \subsection{Solution classique}
@@ -350,7 +351,117 @@ valoir $(-1)^{0} = 1$ et l'autre moitié $(-1)^{1} = -1$. La première
 ligne du vecteur $\ket{u_3}$ donne donc systématiquement 0, on ne mesure donc
 jamais l'état $\ket{00}$.
 
+\section{Visualisation géométrique}
+Reprenons cet algorithme avec $n=4$ qubits et affichons l'évolution des états des qubits avec des sphères de bloch.
+
+\subsection{Fonction constante $f_0(x)$ = 0}
 \medbreak
+\begin{figure}[ht]
+  \begin{subfigure}[b]{0.6\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_constant_1_u0.png}
+      \caption{$\ket{u0}=\ket{0001}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_constant_1_u1.png}
+      \caption{$\ket{u1}=H\ket{u0}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_constant_1_u2.png}
+      \caption{$\ket{u2}=Uf\ket{u1}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/visualization_constant_1_u3.png}
+    \caption{$\ket{u3}=H\ket{u2}$}
+\end{subfigure}
+     \caption{Evolution des états pour une fonction f constante, vecteurs d'états séparés}
+\end{figure}
+
+On peut aussi visualiser ces figures avec une shère de bloch représentant les 5 qubits ensembles avec les phases:
+
+\begin{figure}[bth]
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_constant_2_u0.png}
+      \caption{$\ket{u0}=\ket{0001}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_constant_2_u1.png}
+      \caption{$\ket{u1}=H\ket{u0}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_constant_2_u2.png}
+      \caption{$\ket{u2}=Uf\ket{u1}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/visualization_constant_2_u3.png}
+    \caption{$\ket{u3}=H\ket{u2}$}
+\end{subfigure}
+     \caption{Evolution des états pour une fonction f constante}
+\end{figure}
+
+On voit ici l'ensemble des états que prends le registre de sortie. Dans le cas constant, on se retrouve bien à mesure exclusivement la valeur 0 (pour rappel, on ne mesure pas le dernier qubit qui est constant à 1). Pour les deux étapes intermédiaires, on visualise bien qu'on se retrouve dans une certaine superposition des états possibles.
+
+\pagebreak
+
+\subsection{Fonction équilibrée quelconque $f_1(x)$}
+Les deux figues suivantes présentent la même visualisation, pour une fonction équilibrée:
+
+\begin{figure}[ht]
+  \begin{subfigure}[b]{0.6\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_eq_1_u0.png}
+      \caption{$\ket{u0}=\ket{0001}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_eq_1_u1.png}
+      \caption{$\ket{u1}=H\ket{u0}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_eq_1_u2.png}
+      \caption{$\ket{u2}=Uf\ket{u1}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/visualization_eq_1_u3.png}
+    \caption{$\ket{u3}=H\ket{u2}$}
+\end{subfigure}
+     \caption{Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés}
+\end{figure}
+
+\begin{figure}[bth]
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_eq_2_u1.png}
+      \caption{$\ket{u0}=\ket{0001}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_eq_2_u2.png}
+      \caption{$\ket{u1}=H\ket{u0}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{images/visualization_eq_2_u3.png}
+      \caption{$\ket{u2}=Uf\ket{u1}$}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/visualization_eq_2_u4.png}
+    \caption{$\ket{u3}=H\ket{u2}$}
+\end{subfigure}
+     \caption{Evolution des états pour une fonction f équilibrée}
+\end{figure}
+
+On voit bien sur cette figure que dans le cas d'une fonction équilibrée, l'état va se situer à un des points indiqués sur la sphère de Bloch mais jamais sur le point 0. 
 
 \end{document}
 

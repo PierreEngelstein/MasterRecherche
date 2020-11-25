@@ -3,6 +3,7 @@
   - https://documents.epfl.ch/groups/i/ip/ipg/www/2014-2015/Traitement%20Quantique%20de%20l%27Information/algoshor2013-14.pdf
 - Deutsch-Jozsa:
   - https://scihub.wikicn.top/https://doi.org/10.1098/rspa.1992.0167
+  - http://www.diva-portal.org/smash/get/diva2:840938/FULLTEXT01.pdf
 - Grover:
   - https://arxiv.org/pdf/quant-ph/9605043.pdf
 
@@ -21,3 +22,6 @@ Sources quantum programming:
 
 Idée constance fonction:
    - calculer moyenne + ecart type : si ecart type = 0 => constant / si moyenne = 0 ou 1 => constant
+
+
+https://www.wolframalpha.com/input/?i=TensorProduct%5B%7B%7B1%2C+0%7D%2C+%7B0%2C+-1%7D%7D%2C%7B%7B1%2C+0%7D%2C+%7B0%2C+-1%7D%7D%2C%7B%7B1%2C+0%7D%2C+%7B0%2C+-1%7D%7D+%5D
