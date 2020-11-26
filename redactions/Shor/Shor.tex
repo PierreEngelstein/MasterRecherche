@@ -70,11 +70,59 @@ La transformation quantique de Fourier permet de passer de la base classique $\{
 
 La première base permet d'encoder les informations avec la valeur du bit. La base de Fourier va elle coder les informations avec la phase des qubits. Sur la sphere de Bloch, la première base va permettre de coder les informations sur plusieurs qubits en alternant sur l'axe vertical, c'est du calcul binaire classique. En revanche, la deuxième va faire tourner les qubits sur l'axe de l'équateur.
 
+
 \begin{rem}
   La transformation quantique de Fourier est l'analogue en classique de la transformation de Fourier discrète inverse
 \end{rem}
 
 En exemple, si on a 2 qubits, en base de Fourier, le premier aura pour phases successives $\{0, \pi\}$, et le deuxième aura $\{0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\}$.
+
+
+Dans le domaine classique, la transformation de Fourier discrète inverse est définie de la façon suivante:
+
+\[ x_k = \frac{1}{\sqrt{N}} \displaystyle\sum_{j=0}^{N-1} y_j e^{2 \pi \imath \frac{j k}{N}}  \]
+
+De façon équivalente, on définit la transformation de Fourier quantique:
+
+\[ \ket{\tilde{x}} = QFT\ket{x} = \frac{1}{\sqrt{N}} \displaystyle\sum_{y=0}^{N-1} e^{2 \pi \imath \frac{x y}{N}} \ket{y}  \]
+
+\subsection{Implémentation de la QFT}
+On note $\displaystyle\sum_{y=0}^{N-1} \ket{y}$. Néanmoins, on est en base 2, et écrire $\ket{7}$ par example n'a pas forcément de sens. La notation binaire de $y$ est: $y=\displaystyle\sum_{k=0}^{n} y_k 2^{n-k}$. On peut donc remplacer dans l'équation définie précédement:
+
+\[ \ket{\tilde{x}} = \frac{1}{\sqrt{N}} \displaystyle\sum_{y=0}^{N-1} e^{2 \pi \imath x \displaystyle\sum_{k=0}^{n} \frac{y_k}{2^k}} \ket{y_1 , y_2 , \dots , y_n}  \]
+
+La somme dans l'exponentielle nous permet de sortir un produit. On peut développer pour avoir une autre forme:
+
+\[ \ket{\tilde{x}} = \frac{1}{\sqrt{N}} \displaystyle\sum_{y=0}^{N-1}  \displaystyle\prod_{k=1}^{n}  e^{2 \pi \imath x \frac{y_k}{2^k}} \ket{y_1 , y_2 , \dots , y_n}   \]
+
+\[ \ket{\tilde{x}} = \frac{1}{\sqrt{N}} \displaystyle\sum_{y_0 = 0}^{1} \displaystyle\sum_{y_1 =0}^{1} \dots \displaystyle\sum_{y_n =0}^{1} \displaystyle\prod_{k=1}^{n}  e^{2 \pi \imath x \frac{y_k}{2^k}} \ket{y_1 , y_2 , \dots , y_n}   \]
+
+\[ \ket{\tilde{x}} = \frac{1}{\sqrt{N}} \displaystyle\prod_{k=1}^{n} \displaystyle\sum_{y_0 = 0}^{1} \displaystyle\sum_{y_1 =0}^{1} \dots \displaystyle\sum_{y_n =0}^{1} e^{2 \pi \imath x \frac{y_k}{2^k}} \ket{y_1 , y_2 , \dots , y_n}   \]
+
+\[ \ket{\tilde{x}} = \frac{1}{\sqrt{N}} (\ket{0} + e^{2 \pi \imath \frac{x}{2^1}}\ket{1}) \otimes  (\ket{0} + e^{2 \pi \imath \frac{x}{2^2}}\ket{1}) \otimes \dots \otimes (\ket{0} + e^{2 \pi \imath \frac{x}{2^n}}\ket{1}) \]
+
+\begin{ex} 
+  
+  Soit $\ket{x} = \ket{5} = \ket{101}$. 
+  
+  On a alors $QFT\ket{x} = \ket{\tilde{x}} = \frac{1}{\sqrt{8}} (\ket{0} + e^{5 \pi \imath}\ket{1}) \otimes (\ket{0} + e^{ \frac{1}{2} \pi \imath 5 }\ket{1}) \otimes (\ket{0} + e^{\frac{1}{4} \pi \imath 5}\ket{1})$
+\end{ex}
+
+% Pour rappel, la formule générale d'une porte de Hadamard pour un qubit est:
+
+% \[ H\ket{x} = \frac{1}{\sqrt{2}} (\ket{0} + e^{2 \pi \imath \frac{x_k}{2}}\ket{1})  \]
+
+% C'est très proche de ce qu'on a avec la QFT, a la différence près qu'il y a une puissance au dénominateur dans la QFT, qui n'est pas présente dans la porte de Hadamard.
+
+Pour chaque qubit, on effectue la transformation suivante: 
+\[ H\ket{x_k} = \ket{0} + e^{2 \pi \imath \frac{x_k}{2^k}}\ket{1} \]
+
+Deux portes quantiques vont être utiles pour implémenter la QFT:
+\begin{enumerate}
+  \item La porte de hadamard, de forme générale: $H\ket{x_k} = \ket{0} + e^{2 \pi \imath \frac{x_k}{2}} \ket{1}$
+  \item La rotation unitaire $UROT_k\ket{x_j} = e^{2 \pi \imath \frac{x_k}{2^k}} \ket{x_j}$. On note que si $x_j = 0$, alors $e^{2 \pi \imath \frac{x_k}{2^k}} \ket{x_j} = \ket{0}.$ De même, si $x_j = 1$, alors $e^{2 \pi \imath \frac{x_k}{2^k}} \ket{x_j} = e^{\frac{2 \pi \imath}{2^k}} \ket{1}$.
+\end{enumerate}
+
 
 \section{Estimation de phase quantique}
 \section{Algorithme de Shor}
@@ -87,6 +135,26 @@ Soit un entier $N = p \times q$, avec p et q nombres premiers grands. Le problè
   \KwData{N}
   \Repeat{}{
     choose a coprime with N;
+
+    find smallest r such that $a^r \equiv 1 (mod N)$;
+
+    \eIf{r is even}
+    {
+      $x \equiv a^{\frac{r}{2}} (mod N) $;
+
+      \eIf{$x + 1 \not \equiv 0 (mod N)$}
+      {
+        at least one of $\{p, q\} \in \{gcd(x+1, N), gcd(x-1, N)\}$;
+
+        break;
+      }
+      {
+        continue;
+      }
+    }
+    {
+      continue;
+    }
   }
 \end{algorithm}
 
