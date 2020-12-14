@@ -19,6 +19,9 @@
 
 Pour le rapport, rajouter deutsch (en exemple simple pour commencer, poser les bases.)
 
+-> Méthode de Newton (résoudre f(x) = 0 linéairement) => résoudre pbs non linéaires en quantique (mécanisme de discrétisation) ?
+-> se débrouiller pour que la mesure équilibrée de DJ tombe sur autre autre chose que 1. Mieux comprendre les symétries (invariances modulo les changements) pour voir dans une situation (Peter J. Olver) (http://www-users.math.umn.edu/~olver/books.html - Applications of Lie Groups to Differential Equations - 2 premiers chapitres)
+
 - https://cds.cern.ch/record/600071/files/0301040.pdf
 - https://arxiv.org/pdf/quant-ph/9503016.pdf
 
