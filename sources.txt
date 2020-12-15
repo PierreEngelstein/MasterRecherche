@@ -11,6 +11,8 @@
   - https://math.uchicago.edu/~may/REU2012/REUPapers/Krahn.pdf
   - https://quantumcomputing.stackexchange.com/questions/7037/grovers-algorithm-in-a-nutshell
   - https://www.linkedin.com/pulse/quantum-computing-intuitive-explanation-grovers-algorithm-sam-wehner/
+  - https://arxiv.org/pdf/quant-ph/9901068.pdf
+  - https://arxiv.org/pdf/0705.4171.pdf
 - Bernstein-Vazirani:
   - https://sci-hub.st/10.1137/S0097539796300921
   - https://sci-hub.st/https://doi.org/10.1103/PhysRevA.64.042306

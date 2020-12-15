@@ -57,7 +57,6 @@ Les deux angles sont bien égaux, on a effectué une reflection.
 \section{Problème à résoudre}
 Soit une base de données non triée à $N$ entrées. Nous voulons trouver un algorithme permettant de chercher efficacement un enregistrement dans cette base.
 
-
 \subsection{Principe de l'algorithme}
 L'algorithme de Grover permet de résoudre ce problème en quantique, en disposant de $N$ qubits intriqués pour calculer $2^N$ état 
 (donc si on a $N$ entrées dans la base, il nous faut $log_2(N)$ qubits intriqués). Dans le cas de cet algorithme, on considère le problème suivant:
@@ -99,8 +98,11 @@ $U_w = I - 2\ket{w}\bra{w}$, avec $w$ état cible correspondant à la solution d
 $U_s = 2\ket{s}\bra{s} - I$
 
 \begin{rem}
-  On reconnait ici que ces deux opérateurs sont semblables à la reflection vue dans la partie 1.
+    On reconnait ici que ces deux opérateurs sont semblables à la reflection vue dans la partie 1.
 \end{rem}
+
+\medbreak
+On effectue ici un changement de base: au lieu de continuer les calculs dans la base canonique $\{\ket{0}, \ket{1}\}$, on se place dans la base $\{\ket{w}, \ket{s}\}$
 
 \paragraph*{Inversion d'amplitude}
 
@@ -125,3 +127,49 @@ On applique ensuite l'opérateur $U_s$ au résultat de $U_w$. On peut voir qu'en
   &= \ket{s} - \frac{4}{2^n} \ket{s} + \frac{2}{\sqrt{2^n}}\ket{w} \nonumber \\
   \ket{u_4}&=\frac{2^n - 4}{2^n}\ket{s} + \frac{2}{\sqrt{2^n}}\ket{w}
 \end{align}
+
+Plus généralement, cette application de $U_w$ puis $U_s$ reviens à appliquer la matrice suivante à l'état d'entrée, dans la base $\{\ket{w}, \ket{s}\}$:
+$
+\begin{bmatrix}
+    1 & \frac{2}{\sqrt{2^n}} \\ \frac{-2}{\sqrt{N}} & \frac{2^n - 4}{2^n}
+\end{bmatrix}
+$
+
+\subsection{Exemple}
+Prenons par exemple une base de données de 4 bits ($n=4$), avec l'état $\ket{w}$ cible valant l'état $\ket{0100}$ (amplitude de 1 sur cet état, et de 0 sur l'ensemble de 15 autres).
+
+On initialise un (n+1)-qubit à l'état suivant:
+
+\begin{align}
+  \ket{u_0} = \ket{00001}
+\end{align}
+
+\subsubsection*{Etape 1}
+On applique la porte de Hadamard à l'état initial $\ket{u_0}$:
+
+\begin{align}
+  \ket{u_1} = \frac{1}{16} \displaystyle\sum_{x=0}^{15} \ket{x}(\ket{0} - \ket{1})
+\end{align}
+
+On obtient donc les deux états formant notre base pour les calculs suivant: $\ket{s} = \ket{u_1}$ et $\ket{w}$.
+
+\subsubsection*{Etape 2: Opérateur de Grover}
+
+On applique la transformation $U_sU_w = \begin{bmatrix}
+  1 & \frac{2}{\sqrt{2^n}} \\ \frac{-2}{\sqrt{2^n}} & \frac{2^n-4}{2^n}
+\end{bmatrix}$ pour $n=4$ soit $U_sU_w = \begin{bmatrix}
+  1 & \frac{1}{2} \\ -\frac{1}{2} & \frac{3}{4}
+\end{bmatrix}$ :
+
+\begin{align}
+  \ket{u_2} = U_sU_w \cdot \ket{s} = \frac{3}{4}\ket{s} + \frac{1}{2}\ket{w}
+\end{align}
+
+On voit que l'état cible $\ket{w}$ est passé d'une amplitude de 0 à une amplitude de $0.5$. On peut effectuer l'opération plusieurs fois pour obtenir un résultat voulu. La figure suivante montre l'évolution des amplitudes de $\ket{s}$ et de $\ket{w}$ pour $n=16$, pour 1000 itérations de l'opérateur. On observe qu'on arrive à l'état voulu $\ket{w}$ mais qu'on ne reste pas à cet état une fois atteint. Cela montre bien qu'il y a un nombre optimal d'itérations à effectuer, à ne pas dépasser. (la courbe verte sert d'indicateur, pour vérifier qu'on reste dans un état valide où la somme des amplitudes vaut bien 1)
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.6]{Grover/grover_n16_1000.png}
+  \caption{Evolution des amplitudes pour n=16, sur 1000 itérations}
+  \label{fig:univerise}
+\end{figure}
