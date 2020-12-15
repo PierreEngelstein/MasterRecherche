@@ -1,30 +1,111 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{report}
 
 \usepackage{mathtools}
 \usepackage{graphicx}
-\DeclarePairedDelimiter\bra{\langle}{\rvert}
-\DeclarePairedDelimiter\ket{\lvert}{\rangle}
-\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1 \delimsize\vert #2}
-
+\usepackage{braket}
 \usepackage{amsthm}
-
-\usepackage{lmodern} % police européennes  vectorielles  CM
-\usepackage[utf8]{inputenc} % encodage à privilégier pour la  portabilité et +
-\usepackage[frenchb]{babel} % francisation  de  libellés et de la typographie
-\usepackage[T1]{fontenc} % encodage européen des caractères (Cork)8
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
 \usepackage{subcaption}
 \usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage{qcircuit}
+% \usepackage{a4wide}
 
+\makeatletter
+\newcommand\frontmatter{
+    \cleardoublepage
+    \pagenumbering{roman}
+}
+\newcommand\mainmatter{
+    \cleardoublepage
+    \pagenumbering{arabic}
+}
+\newcommand\backmatter{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+}
+\makeatother
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\graphicspath{{images/}}
 
 \newtheorem{definition}{Définition}
 \newtheorem{pb}{Problème}
 \newtheorem{rem}{Remarque}
 \newtheorem{ex}{Exemple}
 
-\title{Rapport de Master}
-\date{}
-
-
 \begin{document}
-\maketitle
+\begin{titlepage}
+    \begin{center}
+    
+    \includegraphics[width=0.6\textwidth]{Polytech_Angers.png}\\[1cm]
+    
+    {\large Master Systèmes Dynamiques et Signaux}\\[0.5cm]
+    
+    {\large Rapport Bibliographique}\\[0.5cm]
+    
+    \rule{\linewidth}{0.5mm} \\[0.4cm]
+    { \huge \bfseries Informatique Quantique \\[0.4cm] }
+    \rule{\linewidth}{0.5mm} \\[1.5cm]
+    
+    \noindent
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        \emph{Auteurs :}\\
+        M. Pierre \textsc{Engelstein}\\
+         \end{flushleft}
+         \end{minipage}%
+         \begin{minipage}{0.4\textwidth}
+         \begin{flushright} \large
+        \emph{Encadrants :}\\
+        Dr. Nicolas \textsc{Delanoue}\\
+        Pr. François \textsc{Chapeau-Blondeau}\\
+         \end{flushright}
+    \end{minipage}
+    
+    \vfill
+    
+    \large
+    \emph{Jury :}
+    \begin{tabular}{lc}
+        Pr.~Laurent \textsc{Hardouin}\\
+        Dr.~Nicolas \textsc{Delanoue}\\
+        Pr.~François \textsc{Chapeau-Blondeau}\\
+        Pr.~Sébastien \textsc{Lahaye}\\
+        Dr.~Mehdi  \textsc{Lhommeau}\\
+        Dr.~Remy  \textsc{Guyonneau}\\
+    \end{tabular}
+    
+    \vspace{1cm}
+    {\large Version  du \today}
+    
+    \end{center}
+\end{titlepage}
+
+\frontmatter
+
+\section*{Remerciements}
+
+\pagebreak
+\tableofcontents
+
+\pagebreak
+\listoffigures
+
+\mainmatter
+
+\input{includes/chap-01-intro.tex}
+\input{includes/chap-02-elementsbase.tex}
+\input{includes/chap-03-DJ.tex}
+\input{includes/chap-04-derives.tex}
+\input{includes/chap-05-grover.tex}
+% \input{includes/chap-06-QFT.tex}
+
 \end{document}

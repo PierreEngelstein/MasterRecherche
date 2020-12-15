@@ -15,7 +15,7 @@
   - https://sci-hub.st/10.1137/S0097539796300921
   - https://sci-hub.st/https://doi.org/10.1103/PhysRevA.64.042306
 - Simon:
-  
+
 
 Pour le rapport, rajouter deutsch (en exemple simple pour commencer, poser les bases.)
 
