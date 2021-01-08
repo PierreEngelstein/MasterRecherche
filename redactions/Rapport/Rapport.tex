@@ -13,6 +13,8 @@
 \usepackage{gensymb}
 \usepackage{tikz}
 \usepackage{qcircuit}
+\usepackage{listings}
+\usepackage[ruled,vlined]{algorithm2e}
 % \usepackage{a4wide}
 
 \makeatletter
@@ -31,6 +33,10 @@
     \clearpage
   \fi
 }
+\newcommand{\tens}[1]{%
+  \mathbin{\mathop{\otimes}\limits_{#1}}%
+}
+
 \makeatother
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
@@ -58,7 +64,7 @@
     \noindent
     \begin{minipage}{0.4\textwidth}
       \begin{flushleft} \large
-        \emph{Auteurs :}\\
+        \emph{Auteur :}\\
         M. Pierre \textsc{Engelstein}\\
          \end{flushleft}
          \end{minipage}%

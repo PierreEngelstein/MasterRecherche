@@ -1,4 +1,4 @@
-\chapter{Algorithmes dérivés de Deutsch-Jozsa}
+\chapter{Algorithme dérivé de Deutsch-Jozsa: Bernstein-Vazirani}
 \section{Problème à résoudre}
 
 Soient $x$ et $s$ tels que $x, s \in \{0, 1\}^n$.
@@ -75,7 +75,8 @@ De la même façon à Deutsch-Jozsa, on applique une porte Hadamard à chaque qu
   & = \frac{1}{2^{n}} \displaystyle\sum_{x=0}^{2^n-1} \displaystyle\sum_{y=0}^{2^n-1} (-1)^{(s \cdot x \Mod{2}) + x.y} \ket{y}
   \end{align}
 
-Et on peut prouver que $\frac{1}{2^{n}} \displaystyle\sum_{x=0}^{2^n-1} \displaystyle\sum_{y=0}^{2^n-1} (-1)^{(s \cdot x \Mod{2}) + x.y} \ket{y}$ est égal à $\ket{s}$ (\textit{à faire ...})
+Et on peut prouver que $\frac{1}{2^{n}} \displaystyle\sum_{x=0}^{2^n-1} \displaystyle\sum_{y=0}^{2^n-1} (-1)^{(s \cdot x \Mod{2}) + x.y} \ket{y}$ est égal à $\ket{s}$.
+% (\textit{à faire ...})
 
 \subsection{Exemple}
 

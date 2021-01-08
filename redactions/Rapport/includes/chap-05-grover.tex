@@ -2,7 +2,7 @@
 
 \section{Rappels d'algèbre: projection et reflection}
 
-Soient deux vecteurs $\overrightarrow{u}$ et $\overrightarrow{u}$, avec $\overrightarrow{v}$ normalisé.
+Soient deux vecteurs $\overrightarrow{u}$ et $\overrightarrow{v}$, avec $\overrightarrow{v}$ normalisé.
 
 \begin{definition}
   La matrice de projection $P$ de $\overrightarrow{u}$ sur $\overrightarrow{v}$ est définie par $P = \overrightarrow{v} \cdot \overrightarrow{v^T}$.
@@ -173,3 +173,71 @@ On voit que l'état cible $\ket{w}$ est passé d'une amplitude de 0 à une ampli
   \caption{Evolution des amplitudes pour n=16, sur 1000 itérations}
   \label{fig:univerise}
 \end{figure}
+
+\subsection{Implémentation}
+
+\subsubsection*{Simulation sur un ordinateur classique}
+
+% \begin{lstlisting}[language=Python]
+% import numpy as np
+% import math
+% import random
+
+% N = 2**8
+% n_opti = (math.pi/4)*math.sqrt(N)
+% nb_iter = math.floor(n_opti)
+% w = np.zeros((N, 1))
+% w[random.randint(-1, N)] = np.imag(0 + 1j)
+% s = np.ones((N, 1)) / math.sqrt(N)
+% u_w = np.identity(N) - 2 * w * np.transpose(w)
+% u_s = 2 * s * np.transpose(s) - np.identity(N)
+% g = np.dot(u_s, u_w)
+% x = s
+% for i in range(0, nb_iter):
+%     x = np.dot(g, x)
+% \end{lstlisting}
+
+\begin{algorithm}[H]
+  \SetAlgoLined
+  \KwData{
+    $w$ vector of size $2^n$ of $0$ with target index to 1;
+  }
+
+  \KwOut{
+    $x$ vector of amplitudes (largest amplitude corresponding to wanted index)
+  }
+
+  \Begin{
+    $s$ vector of size $2^n$ of $\frac{1}{\sqrt{2^n}}$
+    $N \longleftarrow 2^n$\;
+    $N_{iter} \longleftarrow floor(\frac{\pi}{4} \sqrt{N})$\;
+    \tcc{Compute grover operator}
+    $U_w \longleftarrow I_N - 2 w \cdot w^T$\;
+    $U_s \longleftarrow 2 s \cdot s^T - I_N$\;
+    $g \longleftarrow U_s \cdot U_w$\;
+    $x \longleftarrow s$ \;
+    \tcc{Apply grover operator $N_{iter}$ times}
+    \For(){$i = 0$ \KwTo $N_{iter}$}{
+      $x \longleftarrow g \cdot x $\;
+    }
+  }
+\end{algorithm}
+
+\subsubsection*{Algorithme quantique}
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import math
+import random
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+
+var_qubits = QuantumRegister(4, name='v')
+clause_qubits = QuantumRegister(4, name='c')
+output_qubits = QuantumRegister(1, name='out')
+cbits = ClassicalRegister(4, name='cbits')
+qc = QuantumCircuit(var_qubits, clause_qubits, output_qubits, cbits)
+qc.initialize([1, -1]/np.sqrt(2), output_qubits)
+qc.h(var_qubits)
+qc.barrier()
+
+\end{lstlisting}

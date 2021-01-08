@@ -1,0 +1,44 @@
+Rapport:
+- Rajouter les explications sur la programmation (q# microsoft / python qiskit IBM)
+- Sphères de bloch:
+  - 1 qubit peut être représenté pratiquement par un point sur une sphère (de bloch). Quand plusieurs qubits, espace trop grand pour représenter
+  - rajouter symbole du produit tensoriel entre chaque qubit
+  - aligner les unes en dessous des autres + deuxième représentation à côté
+  - DJ: insister que les qubits sont séparables (écrivable en tant que produit tensoriel de chaque composants)
+  	Expliquer quand c'est intriqué (non séparable en produit tensoriel)
+  - Taille des boules: probabilité des états (introduire avec 1 qubit après H)
+
+
+Soutenance
+- FR:
+======> connaissent notion d'algorithme standard;
+
+  Intro:
+     -> expliquer notion de qubit
+     -> expliquer produit tensoriel
+     -> Sphère de Bloch
+     -> Interprétation probabiliste
+
+  Partie 1: algo 1 (année et ref): Deutsch Jozsa
+    - Version algébrique
+    - Version algorithmique
+    - Version géométrique
+
+  Partie 2: algo 2 (année et ref): Grover (souligner l'aspect dynamique itératif)
+    - Version algébrique
+    - Version algorithmique
+    - Version géométrique
+
+  Conclusion: lancer des pistes pour que ça ait du sens (
+    - modéliser sous forme de pb d'optimisation;
+    - voir à quel point méthodes de Newton (dérivées unitaires au lieu de la vraie dérivée) => linéarisation par matrices unitaires pour des pbs non linéaires)
+
+
+  - Aspect algébrique, géométrique, l'interprétation probabiliste et programmation.
+
+- EN:
+======> aucune connaissance
+
+  Nouveaux algorithmes, pas encore le matériel pour le faire en pratique mais simulation possibles.
+  Aspect historique; entreprises qui s'y mettent.
+  Citer les grands algos (ex: Shor avec la sécurité informatique)

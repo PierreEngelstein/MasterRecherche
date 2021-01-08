@@ -1,0 +1,132 @@
+\documentclass{beamer}
+\usetheme{Frankfurt}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{graphicx}
+\usepackage{subfig}
+
+\titlegraphic{}
+
+\title{Soutenance de projet - Informatique quantique}
+\author{Pierre Engelstein}
+\institute{Polytech Angers}
+
+\begin{document}
+
+%====================================
+%================1===================
+
+\frame{\titlepage}
+
+%% Intro
+
+% Notion de Qubit
+% Combinaison de qubits: le produit tensoriel
+% Mesure des qubits
+% Représentations graphiques
+
+%% Partie 1: Algorithme de Deutsch Jozsa
+
+% Présentation du problème
+% Notion d'oracle
+% Explication algébrique
+  % Porte de hadamard: se porter dans un état superposé
+  % Application de l'oracle
+  % Réapplication de Hadamard: forcer les résultats
+% Implémentation en QSharp: expliquer un exemple d'oracle
+% Visualisation géométrique
+
+%% Partie 2: Algorithme de Grover
+
+% Présentation du problème
+% Miroir géométrique
+% Application d'une itération
+  % Opérateur s et w
+  % Obtention d'un état probabiliste
+  % Necessité de plusieurs itérations: jamais obtention d'un état pur
+% Implémentations: simulation sur ordinateur classique et implémentation quantique
+
+%% Conclusion: Perspectives
+
+% Application de la méthode de newton ?
+% 
+
+%====================================
+%================3===================
+
+\section{Introduction}
+
+\begin{frame}
+
+\frametitle{Le qubit}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mesure des qubits}
+\end{frame}
+
+\begin{frame}
+\frametitle{Visualisation}
+\end{frame}
+
+\section{Algorithme de Deutsch-Jozsa}
+
+\begin{frame}
+\frametitle{Présentation du problème}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algorithme}
+\end{frame}
+
+\begin{frame}
+\frametitle{Implémentation en \texttt{QSharp}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Visualisation géométrique}
+\end{frame}
+
+\section{Algorithme de Grover}
+
+\begin{frame}
+\frametitle{Présentation du problème}
+\end{frame}
+
+\begin{frame}
+\frametitle{Itération unique}
+\end{frame}
+
+\begin{frame}
+\frametitle{Implémentations classiques et quantiques}
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}
+\frametitle{Le qubit}
+\end{frame}
+
+\begin{frame}
+\frametitle{Biliographie}
+\begin{itemize}
+    \fontsize{6pt}{7.2}\selectfont
+
+    \item R. Buyya, R. N. Calheiros, J. Son, A. V. Dastjerdi and Y. Yoon, "Software-Defined Cloud Computing: Architectural elements and open challenges," 2014 International Conference on Advances in Computing, Communications and Informatics (ICACCI), New Delhi, 2014, pp. 1-12
+    \item Bhore, Pratik. (2016). A Survey on Storage Virtualization and its Levels along with the Benefits and Limitations. INTERNATIONAL JOURNAL OF COMPUTER SCIENCES AND ENGINEERING. 4. 115-121.
+    \item M. F. Bari et al., "Data Center Network Virtualization: A Survey," in IEEE Communications Surveys \& Tutorials, vol. 15, no. 2, pp. 909-928
+    \item M. Alouane and H. El Bakkali, "Virtualization in Cloud Computing: Existing solutions and new approach," 2016 2nd International Conference on Cloud Computing Technologies and Applications (CloudTech), Marrakech, 2016, pp. 116-123
+    \item Chrobak, Pawel. (2014). Implementation of Virtual Desktop Infrastructure in academic laboratories. 1139-1146.
+    \item Nagesh, O \& Kumar, Tapas \& Venkateswararao, V.. (2017). A Survey on Security Aspects of Server Virtualization in Cloud Computing. International Journal of Electrical and Computer Engineering. 7. 1326-1336.
+\end{itemize}
+
+\end{frame}
+
+\end{document}
