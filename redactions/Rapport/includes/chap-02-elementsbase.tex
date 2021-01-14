@@ -1,49 +1,57 @@
 \chapter{Informatique quantique: éléments de base}
 
-\section{Le qubit}
+\section{Postulats de base}
 
-\subsection{Représentation d'état}
-Prenons un système composé 
+On pose 3 postulats, servant de base aux raisonnements qui suivront. Ces postulats sont des hypothèses de travail, mais confirmés jusqu'a présent par les expériences.
 
-\subsection{Formalisme mathématique}
-
-\subsubsection*{Qubit unique}
-
-Le qubit possède deux états de base, correspondant aux états des bits classiques. On les représente par $\ket{0}$, correspondant à l'état $0$ classique, et par $\ket{1}$ pour l'état $1$ classique. A la différence d'un bit classique, un qubit peut également prendre une infinité d'autres états que ses états de base. La question se pose alors de la mesure: que va-t-on mesurer quand un qubit est dans un état autre que $\ket{0}$ ou $\ket{1}$ ? C'est là qu'apparaissent les bizarreries de la mécanique quantique. La mesure va donner au hasard $0$ ou $1$, suivant des probabilités définies.
-
-Pour représenter ce comportement, on note un qubit de la façon suivante:
+\subsection{Etat d'un système quantique}
+Un système quantique peut être représenté par un vecteur d'état, de la même manière qu'un système physique classique. On le représente par la notation de Dirac, notée de la forme $\ket{\psi}$. Ce vecteur d'état est necessairement de norme 1 (la somme des modules au carré vaut 1). On peut distinguer deux types d'états pour un système quantique: les états de base, ou \textbf{états purs}, formant une base vectorielle, et les états superposés. Ces états superposés correspondent à une combinaison linéaire des états purs. On peut écrire généralement un état quantique de la façon suivante:
 
 \begin{equation}
-\ket{\psi} = \alpha \cdot \ket{0} + \beta \cdot \ket{1}
+    \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
 \end{equation}
 
-Le qubit est alors représenté par une combinaison linéaire des deux états de base $\ket{0}$ et $\ket{1}$, suivant les coefficients complexes $\alpha$ et $\beta$. Ces coefficients représentent les amplitudes de probabilité suivant lesquelles on va mesurer $\ket{0}$ ou $\ket{1}$.
+avec les $\ket{k_i}$ états purs, et les $c_i$ respectant $ \displaystyle\sum_{i} |c_i|^2 = 1$ pour la normalité du vecteur d'état.
 
-Ces deux coefficients complexes doivent absolument respecter la propriété suivante:
+\medbreak
 
-\begin{equation}
-\norm{\alpha}^2 + \norm{\alpha}^2 = 1
-\end{equation}    
+Dans le cadre de l'informatique quantique, on utilise le système quantique le plus simple, appelé \textbf{qubit}. Ce système quantique est composé de deux états purs, $\ket{0}$ et $\ket{1}$, et des états superposés. Similairement à l'informatique classique, où on travaille sur le système physique le plus élémentaire - le bit - en quantique on travaille sur le système physique quantique élémentaire - le qubit. On dispose des mêmes états purs, mais l'informatique quantique apporte les états \textit{intermédiaires} superposés. Dans la base canonique $\{\ket{0}, \ket{1}\}$, on note un qubit de la façon suivante: $\ket{\psi} = \alpha \cdot \ket{0} + \beta \cdot \ket{1}$.
 
-\subsubsection*{Multiples qubits}
+\subsection{Mesure projective}
+Que se passe-t-il quand on mesure un système quantique ? On a évoqué au dessus la notion de superposition des états. L'expérience montre que, lorsqu'on va mesurer un système quantique, on va mesurer au hasard un des états de base, avec comme probabilité le carré du coefficient correspondant.
 
-Une fois ces éléments posés, on peut commencer à travailler avec plusieurs qubits, notés n-qubits. Mathématiquement, une combinaison de qubits correspond à un produit tensoriel de deux vecteurs.
+Mathématiquement, la mesure effectue une projection de l'état du système sur un des états de base dont il est composé. Par exemple, si on a un qubit dans l'état $\ket{\psi} = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, alors la probabilité de mesurer 0, c'est à dire de projeter le système dans l'état pur $\ket{0}$ est $|\frac{1}{\sqrt{2}}|^2 = \frac{1}{2}$; et de même pour l'état pur $\ket{1}$. On a donc exactement la même probabilité de mesurer 0 que de mesurer 1.
 
-Prenons les qubits $\ket{0}$ et $\ket{1}$. La combinaisons en un 2-qbits est donc:
+Il faut noter que, lorsqu'on fait la mesure, on projete réellement le système quantique dans l'état pur. Concrètement, si on a un état superposé qu'on mesure, il se place dans l'état pur qu'on mesure, et toutes les mesures successives qu'on fera sur ce qubit donneront le même résultat. La mesure fait donc perdre l'état qu'on avait auparavant.
 
-\begin{equation}
-    \ket{\psi} = \ket{0} \tens{} \ket{1}
-\end{equation} 
-
-qu'on peut écrire plus simplement:
+\subsection{Dynamique du système}
+Comme n'importe quel système physique, on peut faire évoluer un système quantique dans le temps. Ici apparaissent deux propriétés. Tout d'abord, il découle du premier postulat que la dynamique d'un système quantique est necessairement unitaire. En effet, un système quantique doit, pour être valide, avoir une norme de 1, et donc l'évolution d'un système quantique d'un premier état vers un autre doit conserver cette unitarité. Cela veut dire que la matrice représentant l'évolution du système quantique doit respecter la propriété suivante:
 
 \begin{equation}
-    \ket{\psi} = \ket{01}
+    U^{\dagger}U = UU^{\dagger} = I,
 \end{equation}
 
-Un 2-qubit a donc 4 états de bases, représentés par: $\{\ket{00},\ket{01}, \ket{10}, \ket{11} \}$, et peut donc être la combinaison linéaire de n'importe quel de ces états de base
+avec $U$ la matrice d'évolution du système, $U^{\dagger}$ la matrice conjuguée transposée de $U$, et $I$ l'identité.
 
-\subsubsection*{Intrication}
+Une deuxième propriété est également posée, ne découlant pas des deux postulats précédents. La dynamique d'un système quantique doit être aussi linéaire. Ainsi, on pourrait penser que n'importe quelle évolution unitaire serait valable, mais l'expérience nous montre que non, il faut en plus qu'elle soit linéaire.
+
+\section{Vers une informatique quantique}
+A partir de ces 3 postulats de base, on peut commencer à comprendre comment se construit l'informatique quantique, et quels sont les apports sur l'informatique classique.
+
+\subsection{Multiples qubits}
+On a vu la définition d'un qubit. Cela nous permet d'étendre ce système quantique élémentaire à des systèmes composés de multiples qubits. En informatique classique, on travaille quasi systématiquement sur des mots binaires plutôt que des bits uniques; l'équivalent est vrai en quantique. Pour cela, les systèmes quantiques, et donc les qubits, sont munis d'une opération: le produit tensoriel. Quand on veut effectuer une combinaison de deux qubits, cela revient à faire un produit tensoriel des états des deux qubits individuels. Par exemple, si nous disposons de deux qubits ayant pour valeur $\ket{\psi_1} = \ket{0}$ et $\ket{\psi_2} = \ket{1}$, alors on peut écrire le 2-qubit combinaison des deux de la façon suivante:
+
+
+\begin{equation}
+    \ket{\psi} = \ket{0} \tens{} \ket{1},
+\end{equation}
+
+qu'on écrit généralement sous la forme plus simple:
+
+\begin{equation}
+    \ket{\psi} = \ket{01}.
+\end{equation}
+
 Prenons un 2-qubit formé par la combinaison de 2 qubits:
 
 \begin{align*}
@@ -64,6 +72,90 @@ Considérons maintenant le 2-qubit suivant:
 
 Il parait évident alors qu'on ne peut pas séparer ce 2-qubit en produit tensoriel de 2 qubits individuels. Dans ce cas, on dit que les deux qubits sont \textbf{intriqués} et donc non séparables.
 
-\section{Représentation géométrique}
 
-\section{Programmer un processeur quantique}
+\subsection{Portes quantiques}
+Dans la représentation d'état classique, et spécifiquement en informatique, on peut faire évoluer l'état au travers de portes. En informatique classique, on dispose ainsi de portes élémentaires telles que \texttt{AND}, \texttt{NOT}, \texttt{OR}, etc. 
+
+De la même manière, en respectant le troisième postulat posé précédement, on peut construire des portes logiques quantiques, les combiner, afin de créer des circuits quantiques. En informatique quantique, on distingue donc plusieurs portes élémentaires, utilisés dans beaucoup de circuit:
+
+\begin{enumerate}
+    \item La porte de Hadamard $H$. Elle permet de passer un qubit d'un état pur $\ket{0}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, ou de l'état pur $\ket{1}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} - \frac{1}{\sqrt{2}}\ket{1}$. Elle est très utilisée en début de circuit pour préparer les qubits entrants dans un état permettant l'évaluation parallèle de toutes les entrées;
+    \item Les portes de Pauli $X$, $Y$ et $Z$ permettant d'effectuer des rotations aux états des qubits;
+    \item La porte de Toffoli, équivalent d'un \texttt{NON} booléen, est une porte universelle quantique. Elle permet donc de construire l'ensemble des autres portes faisables.
+\end{enumerate}
+
+Un exemple de circuit est le suivant: On dispose d'un 3-qubit dans l'état $\ket{000}$. Au départ, on applique à ces trois qubits une porte de Hadamard, qui les fait se retrouver dans des états équilibrés. On arrive donc à un 3-qubit qui est équilibré entre chacun de ses états purs. On applique ensuite deux portes de Pauli $Z$, un au premier qubit, et un au troisième. Cela est effectivement faisable puisqu'a la sortie des portes de hadamard, les 3 qubits ne sont pas intriqués. On applique de la même façon 3 portes de Hadamard à la sortie, puis on mesure. 
+
+\centerline{
+  \Qcircuit @C=1em @R=.7em {
+    & \lstick{\ket{0}} & \gate{H} \barrier[-1.25em]{2} & \gate{Z} \barrier[-1.25em]{2} & \gate{H} & \meter & \qwa \\
+    & \lstick{\ket{0}} & \gate{H} & \qw & \gate{H} & \meter & \qwa \\
+    & \lstick{\ket{0}} & \gate{H} & \gate{Z} & \gate{H} & \meter & \qwa
+  }
+}
+
+L'avantage du quantique bien montré ici: Les deux portes du milieu vont faire changer l'état des qubits, mais en parallèle: on fait évoluer le système simultanément pour tout les états purs qui nous intéressent, puisqu'ils sont superposés.
+
+
+% \subsection{Formalisme mathématique}
+
+% \subsubsection*{Qubit unique}
+
+% Le qubit possède deux états de base, correspondant aux états des bits classiques. On les représente par $\ket{0}$, correspondant à l'état $0$ classique, et par $\ket{1}$ pour l'état $1$ classique. A la différence d'un bit classique, un qubit peut également prendre une infinité d'autres états que ses états de base. La question se pose alors de la mesure: que va-t-on mesurer quand un qubit est dans un état autre que $\ket{0}$ ou $\ket{1}$ ? C'est là qu'apparaissent les bizarreries de la mécanique quantique. La mesure va donner au hasard $0$ ou $1$, suivant des probabilités définies.
+
+% Pour représenter ce comportement, on note un qubit de la façon suivante:
+
+% \begin{equation}
+% \ket{\psi} = \alpha \cdot \ket{0} + \beta \cdot \ket{1}
+% \end{equation}
+
+% Le qubit est alors représenté par une combinaison linéaire des deux états de base $\ket{0}$ et $\ket{1}$, suivant les coefficients complexes $\alpha$ et $\beta$. Ces coefficients représentent les amplitudes de probabilité suivant lesquelles on va mesurer $\ket{0}$ ou $\ket{1}$.
+
+% Ces deux coefficients complexes doivent absolument respecter la propriété suivante:
+
+% \begin{equation}
+% \norm{\alpha}^2 + \norm{\beta}^2 = 1
+% \end{equation}    
+
+% \subsubsection*{Multiples qubits}
+
+% Une fois ces éléments posés, on peut commencer à travailler avec plusieurs qubits, notés n-qubits. Mathématiquement, une combinaison de qubits correspond à un produit tensoriel de deux vecteurs.
+
+% Prenons les qubits $\ket{0}$ et $\ket{1}$. La combinaisons en un 2-qbits est donc:
+
+% \begin{equation}
+%     \ket{\psi} = \ket{0} \tens{} \ket{1}
+% \end{equation} 
+
+% qu'on peut écrire plus simplement:
+
+% \begin{equation}
+%     \ket{\psi} = \ket{01}
+% \end{equation}
+
+% Un 2-qubit a donc 4 états de bases, représentés par: $\{\ket{00},\ket{01}, \ket{10}, \ket{11} \}$, et peut donc être la combinaison linéaire de n'importe quel de ces états de base
+
+% \subsubsection*{Intrication}
+% Prenons un 2-qubit formé par la combinaison de 2 qubits:
+
+% \begin{align*}
+% \ket{\psi} &= (\alpha_1\cdot\ket{0} + \beta_1\cdot\ket{1}) \otimes (\alpha_2\cdot\ket{0} + \beta_2\cdot\ket{1}) \\
+% &= \alpha_1\alpha_2 \ket{0} \otimes \ket{0} + \alpha_1\beta_2 \ket{0} \otimes \ket{1} + \beta_1\alpha_2 \ket{1} \otimes \ket{0} + \beta_1\beta_2 \ket{1} \otimes \ket{1} \\
+% &= \gamma_1 \ket{00} + \gamma_2 \ket{01} + \gamma_3 \ket{10} + \gamma_4 \ket{11}
+% \end{align*}
+
+% On peut donc, si on a un 2-qubit combinaison linéaire de tout les états de bases, le séparer en deux qubits individuels, sur lesquels on va pouvoir agir.
+
+% \medbreak
+
+% Considérons maintenant le 2-qubit suivant:
+
+% \[
+% \ket{\psi} = \gamma_1 \ket{00} + \gamma_2 \ket{11}
+% \]
+
+% Il parait évident alors qu'on ne peut pas séparer ce 2-qubit en produit tensoriel de 2 qubits individuels. Dans ce cas, on dit que les deux qubits sont \textbf{intriqués} et donc non séparables.
+
+% \section{Représentation géométrique}
+
+% \section{Programmer un processeur quantique}

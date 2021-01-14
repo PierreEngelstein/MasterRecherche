@@ -2,11 +2,9 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Schéma de l'algorithme\relax }}{6}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Evolution des états pour une fonction f constante, vecteurs d'états séparés\relax }}{11}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Evolution des états pour une fonction f constante\relax }}{11}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés\relax }}{12}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Evolution des états pour une fonction f équilibrée\relax }}{12}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Schéma de l'algorithme\relax }}{7}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Evolution des états pour une fonction f constante, vecteurs d'états séparés et réunis\relax }}{12}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés\relax }}{13}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{22}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{24}%
