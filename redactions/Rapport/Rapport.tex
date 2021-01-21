@@ -14,6 +14,8 @@
 \usepackage{tikz}
 \usepackage{qcircuit}
 \usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{appendix}
 \usepackage[ruled,vlined]{algorithm2e}
 \usetikzlibrary{angles,quotes}
 % \usepackage{a4wide}
@@ -110,9 +112,16 @@
 
 \input{includes/chap-01-intro.tex}
 \input{includes/chap-02-elementsbase.tex}
-\input{includes/chap-03-DJ.tex}
-\input{includes/chap-04-derives.tex}
-\input{includes/chap-05-grover.tex}
+\input{includes/chap-03-Algorithmes.tex}
+
+\begin{appendix}
+\input{includes/app-01-DJ.tex}
+\input{includes/app-02-vazirani.tex}
+\input{includes/app-03-grover.tex}
+\end{appendix}
 % \input{includes/chap-06-QFT.tex}
+
+\bibliographystyle{ieeetr}
+\bibliography{biblio}
 
 \end{document}
