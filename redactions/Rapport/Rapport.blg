@@ -1,0 +1,57 @@
+This is BibTeX, Version 0.99d (TeX Live 2020/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: Rapport.aux
+The style file: ieeetr.bst
+Database file #1: biblio.bib
+I was expecting a `,' or a `}'---line 2659 of file biblio.bib
+ :   
+ :   JOURNAL={Nature},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty journal in Grover96
+Warning--empty journal in Vandersypen01
+Warning--empty year in Vandersypen01
+Warning--empty journal in gidney2019factor
+Warning--empty journal in anschuetz2018variational
+You've used 19 entries,
+            1876 wiz_defined-function locations,
+            606 strings with 6272 characters,
+and the built_in function-call counts, 4854 in all, are:
+= -- 492
+> -- 156
+< -- 0
++ -- 61
+- -- 42
+* -- 291
+:= -- 646
+add.period$ -- 20
+call.type$ -- 19
+change.case$ -- 17
+chr.to.int$ -- 0
+cite$ -- 24
+duplicate$ -- 270
+empty$ -- 472
+format.name$ -- 42
+if$ -- 1216
+int.to.chr$ -- 0
+int.to.str$ -- 19
+missing$ -- 18
+newline$ -- 62
+num.names$ -- 18
+pop$ -- 79
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 217
+stack$ -- 0
+substring$ -- 311
+swap$ -- 124
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 5
+while$ -- 43
+width$ -- 21
+write$ -- 168
+(There was 1 error message)

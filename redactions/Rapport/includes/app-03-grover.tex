@@ -1,37 +1,38 @@
 \chapter{Algorithme de Grover}
 
 \section{Rappels d'algèbre: projection et reflection}
+On utilise ici la notation de Dirac pour noter les vecteurs, et on ne norme pas les vecteurs pour plus de simplicité dans les calculs. Les raisonnements restent les mêmes si on respectait la norme.
 
-Soient deux vecteurs $\overrightarrow{u}$ et $\overrightarrow{v}$, avec $\overrightarrow{v}$ normalisé.
+Soient deux vecteurs $\ket{u}$ et $\ket{v}$, avec $\ket{v}$ normalisé.
 
 \begin{definition}
-  La matrice de projection $P$ de $\overrightarrow{u}$ sur $\overrightarrow{v}$ est définie par $P = \overrightarrow{v} \cdot \overrightarrow{v^T}$.
+  La matrice de projection $P$ de $\ket{u}$ sur $\ket{v}$ est définie par $P = \ket{v} \cdot \bra{v}$.
 \end{definition}
 
 \begin{definition}
-  La matrice de reflection $R$ de $\overrightarrow{u}$ par rapport à $\overrightarrow{v}$ est définie par $R = 2 \overrightarrow{v} \cdot \overrightarrow{v^T} - I$.
+  La matrice de reflection $R$ de $\ket{u}$ par rapport à $\ket{v}$ est définie par $R = 2 \ket{v} \cdot \bra{v} - I$.
 \end{definition}
 
 \begin{ex}
-Prenons $\overrightarrow{u}=\begin{bmatrix}2\\3\end{bmatrix}$ et $\overrightarrow{v}=\begin{bmatrix}1\\-2\end{bmatrix}$.
+Prenons $\ket{u}=\begin{bmatrix}2\\3\end{bmatrix}$ et $\ket{v}=\begin{bmatrix}1\\-2\end{bmatrix}$.
 
-On projete $\overrightarrow{u}$ sur $\overrightarrow{v}$:
+On projete $\ket{u}$ sur $\ket{v}$:
 
-$P = \frac{\overrightarrow{v} \cdot \overrightarrow{v^T}}{\norm{v}^2} = \begin{bmatrix}\frac{1}{\sqrt{5}} & \frac{-2}{\sqrt{5}}\\\frac{-2}{\sqrt{5}} & \frac{4}{\sqrt{5}}\end{bmatrix}$
+$P = \frac{\ket{v} \cdot \bra{v}}{\norm{v}^2} = \begin{bmatrix}\frac{1}{\sqrt{5}} & \frac{-2}{\sqrt{5}}\\\frac{-2}{\sqrt{5}} & \frac{4}{\sqrt{5}}\end{bmatrix}$
 \medbreak
-Soit: $\overrightarrow{u_v} = P\overrightarrow{u} = \begin{bmatrix}-0.8\\1.6\end{bmatrix}$
+Soit: $\ket{u_v} = P\ket{u} = \begin{bmatrix}-0.8\\1.6\end{bmatrix}$
 \end{ex}
 
 \begin{ex}
-Prenons à nouveau $\overrightarrow{u}=\begin{bmatrix}2\\3\end{bmatrix}$ et $\overrightarrow{v}=\begin{bmatrix}1\\-2\end{bmatrix}$.
-On effectue une reflection de $\overrightarrow{u}$
+Prenons à nouveau $\ket{u}=\begin{bmatrix}2\\3\end{bmatrix}$ et $\ket{v}=\begin{bmatrix}1\\-2\end{bmatrix}$.
+On effectue une reflection de $\ket{u}$
 
-$R = 2 \times \frac{\overrightarrow{v} \cdot \overrightarrow{v^T}}{\norm{v}^2} - I = 2 \times \begin{bmatrix}\frac{1}{\sqrt{5}} & \frac{-2}{\sqrt{5}}\\\frac{-2}{\sqrt{5}} & \frac{4}{\sqrt{5}}\end{bmatrix} - \begin{bmatrix}1 & 0 \\ 0 & 1\end{bmatrix}$
+$R = 2 \times \frac{\ket{v} \cdot \bra{v}}{\norm{v}^2} - I = 2 \times \begin{bmatrix}\frac{1}{\sqrt{5}} & \frac{-2}{\sqrt{5}}\\\frac{-2}{\sqrt{5}} & \frac{4}{\sqrt{5}}\end{bmatrix} - \begin{bmatrix}1 & 0 \\ 0 & 1\end{bmatrix}$
 \end{ex}
 
 La première étape est la double projection $2\times P$, ce qui donne le vecteur $\begin{bmatrix}-1.6\\3.2\end{bmatrix}$.
 
-La deuxième étape est d'enlever le vecteur initial, ce qui donne le vecteur $\overrightarrow{u_R} = \begin{bmatrix}-3.6\\0.2\end{bmatrix}$.
+La deuxième étape est d'enlever le vecteur initial, ce qui donne le vecteur $\ket{u_R} = \begin{bmatrix}-3.6\\0.2\end{bmatrix}$.
 
 On peut vérifier les angles $\theta_{UV}$ et $\theta_{VU_R}$:
 
@@ -45,34 +46,34 @@ Les deux angles sont bien égaux, on a effectué une reflection.
   \draw[thin,gray!40] (-4,-3) grid (3,4);
   \draw[<->] (-3,0)--(3,0) node[right]{$x$};
   \draw[<->] (0,-3)--(0,4) node[above]{$y$};
-  \draw[line width=1pt,blue,-stealth](0,0)--(2, 3) node[anchor=south west]{$\boldsymbol{\overrightarrow{u}}$};
-  \draw[line width=1pt,red,-stealth](0,0)--(1,-2) node[anchor=north east]{$\boldsymbol{\overrightarrow{v}}$};
-  \draw[line width=1pt,green,-stealth](0,0)--(-0.8,1.5) node[anchor=north east]{$\boldsymbol{\overrightarrow{u_v}}$};
+  \draw[line width=1pt,blue,-stealth](0,0)--(2, 3) node[anchor=south west]{$\boldsymbol{\ket{u}}$};
+  \draw[line width=1pt,red,-stealth](0,0)--(1,-2) node[anchor=north east]{$\boldsymbol{\ket{v}}$};
+  \draw[line width=1pt,green,-stealth](0,0)--(-0.8,1.5) node[anchor=north east]{$\boldsymbol{\ket{u_v}}$};
   \draw[line width=1pt,gray!200,dashed](2, 3) -- (-0.8,1.5){};
   \draw[line width=1pt,gray!200,dashed](-0.8,1.5)--(-1.6,3.0) node[anchor=north east]{$\boldsymbol{2 \times P}$};
   \draw[line width=1pt,gray!200,dashed](-1.6,3.0)--(-3.6,0.2) node[anchor=north east]{};
-  \draw[line width=1pt,green,-stealth](0,0)--(-3.6,0.2) node[anchor=north east]{$\boldsymbol{\overrightarrow{u_R} = (2 \times P - I)\overrightarrow{u}}$};
+  \draw[line width=1pt,green,-stealth](0,0)--(-3.6,0.2) node[anchor=north east]{$\boldsymbol{\ket{u_R} = (2 \times P - I)\ket{u}}$};
 \end{tikzpicture}
 
 \section{Problème à résoudre}
 Soit une base de données non triée à $N$ entrées. Nous voulons trouver un algorithme permettant de chercher efficacement un enregistrement dans cette base.
 
-\subsection{Principe de l'algorithme}
-L'algorithme de Grover permet de résoudre ce problème en quantique, en disposant de $N$ qubits intriqués pour calculer $2^N$ état 
-(donc si on a $N$ entrées dans la base, il nous faut $log_2(N)$ qubits intriqués). Dans le cas de cet algorithme, on considère le problème suivant:
-\medbreak
-On marque $\{0, 1, 2, ..., N-1\}$ les enregistrements de la base de données, et on dénote $\omega$ l'état inconnu recherché. On dispose de la fonction suivante:
+% \subsection{Principe de l'algorithme}
+% L'algorithme de Grover permet de résoudre ce problème en quantique, en disposant de $N$ qubits intriqués pour calculer $2^N$ état 
+% (donc si on a $N$ entrées dans la base, il nous faut $log_2(N)$ qubits intriqués). Dans le cas de cet algorithme, on considère le problème suivant:
+% \medbreak
+% On marque $\{0, 1, 2, ..., N-1\}$ les enregistrements de la base de données, et on dénote $\omega$ l'état inconnu recherché. On dispose de la fonction suivante:
 
-$f(x) = 
- \begin{cases}
-   1, & \text{si x vérifie le critère} \; \omega \\
-   0, & \text{sinon}
- \end{cases}
-$
+% $f(x) = 
+%  \begin{cases}
+%    1, & \text{si x vérifie le critère} \; \omega \\
+%    0, & \text{sinon}
+%  \end{cases}
+% $
 
-A la fin, on obtient un set de résultat. Or, lors de la mesure on va avoir au hasard une des solutions suivant les probabilités de chaque état, alors qu'on cherche
-juste à savoir la (ou les) bonnes solutions. On rajoute donc une amplification d'amplitude permettant d'augmenter les probabilités des bons résultats et de diminuer
-celles des mauvais.
+% A la fin, on obtient un set de résultat. Or, lors de la mesure on va avoir au hasard une des solutions suivant les probabilités de chaque état, alors qu'on cherche
+% juste à savoir la (ou les) bonnes solutions. On rajoute donc une amplification d'amplitude permettant d'augmenter les probabilités des bons résultats et de diminuer
+% celles des mauvais.
 
 
 \subsubsection*{Initialisation}
@@ -223,21 +224,21 @@ On voit que l'état cible $\ket{w}$ est passé d'une amplitude de 0 à une ampli
   }
 \end{algorithm}
 
-\subsubsection*{Algorithme quantique}
+% \subsubsection*{Algorithme quantique}
 
-\begin{lstlisting}[language=Python]
-import numpy as np
-import math
-import random
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+% \begin{lstlisting}[language=Python]
+% import numpy as np
+% import math
+% import random
+% from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
 
-var_qubits = QuantumRegister(4, name='v')
-clause_qubits = QuantumRegister(4, name='c')
-output_qubits = QuantumRegister(1, name='out')
-cbits = ClassicalRegister(4, name='cbits')
-qc = QuantumCircuit(var_qubits, clause_qubits, output_qubits, cbits)
-qc.initialize([1, -1]/np.sqrt(2), output_qubits)
-qc.h(var_qubits)
-qc.barrier()
+% var_qubits = QuantumRegister(4, name='v')
+% clause_qubits = QuantumRegister(4, name='c')
+% output_qubits = QuantumRegister(1, name='out')
+% cbits = ClassicalRegister(4, name='cbits')
+% qc = QuantumCircuit(var_qubits, clause_qubits, output_qubits, cbits)
+% qc.initialize([1, -1]/np.sqrt(2), output_qubits)
+% qc.h(var_qubits)
+% qc.barrier()
 
-\end{lstlisting}
+% \end{lstlisting}

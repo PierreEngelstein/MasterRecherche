@@ -44,7 +44,7 @@ Pour résoudre ce problème, on applique à nouveau une porte de Hadamard pour o
 
 \medbreak
 
-Cet algorithme permet principalement de prouver la supériorité de l'informatique quantique sur ce type de problèmes: on arrive effectivement à atteindre des performances qui sont inatteignables avec des ordinateurs classiques. Plusieurs autres algorithmes ont été créés en se basant sur celui-là, en modifiant le problème et la fonction évaluée, mais en gardant l'algorithme. On peut notament citer l'algorithme de Bernstein-Vazirani \cite{Bernstein97} qui permet de résoudre un problème d'arithmétique modulaire.
+Cet algorithme permet principalement de prouver la supériorité de l'informatique quantique sur ce type de problèmes: on arrive effectivement à atteindre des performances qui sont inatteignables avec des ordinateurs classiques. Plusieurs autres algorithmes ont été créés en se basant sur celui-là, en modifiant le problème et la fonction évaluée, mais en gardant l'algorithme. On peut notamment citer l'algorithme de Bernstein-Vazirani \cite{Bernstein97} qui permet de résoudre un problème d'arithmétique modulaire.
 
 \section{Algorithme de Grover}
 
@@ -164,7 +164,7 @@ La deuxième étape consiste à appliquer l'opérateur de Grover à l'état supe
 Cette figure illustre cette évolution pour 3 qubits. On voit qu'a la fin de $U_s$, on obtient un état quantique qui a une forte probabilité de tomber sur l'état voulu (ici, $\ket{010}$), les amplitudes de ceux qu'on ne veut pas ayant été fortement réduites. Néanmoins, on est toujours pas sûr de tomber sur le bon résultat: dans ce cas précis, la probabilité de tomber sur $\ket{010}$ est d'environ 78\%, on a quand même quasiment 20\% de chances de mesurer un autre état. Ce n'est pas satisfaisant.
 
 La solution est de réappliquer les portes $U_w$ et $U_s$. Ceci va encore plus diminuer les probabilités des états non voulus et augmenter la probabilité de l'état voulu.
-On peut prouver, notament géométriquement, que le nombre d'optimal d'itérations est $\frac{\pi}{4}\sqrt{N}$. En fait, il se passe autre chose: si on dépasse ce nombre optimal d'itération, on va diminuer l'amplitude de l'état voulu et augmenter les probabilités des autres états: c'est cyclique. La figure suivante illustre une simulation sur plus d'itérations que ce qui est necessaire:
+On peut prouver, notamment géométriquement, que le nombre d'optimal d'itérations est $\frac{\pi}{4}\sqrt{N}$. En fait, il se passe autre chose: si on dépasse ce nombre optimal d'itération, on va diminuer l'amplitude de l'état voulu et augmenter les probabilités des autres états: c'est cyclique. La figure suivante illustre une simulation sur plus d'itérations que ce qui est necessaire:
 
 \begin{figure}[htbp]
   \centering
@@ -218,3 +218,10 @@ Cet algorithme permet de trouver les facteurs premiers $p$ et $q$. On peut prouv
 
 Cet algorithme se passe en 3 étapes. Les deux premières sont similaires aux deux algorithmes précédents: on fait passer un n-qubit de l'état $\ket{0}^{\otimes n}$ à l'état équilibré; puis on évalue la fonction $a^r \Mod{N}$ pour l'état équilibré. La troisième étape fait intervenir une nouvelle notion: la transformée de Fourier quantique. C'est une généralisation de la porte de Hadamard, qui fait passer les qubits de la base $\{\ket{0}, \ket{1}\}$ à la base $\{\ket{+}, \ket{-}\}$ (pour rappel, on a $\ket{+} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1})$, et $\ket{-} = \frac{1}{\sqrt{2}}(\ket{0} - \ket{1})$).
 
+La transformée de Fourier quantique peut être comprise ici en faisant l'analogie à la version classique. Dans un cas classique, quand on a une fonction périodique, l'application de la transformée de Fourier permet de passer de la représentation temporelle à la représentation fréquentielle. Sur cette représentation, on obtient des raies de Dirac aux fréquences correspondant aux périodes de la fonction. Il suffit alors de lire les valeurs pour obtenir les périodes. Il s'agit du même principe en quantique: la transformée de Fourier quantique nous permet d'obtenir directement la valeur de la période, avec l'avantage de faire le calcul parallélisé.
+
+\medbreak
+
+Cet algorithme a déjà été implémenté sur de réels processeurs quantique, permettant de factoriser 15 en 5 et 3 en 2001 \cite{Vandersypen01}, puis de factoriser 21 en 3 et 7 en 2011 \cite{Martin11}. Aucun travail expérimental n'a réussi à ce jour à factoriser des nombres plus grands que ça, limitant les risques potentiels à la cybersécurité engendrés par cet algorithme. La structure de la solution de Shor necessite en effet beaucoup de corrections d'erreur sur les mises en oeuvres pratiques dûes au bruits sur les grand nombres de portes utilisées, ce qui complexifie et ralentis les implémentations.
+
+En revanche, ce problème de factorisation n'a pas pour seule solution celle proposée par Shor, et notamment une implémentations théorique de 2018 montre une factorisation d'entiers de 2048 bits en 8 heures, en utilisant 20 million de qubits \cite{gidney2019factor}. D'autres algorithmes sont présentés depuis 2010 notamment, présentant d'autres alternatives à Shor \cite{anschuetz2018variational}.

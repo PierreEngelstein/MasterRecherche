@@ -16,7 +16,17 @@
 \usepackage{listings}
 \usepackage{pgfplots}
 \usepackage{appendix}
+\usepackage{hyperref}
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{titlesec}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[display]
+{\normalfont%
+    \Large% %change this size to your needs for the first line
+    \bfseries}{\chaptertitlename\ \thechapter}{15pt}{%
+    \Large %change this size to your needs for the second line
+    }
 \usetikzlibrary{angles,quotes}
 % \usepackage{a4wide}
 
@@ -53,48 +63,50 @@
 \begin{document}
 \begin{titlepage}
     \begin{center}
-    
-    \includegraphics[width=0.6\textwidth]{Polytech_Angers.png}\\[1cm]
-    
-    {\large Master Systèmes Dynamiques et Signaux}\\[0.5cm]
-    
-    {\large Rapport Bibliographique}\\[0.5cm]
-    
-    \rule{\linewidth}{0.5mm} \\[0.4cm]
-    { \huge \bfseries Informatique Quantique \\[0.4cm] }
-    \rule{\linewidth}{0.5mm} \\[1.5cm]
-    
-    \noindent
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushleft} \large
-        \emph{Auteur :}\\
-        M. Pierre \textsc{Engelstein}\\
-         \end{flushleft}
-         \end{minipage}%
-         \begin{minipage}{0.4\textwidth}
-         \begin{flushright} \large
-        \emph{Encadrants :}\\
-        Dr. Nicolas \textsc{Delanoue}\\
-        Pr. François \textsc{Chapeau-Blondeau}\\
-         \end{flushright}
-    \end{minipage}
-    
-    \vfill
-    
-    \large
-    \emph{Jury :}
-    \begin{tabular}{lc}
-        Pr.~Laurent \textsc{Hardouin}\\
-        Dr.~Nicolas \textsc{Delanoue}\\
-        Pr.~François \textsc{Chapeau-Blondeau}\\
-        Pr.~Sébastien \textsc{Lahaye}\\
-        Dr.~Mehdi  \textsc{Lhommeau}\\
-        Dr.~Remy  \textsc{Guyonneau}\\
-    \end{tabular}
-    
-    \vspace{1cm}
-    {\large Version  du \today}
-    
+      \begin{figure}[!tbp]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+          \includegraphics[width=\textwidth]{Polytech_Angers.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+          \includegraphics[width=\textwidth]{LogoUnivAngers.png}
+        \end{minipage}
+      \end{figure}
+      {\large Master Systèmes Dynamiques et Signaux}\\[0.5cm]
+      {\large Rapport Bibliographique}\\[0.5cm]
+      \rule{\linewidth}{0.5mm} \\[0.4cm]
+      { \huge \bfseries Informatique Quantique \\[0.4cm] }
+      \rule{\linewidth}{0.5mm} \\[1.5cm]
+      \noindent
+      \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+          \emph{Auteur :}\\
+          M. Pierre \textsc{Engelstein}\\
+          \end{flushleft}
+          \end{minipage}%
+          \begin{minipage}{0.4\textwidth}
+          \begin{flushright} \large
+          \emph{Encadrants :}\\
+          Dr. Nicolas \textsc{Delanoue}\\
+          Pr. François \textsc{Chapeau-Blondeau}\\
+          \end{flushright}
+      \end{minipage}
+      \vfill
+      \large
+      \emph{Jury :}
+      \begin{tabular}{lc}
+          Pr.~Laurent \textsc{Hardouin}\\
+          Dr.~Nicolas \textsc{Delanoue}\\
+          Pr.~François \textsc{Chapeau-Blondeau}\\
+          Pr.~Sébastien \textsc{Lahaye}\\
+          Dr.~Mehdi  \textsc{Lhommeau}\\
+          Dr.~Remy  \textsc{Guyonneau}\\
+      \end{tabular}
+
+      \vspace{2cm}
+      
+      {\large Version  du \today}
     \end{center}
 \end{titlepage}
 
@@ -112,14 +124,20 @@
 
 \input{includes/chap-01-intro.tex}
 \input{includes/chap-02-elementsbase.tex}
-\input{includes/chap-03-Algorithmes.tex}
+\input{includes/chap-03-miseenoeuvre.tex}
+\input{includes/chap-04-Algorithmes.tex}
+\input{includes/chap-05-perpectives.tex}
+\input{includes/chap-06-conclu.tex}
 
 \begin{appendix}
 \input{includes/app-01-DJ.tex}
 \input{includes/app-02-vazirani.tex}
 \input{includes/app-03-grover.tex}
+
 \end{appendix}
 % \input{includes/chap-06-QFT.tex}
+
+
 
 \bibliographystyle{ieeetr}
 \bibliography{biblio}

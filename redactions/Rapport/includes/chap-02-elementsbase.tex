@@ -1,5 +1,8 @@
 \chapter{Informatique quantique: éléments de base}
 
+
+Les notions de base à connaître en informatique quantique sont décrites dans plusieurs ouvrages de référence, notamment dans \textit{Quantum Computation and Quantum Information} par Michael Nielsen et Isaac Chuang \cite{Nielsen00} ou \textit{Quantum Computer Science: An introduction} par David Mermin \cite{Mermin07}. On présente ici un résumé des notions fondamentales à connaître pour la suite du rapport.
+
 \section{Postulats de base}
 
 On pose 3 postulats, servant de base aux raisonnements qui suivront. Ces postulats sont des hypothèses de travail, mais confirmés jusqu'a présent par les expériences.
@@ -95,67 +98,3 @@ Un exemple de circuit est le suivant: On dispose d'un 3-qubit dans l'état $\ket
 }
 
 L'avantage du quantique bien montré ici: Les deux portes du milieu vont faire changer l'état des qubits, mais en parallèle: on fait évoluer le système simultanément pour tout les états purs qui nous intéressent, puisqu'ils sont superposés.
-
-
-% \subsection{Formalisme mathématique}
-
-% \subsubsection*{Qubit unique}
-
-% Le qubit possède deux états de base, correspondant aux états des bits classiques. On les représente par $\ket{0}$, correspondant à l'état $0$ classique, et par $\ket{1}$ pour l'état $1$ classique. A la différence d'un bit classique, un qubit peut également prendre une infinité d'autres états que ses états de base. La question se pose alors de la mesure: que va-t-on mesurer quand un qubit est dans un état autre que $\ket{0}$ ou $\ket{1}$ ? C'est là qu'apparaissent les bizarreries de la mécanique quantique. La mesure va donner au hasard $0$ ou $1$, suivant des probabilités définies.
-
-% Pour représenter ce comportement, on note un qubit de la façon suivante:
-
-% \begin{equation}
-% \ket{\psi} = \alpha \cdot \ket{0} + \beta \cdot \ket{1}
-% \end{equation}
-
-% Le qubit est alors représenté par une combinaison linéaire des deux états de base $\ket{0}$ et $\ket{1}$, suivant les coefficients complexes $\alpha$ et $\beta$. Ces coefficients représentent les amplitudes de probabilité suivant lesquelles on va mesurer $\ket{0}$ ou $\ket{1}$.
-
-% Ces deux coefficients complexes doivent absolument respecter la propriété suivante:
-
-% \begin{equation}
-% \norm{\alpha}^2 + \norm{\beta}^2 = 1
-% \end{equation}    
-
-% \subsubsection*{Multiples qubits}
-
-% Une fois ces éléments posés, on peut commencer à travailler avec plusieurs qubits, notés n-qubits. Mathématiquement, une combinaison de qubits correspond à un produit tensoriel de deux vecteurs.
-
-% Prenons les qubits $\ket{0}$ et $\ket{1}$. La combinaisons en un 2-qbits est donc:
-
-% \begin{equation}
-%     \ket{\psi} = \ket{0} \tens{} \ket{1}
-% \end{equation} 
-
-% qu'on peut écrire plus simplement:
-
-% \begin{equation}
-%     \ket{\psi} = \ket{01}
-% \end{equation}
-
-% Un 2-qubit a donc 4 états de bases, représentés par: $\{\ket{00},\ket{01}, \ket{10}, \ket{11} \}$, et peut donc être la combinaison linéaire de n'importe quel de ces états de base
-
-% \subsubsection*{Intrication}
-% Prenons un 2-qubit formé par la combinaison de 2 qubits:
-
-% \begin{align*}
-% \ket{\psi} &= (\alpha_1\cdot\ket{0} + \beta_1\cdot\ket{1}) \otimes (\alpha_2\cdot\ket{0} + \beta_2\cdot\ket{1}) \\
-% &= \alpha_1\alpha_2 \ket{0} \otimes \ket{0} + \alpha_1\beta_2 \ket{0} \otimes \ket{1} + \beta_1\alpha_2 \ket{1} \otimes \ket{0} + \beta_1\beta_2 \ket{1} \otimes \ket{1} \\
-% &= \gamma_1 \ket{00} + \gamma_2 \ket{01} + \gamma_3 \ket{10} + \gamma_4 \ket{11}
-% \end{align*}
-
-% On peut donc, si on a un 2-qubit combinaison linéaire de tout les états de bases, le séparer en deux qubits individuels, sur lesquels on va pouvoir agir.
-
-% \medbreak
-
-% Considérons maintenant le 2-qubit suivant:
-
-% \[
-% \ket{\psi} = \gamma_1 \ket{00} + \gamma_2 \ket{11}
-% \]
-
-% Il parait évident alors qu'on ne peut pas séparer ce 2-qubit en produit tensoriel de 2 qubits individuels. Dans ce cas, on dit que les deux qubits sont \textbf{intriqués} et donc non séparables.
-
-% \section{Représentation géométrique}
-
-% \section{Programmer un processeur quantique}

@@ -1,7 +1,9 @@
 \chapter{Algorithme de Deutsch-Jozsa}
 
 \section{Problème à résoudre}
-Soit une fonction $f$ booléenne définie par 
+
+Pour rappel, on cherche à déterminer si une fonction $f$ booléenne définie par
+
 \[
   \begin{array}{llll}
     f :  &  \{0, 1\}^n              & \to       & \{ 0, 1 \} \\
@@ -9,22 +11,24 @@ Soit une fonction $f$ booléenne définie par
   \end{array}  
 \]
 
-\begin{definition}
-  Une fonction booléenne $f$ est dite équilibrée si $f$ retourne 0
-  pour la moitié de ses entrées.
-\end{definition}
+est équilibrée ou constante. On sait à l'avance que $f$ est soit constante, soit équilibrée, mais ne peut pas être aucun.
 
-\begin{definition}
-  Une fonction est dite constante si elle retourne une constante pour
-  toutes ses entrées.
-\end{definition}
+% \begin{definition}
+%   Une fonction booléenne $f$ est dite équilibrée si $f$ retourne 0
+%   pour la moitié de ses entrées.
+% \end{definition}
+
+% \begin{definition}
+%   Une fonction est dite constante si elle retourne une constante pour
+%   toutes ses entrées.
+% \end{definition}
 
 
-\begin{rem}
-  Avec $n$ un entier et comme les fonctions booléennes sont à valeur
-  dans $\{0,1\}$, il n'existe que deux fonctions constantes $f_0$ et
-  $f_1$.
-\end{rem}
+% \begin{rem}
+%   Avec $n$ un entier et comme les fonctions booléennes sont à valeur
+%   dans $\{0,1\}$, il n'existe que deux fonctions constantes $f_0$ et
+%   $f_1$.
+% \end{rem}
 
 \begin{ex}
   Soit $f$ la fonction booléenne $f : \{0,1\}^2 \to \{0,1\}$ définie
@@ -49,61 +53,6 @@ classique ``ou exclusif''. Cette fonction pourrait être représentée
 par le vecteur de ces valeurs : $(0,1,1,0)$. Elle peut aussi être
 codée en listant les entrées où elle est vraie, ici $\{(0,1),(1,0)\}$ (ou bien en base 10: $\{1, 2\}$).
 \end{ex}
-
-\begin{rem}
-  Dénombrer les fonctions équilibrées revient à dénombrer les façons
-  de placer le symbole le symbole $1$ dans la moitié des cases d'un
-  vecteur de taille $2^n$. Avec les emplacements, cela revient à
-  dénombrer l'ensemble de sous-ensembles de $\{0, \dots, 2^{n}-1 \}$
-  qui ont pour cardinal $2^n / 2$. Finalement, il a donc
-  ${\displaystyle {2^n \choose 2^{n-1}}}$ fonctions équilibrées. Ce qui fait
-  \[ {\displaystyle {2^n \choose 2^{n-1}}} = \frac{(2^n)!}{(2^{n-1})!(2^n-2^{n-1})!} = \frac{(2^n)!}{((2^{n-1})!)^2}.  \]
-
-  On notera que la proportion des fonctions équilibrées sur l'ensemble
-  des $2^{2^n}$ fonctions booléennes de $n$ variables diminue très
-  rapidement avec $n$.
-\end{rem}
-% Le problème de Deutsch-Jozsa s'intéresse à une fonction booléenne qui est soit équilibrée (ayant autant d'entrées à 1 qu'a 0), soit constante (toutes les entrées à 1, ou toutes les entrées à 0).
-
-% \begin{pb}[Deutsch-Jozsa]
-% Etant donnée une fonction $f$ booléenne qui est soit équilibrée, soit constante.
-% Le problème de Deutsch-Jozsa est de déterminer si $f$ est constante ou
-% équilibrée.  
-% \end{pb}
-
-% % \subsection{Solution classique}
-% Dans le cas classique, il faut effectuer au pire $2^{n-1}+1$
-% évaluations pour déterminer si $f$ est constante ou équilibrée. Tout
-% d'abord, dès que deux évaluations sont différentes, $f$ est
-% nécessairement équilibrée. De plus, si après avoir évalué $2^{n-1}$
-% entrées et obtenu la même valeur, une évaluation supplémentaire nous
-% permet de connaitre dans quelle catégorie $f$ se trouve.
-
-% % \subsection{Solution quantique}
-
-% %% Revoir la phrase
-% Dans le cas quantique, on peut résoudre ce problème en effectuant qu'une seule évaluation, parallèle, de $f$. Le schéma suivant illustre le fonctionnement de l'algorithme présente par Deutsch et Jozsa en 1992:
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[scale=0.2]{DJ/Deutsch-Jozsa_Algorithm.png}
-%     \caption{Schéma de l'algorithme}
-%     \label{fig:univerise}
-% \end{figure}
-
-% Les détails algébriques de l'algorithme sont disponibles en annexes.
-% \medbreak
-% On dispose au départ un (n+1)-qubit, c'est à dire (n+1) qubits associés, les n premiers mis à 0 et le dernier mis à 1. Cet état d'entrée $\ket{u_0}$ est construit préalablement, puis est donné en entrée à des portes de Hadamard. Pour rappel, cette porte permet de faire passer un qubit d'un état pur ($\ket{0}$ ou $\ket{1}$) à un état équilibré. 
-
-% Au sortir de cette porte, on obtient l'état $\ket{u_1}$, qui si mesuré va nous donner avec autant de probabilité un des états purs. On le passe donc à la "boite" $U_f$. On appelle ce bloc \textbf{oracle}, qui implémente la fonction $f$ qu'on souhaite évaluer pour $n$ qubits (on ne détaille pas ici la façon d'implémenter $f$). L'entrée étant un (n+1)-qubit équilibré, l'oracle va évaluer en simultané toutes les entrées, correspondant aux états purs superposés. C'est ici qu'on peut à nouveau montrer la force de l'informatique quantique: avec en entrée un état superposé, un bloc fonctionnel va faire évoluer le système en effectuant le calcul pour tout les états purs superposés composant l'entrée.
-
-% On obtient $\ket{u_2}$, qui contient la solution de notre problème. Néanmoins, si on essaye ici de mesurer le système, on ne va pas obtenir directement une réponse "oui" ou "non" à notre problème: le système est encore dans un état superposé, et la réponse est codée dans les modules associés aux états purs superposés. Si on mesure $\ket{u_2}$, on obtiendra aléatoirement un des état purs composant le système.
-
-% Pour résoudre ce problème, on applique à nouveau une porte de Hadamard pour obtenir un $\ket{u_4}$. On l'a dit précédement, quand appliqué à un état pur, la porte de Hadamard permet de créer un état équilibré. En revanche, quand comme ici on l'applique à un état déjà superposé, on peut obtenir directement un état qui va nous donner à coup sûr une réponse binaire. Ici, quand on va mesurer $\ket{u_4}$, on va soit mesurer un mot binaire de $n$ bits valant 0, et dans ce cas la fonction est constante. Si on obtient n'importe quelle autre solution, alors la fonction est équilibrée. A nouveau, les détails algébriques de cet algorithme sont disponibles en annexes.
-
-%% Expliquer le schéma bloc avec des phrases. (4 ou 5). Redites en texte de la partie algébrique.
-%% Ajouter détails des étapes avec des pointillés dans le schéma
-%% Expliquer évaluation en parallèle.
 
 \subsubsection{Initialisation}
 On commence avec :
@@ -161,14 +110,14 @@ constant. Finalement, on en déduit :
 
 \subsubsection{Etape 3}
 
-Maintenant qu'on a appliqué notre oracle, on est toujours dans un état
-"probabiliste", et en mesurant nous n'obtiendrons pas une réponse
-exacte à notre problème. L'objectif est donc maintenant de ramener les
-solutions sur un état déterminé pour obtenir la réponse
-systématique. En appliquant la porte de Hadamard, on va pouvoir forcer
-un état à apparaître pour un type de fonction $f$, et le forcer à
-disparaître dans l'autre cas, ce qui nous permet d'avoir une réponse
-systématique sur le type de la fonction : est-elle équilibrée ou bien constante ?
+% Maintenant qu'on a appliqué notre oracle, on est toujours dans un état
+% "probabiliste", et en mesurant nous n'obtiendrons pas une réponse
+% exacte à notre problème. L'objectif est donc maintenant de ramener les
+% solutions sur un état déterminé pour obtenir la réponse
+% systématique. En appliquant la porte de Hadamard, on va pouvoir forcer
+% un état à apparaître pour un type de fonction $f$, et le forcer à
+% disparaître dans l'autre cas, ce qui nous permet d'avoir une réponse
+% systématique sur le type de la fonction : est-elle équilibrée ou bien constante ?
 
 On réapplique une porte Hadamard à chaque qubit sortant, ce qui donne:
 
@@ -206,7 +155,7 @@ On a donc les valeurs suivantes dépendant du type de $f(x)$ :
 
 Dans le cas constant, on ne peut donc que mesurer $\ket{0}^{\bigotimes n}$ puisqu'il a une probabilité de 1 d'apparaître. Dans le cas équilibré, on ne mesure jamais $\ket{0}^{\bigotimes n}$ puisque sa probabilité est nulle.
 
-On en conclut que, lorsqu'on effectue une mesure, si on tombe sur $\ket{0}^{\bigotimes n}$ alors la fonction est constante, sinon elle est équilibrée.
+On en conclue que, lorsqu'on effectue une mesure, si on tombe sur $\ket{0}^{\bigotimes n}$ alors la fonction est constante, sinon elle est équilibrée.
 
 %'objectif de cette dernière étape est de passer 
 

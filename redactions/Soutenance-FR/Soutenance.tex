@@ -87,8 +87,15 @@
 \frametitle{Etat d'un système quantique}
 
 \begin{definition}
-  test 123
+  Notation d'un état quantique :
+\begin{equation}
+    \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
+\end{equation}
+Avec $\ket{k_i}$ états purs.
 \end{definition}
+
+Système quantique élémentaire: le qubit : $\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$
+
 \end{frame}
 
 % 1 minute
@@ -99,6 +106,22 @@
 % 1 minute
 \begin{frame}
 \frametitle{Dynamique des systèmes quantiques}
+\begin{enumerate}
+  \item Evolution unitaire: conservation de la norme
+  \item Evolution linéaire: limite dans les problèmes résolvables
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Vers l'informatique quantique}
+  \begin{enumerate}
+    \item Utiliser de multiples qubits - l'intrication
+    \item Portes quantiques
+    \begin{enumerate}
+      \item Portes élémentaires: Hadamard, Pauli, Toffoli
+      \item Construction de circuit
+    \end{enumerate}
+  \end{enumerate}
 \end{frame}
 
 %====================================
@@ -110,11 +133,42 @@
 % 2 minutes
 \begin{frame}
 \frametitle{Présentation du problème}
+
+\begin{pb}
+  Déterminer en le moins d'itérations possibles si une fonction $f$ booléenne est constante ou équilibrée
+\end{pb}
+
+\medbreak
+Dans le cas classique: $2^{n-1} + 1$ itérations
+
+\medbreak
+Dans le cas quantique: 1 seule itération
+
 \end{frame}
 
 % 3 minutes
 \begin{frame}
 \frametitle{Algorithme}
+
+\begin{figure}[htbp]
+  \centering
+  \centerline{
+      \Qcircuit @C=1em @R=.7em {
+        & \lstick{\ket{0}^n} \barrier[-1.75em]{1} & \gate{H^{\otimes n}} \barrier[-1.5em]{1} & \multigate{1}{U_f} \barrier[-1.75em]{1} & \gate{H^{\otimes n}} \barrier[-1.5em]{1} & \meter \\
+        & \lstick{\ket{1}} & \gate{H} & \ghost{U_f} & \qw & \\
+        \hspace{3em} \ket{u_{0}} & \hspace{9em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}}
+      }
+  }
+  \label{fig:univerise}
+\end{figure}
+
+\begin{enumerate}
+  \item Initialisation: $\ket{u_0}$
+  \item $\ket{u_1}$: Mise à l'équilibre: porte de Hadamard
+  \item $\ket{u_2}$: Application de la fonction $U_f$
+  \item $\ket{u_3}$: Préparation pour la mesure
+\end{enumerate}
+
 \end{frame}
 
 % 2 minutes
