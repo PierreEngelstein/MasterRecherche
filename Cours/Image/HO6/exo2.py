@@ -21,8 +21,30 @@ def sp_noise(image,prob):
                 output[i][j] = image[i][j]
     return output
 
+def denoise_sp(image, size_mask):
+    # Create mask
+    # size_mask=5
+    kernel = np.ones((size_mask,size_mask),np.float32)/(size_mask**2)
+    # Apply low pass filter to image
+    dst = cv2.filter2D(noise_img, -1, kernel)
+
+    # FFT
+    f = np.fft.fft2(img)
+    fshift = np.fft.fftshift(f)
+    # Apply filter
+    keep_fraction = 0.5
+    r, c = fshift.shape
+    fshift[int(r*keep_fraction):int(r*(1-keep_fraction))] = 0
+    fshift[:, int(c*keep_fraction):int(c*(1-keep_fraction))] = 0
+
+    # Inverse FFT to denoise image
+    fft_inv = np.fft.ifftshift(fshift)
+    fft_inv = np.abs(np.fft.ifft2(fft_inv))
+
 img = cv2.imread('holmes_nb.bmp',0)
 noise_img = sp_noise(img, 0.5)
+
+# fft_inv = denoise_sp(noise_img, 5)
 
 # Create mask
 size_mask=5

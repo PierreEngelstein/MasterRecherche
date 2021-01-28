@@ -10,13 +10,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{subfig}
+\captionsetup[figure]{labelformat=empty}
 
-\titlegraphic{}
+\titlegraphic{
+    \includegraphics[width=4cm]{LOGO_PTYS_2017_Paysage.png}%
+}
 
 \title{Virtualisation des infrastructures}
-\author{Pierre Engelstein}
-\institute{Polytech Angers}
-\date{19 Octobre 2020}
+\author{Productys}
+\date{20 Janvier 2021}
 
 \begin{document}
 
@@ -33,7 +35,7 @@
 \frametitle{Introduction}
 Evolution des architectures systèmes et réseaux vers des solutions distribuées
 \medbreak
-Gestion simplifiée des infrastructures (Implementation, duplication, évolution, sauvegarde)
+Gestion simplifiée et sécurisée des infrastructures (Implementation, duplication, évolution, sauvegarde)
 
 \end{frame}
 
@@ -63,7 +65,6 @@ Gestion simplifiée des infrastructures (Implementation, duplication, évolution
 
 \begin{frame}
 \frametitle{Infrastructure générale}
-
 Réseau
 \begin{itemize}
     \item Parefeux
@@ -83,7 +84,46 @@ Clients légers: VDI (Virtual Desktop Infrastucture)
     \item VMware Horizon
     \item Citrix Workspace
 \end{itemize}
+\end{frame}
 
+\begin{frame}
+\frametitle{Virtualisation systèmes}
+\begin{columns}
+\column{0.5\textwidth}
+
+Niveau 1
+\begin{itemize}
+    \item VMware: vSphere
+    \item Microsoft: Hyper-V
+    \item Linux: KVM/Xen
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.2]{hypervisor.png}
+    \label{fig:univerise}
+\end{figure}
+
+\column{0.5\textwidth}
+Niveau 2
+\begin{itemize}
+    \item VMware Workstation
+    \item Oracle Virtual Box
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.2]{hypervisor_2.png}
+\end{figure}
+
+% \column{0.33\textwidth}
+% Containers
+% \begin{itemize}
+%     \item LXC
+%     \item Docker / Kubernetes
+% \end{itemize}
+
+\end{columns}
 \end{frame}
     
 %====================================
@@ -98,7 +138,7 @@ Technologies de virtualisation x86\_64: extensions des processeurs
 Optimisation des ressources materielles (CPU, mémoire, disque)
 \medbreak
 \medbreak
-Infrastructures en grappes : haute disponibilité %(cluster)
+Infrastructures en grappes (cluster) : haute disponibilité %(cluster)
 
 \end{frame}
 
