@@ -19,10 +19,36 @@
 \usepackage{caption}
 \usepackage{gensymb}
 \usepackage{tikz}
-\usepackage{qcircuit}
+\usepackage[qm]{qcircuit}
 \usepackage{listings}
 \usepackage{pgfplots}
+\usepackage{xcolor}
 \usepackage[ruled,vlined]{algorithm2e}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
 
 
 \newtheorem{pb}{Problème}
@@ -32,8 +58,9 @@
 
 \titlegraphic{}
 
-\title{Soutenance de projet - Informatique quantique}
+\title{Soutenance de rapport bibliographique - Informatique quantique}
 \author{Pierre Engelstein}
+% Rajouter nom des encadrants + membres du jury
 \institute{Polytech Angers}
 
 \begin{document}
@@ -91,17 +118,46 @@
 \begin{equation}
     \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
 \end{equation}
-Avec $\ket{k_i}$ états purs.
+Avec $\ket{k_i}$ vecteurs d'état purs.
 \end{definition}
 
+% Parler d'un espace de Hilbert (espace vectoriel muni de produit scalaire, et autres => à regarder)
+% 
+% Rajouter un exemple
+
 Système quantique élémentaire: le qubit : $\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$
+
+\begin{example}
+\begin{equation}
+  \ket{\psi_1} = \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1}.
+\end{equation}
+avec
+\begin{equation}
+  \ket{0} \mapsto \begin{bmatrix}
+    1 \\ 0
+  \end{bmatrix}
+  ,
+  \ket{1} \mapsto \begin{bmatrix}
+    0 \\ 1
+  \end{bmatrix}
+\end{equation}
+\end{example}
 
 \end{frame}
 
 % 1 minute
 \begin{frame}
 \frametitle{La mesure projective}
+\begin{definition}
+  Quand un système quantique est dans un état superposé $\ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i}$, on va avoir comme probabilité $c_i^2$ de mesurer l'état $\ket{k_i}$.
+\end{definition}
+
+\begin{rem}
+  La mesure est \textbf{projective}: on pert l'état probabiliste.
+\end{rem}
 \end{frame}
+
+
 
 % 1 minute
 \begin{frame}
@@ -114,14 +170,24 @@ Système quantique élémentaire: le qubit : $\ket{\psi} = \alpha \ket{0} + \bet
 
 \begin{frame}
   \frametitle{Vers l'informatique quantique}
-  \begin{enumerate}
-    \item Utiliser de multiples qubits - l'intrication
+  \begin{itemize}
+    \item Utiliser de multiples qubits - intrication quantique
+    
+    \begin{align}
+      \ket{\psi_1} &= \frac{1}{2}\ket{00} + \frac{1}{2}\ket{01} + \frac{1}{2}\ket{10} +\frac{1}{2}\ket{11} \nonumber \\
+                   &= \frac{1}{2} (\ket{0} + \ket{1}) \otimes (\ket{0} + \ket{1})  \nonumber
+    \end{align}
+    \begin{align}
+      \ket{\psi_2} &= \frac{1}{4}\ket{00} + 0\ket{01} + 0\ket{10} +\frac{1}{4}\ket{11} \nonumber \\
+                   &= ?? \nonumber
+    \end{align}
+
     \item Portes quantiques
-    \begin{enumerate}
+    \begin{itemize}
       \item Portes élémentaires: Hadamard, Pauli, Toffoli
       \item Construction de circuit
-    \end{enumerate}
-  \end{enumerate}
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 %====================================
@@ -172,8 +238,28 @@ Dans le cas quantique: 1 seule itération
 \end{frame}
 
 % 2 minutes
-\begin{frame}
-\frametitle{Implémentation en \texttt{QSharp}}
+\begin{frame}[fragile]
+\frametitle{Implémentation en \texttt{python (Qiskit)}}
+
+\begin{lstlisting}[style=CStyle]
+import numpy as np
+from qiskit import *
+import matplotlib.pyplot as plt
+nb_qubits = 3
+circuit = QuantumCircuit(nb_qubits, nb_qubits)
+for i in range(nb_qubits):
+    circuit.h(i)
+circuit.barrier()
+circuit.z(0)
+circuit.z(2)
+circuit.barrier()
+for i in range(nb_qubits):
+    circuit.h(i)
+circuit.barrier()
+for i in range(nb_qubits):
+    circuit.measure(i, i)
+\end{lstlisting}
+
 \end{frame}
 
 %====================================

@@ -72,7 +72,7 @@ En utilisant les principes de l'informatique quantique, Lou Grover a proposé en
   \label{fig:univerise}
 \end{figure}
 
-De même que pour Deutsch-Jozsa, les détails algébriques de cet algorithme sont disponibles en annexes.
+De même que pour Deutsch-Jozsa, les détails algébriques de cet algorithme sont disponibles en annexes. Cet algorithme a aussi été bien expliqué dans \cite{borbely2007grover}, notamment en étendant à une recherche de solutions multiples, et en détaillant l'implémentation de l'opérateur de Grover.
 
 On commence donc de la même manière avec n qubits initialisés à $\ket{0}$ et 1 à $\ket{1}$, et on les passe tous dans une porte de Hadamard pour avoir des qubits équilibrés, afin de faire un traitement parallèle.
 
@@ -182,7 +182,7 @@ On peut enfin étudier l'algorithme de Shor, proposé par Peter Shor en 1997 \ci
   On s'intéresse au problème de la factorisation d'un nombre $N=q \times q$ avec $p$ et $q$ nombres entiers très grands.
 \end{pb}
 
-Classiquement, ce problème est résolvable en $\mathcal{O}(\exp{[c . n^{\frac{1}{3}} (\log n)^{\frac{2}{3}} ]})$ avec l'algorithme du crible du corps algébrique. Cet algorithme est certes efficace pour des nombres supérieurs à $10^{100}$, mais ne permet pas de factoriser pour des nombres de $2048$ ou $4096$ bits. Ce domaine de recherche avance rapidement, et de nouveaux algorithmes sont trouvés permettant d'améliorer les performances. On ne trouve en revanche toujours pas d'algorithmes permettant de résoudre ce problème en un temps polynomial.
+Classiquement, ce problème est résolvable en $\mathcal{O}(\exp{[c . n^{\frac{1}{3}} (\log n)^{\frac{2}{3}} ]})$, par exemple avec l'algorithme du crible du corps algébrique \cite{NFS-RSA220}. Cet algorithme est certes efficace pour des nombres supérieurs à $10^{100}$, mais ne permet pas de factoriser pour des nombres de $2048$ ou $4096$ bits. Ce domaine de recherche avance rapidement, et de nouveaux algorithmes sont trouvés permettant d'améliorer les performances. On ne trouve en revanche toujours pas d'algorithmes permettant de résoudre ce problème en un temps polynomial.
 
 En utilisant l'informatique, Shor a démontré que ce problème était résolvable bien plus rapidement avec un processeur quantique, en un peu plus rapidement que $\mathcal{O}(n^3)$. En fait, Shor résout avec son algorithme une sous-partie d'un algorithme:
 

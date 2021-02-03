@@ -9,6 +9,15 @@ M.~A. Nielsen and I.~L. Chuang, {\em Quantum Computation and Quantum
 D.~N. Mermin, {\em Quantum Computer Science: An introduction}.
 \newblock Cambridge: Cambridge University Press, 2007.
 
+\bibitem{Barenco95}
+A.~Barenco, C.~H. Bennett, R.~Cleve, D.~P. DiVincenzo, N.~Margolus, P.~Shor,
+  T.~Sleator, J.~A. Smolin, and H.~Weinfurter, ``Elementary gates for quantum
+  computation,'' {\em Physical Review A}, vol.~52, pp.~3457--3467, 1995.
+
+\bibitem{shi2002toffoli}
+Y.~Shi, ``Both toffoli and controlled-not need little help to do universal
+  quantum computation,'' 2002.
+
 \bibitem{Deutsch85}
 D.~Deutsch, ``Quantum theory, the {C}hurch-{T}uring principle and the universal
   quantum computer,'' {\em Proceedings of the Royal Society of London A},
@@ -60,10 +69,17 @@ E.~Bernstein and U.~Vazirani, ``Quantum complexity theory,'' {\em SIAM Journal
 L.~K. Grover, ``A fast quantum mechanical algorithm for database search,''
   p.~212–219, 1996.
 
+\bibitem{borbely2007grover}
+E.~Borbely, ``Grover search algorithm,'' 2007.
+
 \bibitem{Shor97}
 P.~W. Shor, ``Polynomial-time algorithms for prime factorization and discrete
   logarithms on a quantum computer,'' {\em SIAM Journal on Computing}, vol.~26,
   pp.~1484--1509, 1997.
+
+\bibitem{NFS-RSA220}
+S.~Bai, P.~Gaudry, A.~Kruppa, E.~Thom{\'e}, and P.~Zimmermann, ``{Factorisation
+  of RSA-220 with CADO-NFS}.'' working paper or preprint, May 2016.
 
 \bibitem{Vandersypen01}
 L.~Vandersypen, M.~Steffen, G.~Breyta, C.~Yannoni, M.~H. Sherwood, and I.~L.

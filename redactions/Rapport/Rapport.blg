@@ -3,7 +3,7 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Rapport.aux
 The style file: ieeetr.bst
 Database file #1: biblio.bib
-I was expecting a `,' or a `}'---line 2659 of file biblio.bib
+I was expecting a `,' or a `}'---line 2675 of file biblio.bib
  :   
  :   JOURNAL={Nature},
 (Error may have been on previous line)
@@ -13,45 +13,45 @@ Warning--empty journal in Vandersypen01
 Warning--empty year in Vandersypen01
 Warning--empty journal in gidney2019factor
 Warning--empty journal in anschuetz2018variational
-You've used 19 entries,
+You've used 23 entries,
             1876 wiz_defined-function locations,
-            606 strings with 6272 characters,
-and the built_in function-call counts, 4854 in all, are:
-= -- 492
-> -- 156
+            627 strings with 6860 characters,
+and the built_in function-call counts, 5704 in all, are:
+= -- 564
+> -- 210
 < -- 0
-+ -- 61
-- -- 42
-* -- 291
-:= -- 646
-add.period$ -- 20
-call.type$ -- 19
-change.case$ -- 17
++ -- 81
+- -- 58
+* -- 353
+:= -- 778
+add.period$ -- 24
+call.type$ -- 23
+change.case$ -- 21
 chr.to.int$ -- 0
-cite$ -- 24
-duplicate$ -- 270
-empty$ -- 472
-format.name$ -- 42
-if$ -- 1216
+cite$ -- 28
+duplicate$ -- 301
+empty$ -- 549
+format.name$ -- 58
+if$ -- 1413
 int.to.chr$ -- 0
-int.to.str$ -- 19
-missing$ -- 18
-newline$ -- 62
-num.names$ -- 18
-pop$ -- 79
+int.to.str$ -- 23
+missing$ -- 19
+newline$ -- 74
+num.names$ -- 22
+pop$ -- 95
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 217
+skip$ -- 243
 stack$ -- 0
-substring$ -- 311
-swap$ -- 124
+substring$ -- 351
+swap$ -- 135
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 5
-while$ -- 43
-width$ -- 21
-write$ -- 168
+while$ -- 50
+width$ -- 25
+write$ -- 200
 (There was 1 error message)
