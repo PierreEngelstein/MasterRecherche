@@ -11,8 +11,9 @@
 \contentsline {figure}{\numberline {4.5}{\ignorespaces Algorithme de factorisation en nombres premiers\relax }}{15}{figure.caption.9}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution des états pour une fonction f constante, vecteurs d'états séparés et réunis\relax }}{23}{figure.caption.10}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés\relax }}{24}{figure.caption.11}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution des états pour une fonction f constante, vecteurs d'états séparés et réunis\relax }}{24}{figure.caption.10}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés\relax }}{25}{figure.caption.11}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {C.1}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{34}{figure.caption.12}%
+\contentsline {figure}{\numberline {C.1}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{35}{figure.caption.12}%
