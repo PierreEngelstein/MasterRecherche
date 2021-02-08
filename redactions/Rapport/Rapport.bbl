@@ -15,8 +15,8 @@ A.~Barenco, C.~H. Bennett, R.~Cleve, D.~P. DiVincenzo, N.~Margolus, P.~Shor,
   computation,'' {\em Physical Review A}, vol.~52, pp.~3457--3467, 1995.
 
 \bibitem{shi2002toffoli}
-Y.~Shi, ``Both toffoli and controlled-not need little help to do universal
-  quantum computation,'' 2002.
+Y.~Shi, ``{Both Toffoli and Controlled-NOT need little help to do universal
+  quantum computation},'' 2002.
 
 \bibitem{Deutsch85}
 D.~Deutsch, ``Quantum theory, the {C}hurch-{T}uring principle and the universal
@@ -66,8 +66,10 @@ E.~Bernstein and U.~Vazirani, ``Quantum complexity theory,'' {\em SIAM Journal
   on Computing}, vol.~26, pp.~1411--1473, 1997.
 
 \bibitem{Grover96}
-L.~K. Grover, ``A fast quantum mechanical algorithm for database search,''
-  p.~212–219, 1996.
+L.~K. Grover, {\em A Fast Quantum Mechanical Algorithm for Database Search},
+  p.~212–219.
+\newblock STOC '96, New York, NY, USA: Association for Computing Machinery,
+  1996.
 
 \bibitem{borbely2007grover}
 E.~Borbely, ``Grover search algorithm,'' 2007.
@@ -79,24 +81,27 @@ P.~W. Shor, ``Polynomial-time algorithms for prime factorization and discrete
 
 \bibitem{NFS-RSA220}
 S.~Bai, P.~Gaudry, A.~Kruppa, E.~Thom{\'e}, and P.~Zimmermann, ``{Factorisation
-  of RSA-220 with CADO-NFS}.'' working paper or preprint, May 2016.
+  of RSA-220 with CADO-NFS}.'' May 2016.
 
 \bibitem{Vandersypen01}
 L.~Vandersypen, M.~Steffen, G.~Breyta, C.~Yannoni, M.~H. Sherwood, and I.~L.
-  Chuang, ``Experimental realization of shor's quantum factoring algorithm
-  using nuclear magnetic resonance,''
+  Chuang, ``Experimental realization of {S}hor's quantum factoring algorithm
+  using nuclear magnetic resonance,'' {\em Nature}, vol.~414, pp.~883--887,
+  2001.
 
 \bibitem{Martin11}
 E.~Martín-López, A.~Laing, T.~Lawson, R.~Alvarez, X.~Zhou, and J.~O'Brien,
-  ``Experimental realisation of shor's quantum factoring algorithm using qubit
-  recycling,'' {\em Nature Photonics}, vol.~6, pp.~773--776, 11 2011.
+  ``Experimental realisation of {S}hor's quantum factoring algorithm using
+  qubit recycling,'' {\em Nature Photonics}, vol.~6, pp.~773--776, 11 2011.
 
 \bibitem{gidney2019factor}
-C.~Gidney and M.~Ekerå, ``How to factor 2048 bit rsa integers in 8 hours using
-  20 million noisy qubits,'' 2019.
+C.~Gidney and M.~Ekerå, ``{How to factor 2048 bit RSA integers in 8 hours
+  using 20 million noisy qubits},'' 2019.
 
 \bibitem{anschuetz2018variational}
-E.~R. Anschuetz, J.~P. Olson, A.~Aspuru-Guzik, and Y.~Cao, ``Variational
-  quantum factoring,'' 2018.
+E.~Anschuetz, J.~Olson, A.~Aspuru-Guzik, and Y.~Cao, ``Variational quantum
+  factoring,'' in {\em Quantum Technology and Optimization Problems} (S.~Feld
+  and C.~Linnhoff-Popien, eds.), (Cham), pp.~74--85, Springer International
+  Publishing, 2019.
 
 \end{thebibliography}

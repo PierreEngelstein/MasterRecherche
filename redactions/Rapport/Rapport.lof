@@ -1,16 +1,18 @@
 \babel@toc {french}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Exemple de circuit quantique\relax }}{7}{figure.caption.4}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Schéma de l'algorithme\relax }}{10}{figure.caption.4}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Schéma de l'algorithme\relax }}{12}{figure.caption.5}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Evolution des amplitudes pour $n=3$ qubits\relax }}{13}{figure.caption.6}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{13}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Schéma du circuit de l'algorithme de Deutsch-Jozsa\relax }}{10}{figure.caption.5}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Schéma du circuit de l'algorithme de Grover\relax }}{12}{figure.caption.6}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Evolution des amplitudes pour $n=3$ qubits\relax }}{13}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{14}{figure.caption.8}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Algorithme de factorisation en nombres premiers\relax }}{15}{figure.caption.9}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution des états pour une fonction f constante, vecteurs d'états séparés et réunis\relax }}{22}{figure.caption.8}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés\relax }}{23}{figure.caption.9}%
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution des états pour une fonction f constante, vecteurs d'états séparés et réunis\relax }}{23}{figure.caption.10}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution des états pour une fonction f équilibrée, vecteurs d'états séparés\relax }}{24}{figure.caption.11}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {C.1}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{33}{figure.caption.10}%
+\contentsline {figure}{\numberline {C.1}{\ignorespaces Evolution des amplitudes pour n=16, sur 1000 itérations\relax }}{34}{figure.caption.12}%

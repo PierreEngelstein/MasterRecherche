@@ -1,5 +1,7 @@
 \chapter{Algorithmes quantiques}
 
+On présente ici trois algorithmes permettant d'illustrer les apports spécifiques du quantique. Ils montrent notamment que l'informatique quantique permet d'obtenir des performances de traitement de l'information inaccessibles en informatique classique.
+
 \section{Algorithme de Deutsch-Jozsa}
 
 Le problème de Deutsch-Jozsa s'intéresse à une fonction booléenne qui est soit équilibrée (ayant autant d'entrées à 1 qu'a 0), soit constante (toutes les entrées à 1, ou toutes les entrées à 0).
@@ -17,7 +19,7 @@ nécessairement équilibrée. De plus, si après avoir évalué $2^{n-1}$
 entrées et obtenu la même valeur, une évaluation supplémentaire nous
 permet de connaitre dans quelle catégorie $f$ se trouve.
 
-Dans le cas quantique, on peut résoudre ce problème en effectuant qu'une seule évaluation, parallèle, de $f$. Le schéma suivant illustre le fonctionnement de l'algorithme présente par Deutsch et Jozsa en 1992 \cite{Deutsch92}:
+Dans le cas quantique, on peut résoudre ce problème en effectuant qu'une seule évaluation, parallèle, de $f$. La figure~\ref{fig:schemaDJ} illustre le fonctionnement de l'algorithme présenté par Deutsch et Jozsa en 1992 \cite{Deutsch92}:
 
 \begin{figure}[htbp]
     \centering
@@ -28,19 +30,19 @@ Dans le cas quantique, on peut résoudre ce problème en effectuant qu'une seule
           \hspace{3em} \ket{u_{0}} & \hspace{9em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}}
         }
     }
-    \caption{Schéma de l'algorithme}
-    \label{fig:univerise}
+    \caption{Schéma du circuit de l'algorithme de Deutsch-Jozsa}
+    \label{fig:schemaDJ}
 \end{figure}
 
-Les détails algébriques de l'algorithme sont disponibles en annexes.
+Les détails algébriques de l'algorithme sont disponibles en annexe \ref{appendix:DJ}
 \medbreak
-On dispose au départ un (n+1)-qubit, c'est à dire (n+1) qubits associés, les n premiers mis à 0 et le dernier mis à 1. Cet état d'entrée $\ket{u_0}$ est construit préalablement, puis est donné en entrée à des portes de Hadamard. Pour rappel, cette porte permet de faire passer un qubit d'un état pur ($\ket{0}$ ou $\ket{1}$) à un état équilibré. 
+On dispose au départ un (n+1)-qubit, c'est-à-dire $n+1$ qubits associés, les n premiers mis à 0 et le dernier mis à 1. Cet état d'entrée $\ket{u_0}$ est construit préalablement, puis est donné en entrée à des portes de Hadamard. Pour rappel, cette porte permet de faire passer un qubit de la base canonique $\{\ket{0}, \ket{1}\}$ à la base de Fourier $\{\ket{+}, \ket{-}\}$, avec $\ket{+} = \frac{1}{\sqrt{2}} (\ket{0} + \ket{1})$ et $\ket{+} = \frac{1}{\sqrt{2}} (\ket{0} - \ket{1})$. Elle permet notamment de faire passer les états de base $\ket{0}$ et $\ket{1}$ à des états superposés avec les mêmes probabilités pour les deux états de base.
 
-Au sortir de cette porte, on obtient l'état $\ket{u_1}$, qui si mesuré va nous donner avec autant de probabilité un des états purs. On le passe donc à la "boite" $U_f$. On appelle ce bloc \textbf{oracle}, qui implémente la fonction $f$ qu'on souhaite évaluer pour $n$ qubits (on ne détaille pas ici la façon d'implémenter $f$). L'entrée étant un (n+1)-qubit équilibré, l'oracle va évaluer en simultané toutes les entrées, correspondant aux états purs superposés. C'est ici qu'on peut à nouveau montrer la force de l'informatique quantique: avec en entrée un état superposé, un bloc fonctionnel va faire évoluer le système en effectuant le calcul pour tout les états purs superposés composant l'entrée.
+Au sortir de cette porte, on obtient l'état $\ket{u_1}$, qui si mesuré va nous donner avec autant de probabilité un des états de base. On le passe donc à la "boite" $U_f$. On appelle ce bloc \textbf{oracle}, qui implémente la fonction $f$ qu'on souhaite évaluer pour $n$ qubits (on ne détaille pas ici la façon d'implémenter $f$). L'entrée étant un (n+1)-qubit équilibré, l'oracle va évaluer en parralèle toutes les entrées, correspondant aux états de base superposés. C'est ici qu'on peut à nouveau montrer la force de l'informatique quantique: avec en entrée un état superposé, un bloc fonctionnel va faire évoluer le système en effectuant le calcul pour tous les états de base superposés composant l'entrée.
 
-On obtient $\ket{u_2}$, qui contient la solution de notre problème. Néanmoins, si on essaye ici de mesurer le système, on ne va pas obtenir directement une réponse "oui" ou "non" à notre problème: le système est encore dans un état superposé, et la réponse est codée dans les modules associés aux états purs superposés. Si on mesure $\ket{u_2}$, on obtiendra aléatoirement un des état purs composant le système.
+On obtient $\ket{u_2}$, qui contient la solution de notre problème. Néanmoins, si on essaye ici de mesurer le système, on ne va pas obtenir directement une réponse "oui" ou "non" à notre problème: le système est encore dans un état superposé, et la réponse est codée dans les modules associés aux états purs superposés. Si on mesure $\ket{u_2}$, on obtiendra aléatoirement un des état de base composant le système.
 
-Pour résoudre ce problème, on applique à nouveau une porte de Hadamard pour obtenir un $\ket{u_3}$. On l'a dit précédement, quand appliqué à un état pur, la porte de Hadamard permet de créer un état équilibré. En revanche, quand comme ici on l'applique à un état déjà superposé, on peut obtenir directement un état qui va nous donner à coup sûr une réponse binaire. Ici, quand on va mesurer $\ket{u_3}$, on va soit mesurer un mot binaire de $n$ bits valant 0, et dans ce cas la fonction est constante. Si on obtient n'importe quelle autre solution, alors la fonction est équilibrée. A nouveau, les détails algébriques de cet algorithme sont disponibles en annexes.
+Pour résoudre ce problème, on applique à nouveau une porte de Hadamard pour obtenir un $\ket{u_3}$. On l'a dit précédement, quand appliqué à un état pur, la porte de Hadamard permet de créer un état équilibré. En revanche, quand comme ici on l'applique à un état déjà superposé, on peut obtenir directement un état qui va nous donner à coup sûr une réponse binaire. Ici, quand on va mesurer $\ket{u_3}$, on va soit mesurer un mot binaire de $n$ bits valant 0, et dans ce cas la fonction est constante. Si on obtient n'importe quelle autre solution, alors la fonction est équilibrée. \`A nouveau, les détails algébriques de cet algorithme sont disponibles en annexe \ref{appendix:DJ}.
 
 \medbreak
 
@@ -56,7 +58,7 @@ Soit une liste non triée à $N$ entrées. Le problème de Grover est de recherc
 
 Classiquement, l'algorithme le plus efficace devra effectuer au pire $N$ itérations sur la liste pour trouver l'élément voulu. La liste étant non triée, on ne peut pas utiliser des algorithmes qui divisent la liste, qui permettent d'obtenir des performances en $\mathcal{O}(\log N)$.
 
-En utilisant les principes de l'informatique quantique, Lou Grover a proposé en 1992 \cite{Grover96} un algorithme permettant de trouver la solution avec une forte probabilité, en juste $\mathcal{O}(\sqrt N)$
+En utilisant les principes de l'informatique quantique, Lou Grover a proposé en 1992 \cite{Grover96} un algorithme permettant de trouver la solution avec une forte probabilité, en juste $\mathcal{O}(\sqrt N)$. La figure \ref{fig:grover} illustre le circuit permettant de réaliser l'algorithme de Grover.
 
 \begin{figure}[htbp]
   \centering
@@ -68,18 +70,18 @@ En utilisant les principes de l'informatique quantique, Lou Grover a proposé en
         \hspace{3em} \ket{u_{0}} & \hspace{8em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}} \gategroup{2}{4}{3}{5}{.7em}{^\}}
       }
     }
-  \caption{Schéma de l'algorithme}
-  \label{fig:univerise}
+  \caption{Schéma du circuit de l'algorithme de Grover}
+  \label{fig:grover}
 \end{figure}
 
-De même que pour Deutsch-Jozsa, les détails algébriques de cet algorithme sont disponibles en annexes. Cet algorithme a aussi été bien expliqué dans \cite{borbely2007grover}, notamment en étendant à une recherche de solutions multiples, et en détaillant l'implémentation de l'opérateur de Grover.
+De même que pour Deutsch-Jozsa, les détails algébriques de cet algorithme sont disponibles en annexe \ref{appendix:grover}. Cet algorithme a aussi été bien expliqué dans \cite{borbely2007grover}, notamment en étendant à une recherche de solutions multiples, et en détaillant l'implémentation de l'opérateur de Grover.
 
-On commence donc de la même manière avec n qubits initialisés à $\ket{0}$ et 1 à $\ket{1}$, et on les passe tous dans une porte de Hadamard pour avoir des qubits équilibrés, afin de faire un traitement parallèle.
+On commence donc de la même manière avec $n$ qubits initialisés à $\ket{0}$ et 1 à $\ket{1}$, et on les passe tous dans une porte de Hadamard pour avoir des qubits équilibrés, afin de faire un traitement parallèle.
 
 La deuxième étape consiste à appliquer l'opérateur de Grover à l'état superposé $\ket{u1}$. On vient effectuer deux opérations successives ici.
 
 \begin{enumerate}
-  \item Une opération d'inversion d'amplitude avec l'opérateur $U_w$. On a au départ les $n$ états purs superposés de façon équilibrés, ils ont donc tous la même amplitude (le module devant l'état pur). Cet opérateur vient inverser l'amplitude de l'état pur qu'on cible. On se retrouve après dans un état équilibré, puisque les probabilités sont les amplitudes mises au carrés. On a donc la réponse dans l'état quantique, mais elle est inaccessible à la mesure.
+  \item Une opération d'inversion d'amplitude avec l'opérateur $U_w$. On a au départ les $n$ états de base superposés de façon équilibrée, ils ont donc tous la même amplitude (le module devant l'état de base). Cet opérateur vient inverser l'amplitude de l'état de base qu'on cible. On se retrouve après dans un état équilibré, puisque les probabilités sont les amplitudes mises au carré. On a donc la réponse dans l'état quantique, mais elle est inaccessible à la mesure.
   \item Une opération de miroir à la moyenne avec l'opérateur $U_s$. Cet opérateur vient calculer la moyenne des amplitudes, puis enlever aux amplitudes leur différence à la moyenne. Dans le cas des amplitudes qui n'ont pas bougé avec $U_w$, on se retrouve légèrement en dessous de la moyenne, et dans le cas de l'état ciblé, on se retrouve bien au dessus de la moyenne.
 \end{enumerate}
 
@@ -117,7 +119,7 @@ La deuxième étape consiste à appliquer l'opérateur de Grover à l'état supe
     $\ket{111}$ & 0.176  \\
 }\afterUs
 
-\begin{figure*}[t!]
+\begin{figure*}[h]
   \centering
   \begin{subfigure}[t]{0.33\textwidth}
       \centering
@@ -159,32 +161,38 @@ La deuxième étape consiste à appliquer l'opérateur de Grover à l'état supe
     \caption{$\ket{u_3}$}
   \end{subfigure}
   \caption{Evolution des amplitudes pour $n=3$ qubits}
+  \label{fig:groverAmp}
 \end{figure*}
 
-Cette figure illustre cette évolution pour 3 qubits. On voit qu'a la fin de $U_s$, on obtient un état quantique qui a une forte probabilité de tomber sur l'état voulu (ici, $\ket{010}$), les amplitudes de ceux qu'on ne veut pas ayant été fortement réduites. Néanmoins, on est toujours pas sûr de tomber sur le bon résultat: dans ce cas précis, la probabilité de tomber sur $\ket{010}$ est d'environ 78\%, on a quand même quasiment 20\% de chances de mesurer un autre état. Ce n'est pas satisfaisant.
+La figure \ref{fig:groverAmp} illustre cette évolution pour 3 qubits. On voit qu'a la fin de $U_s$, on obtient un état quantique qui a une forte probabilité de tomber sur l'état voulu (ici, $\ket{010}$), les amplitudes de ceux qu'on ne veut pas ayant été fortement réduites. Néanmoins, on est toujours pas sûr de tomber sur le bon résultat: dans ce cas précis, la probabilité de tomber sur $\ket{010}$ est d'environ 78\%, on a quand même quasiment 20\% de chances de mesurer un autre état. Ce n'est pas satisfaisant.
 
 La solution est de réappliquer les portes $U_w$ et $U_s$. Ceci va encore plus diminuer les probabilités des états non voulus et augmenter la probabilité de l'état voulu.
-On peut prouver, notamment géométriquement, que le nombre d'optimal d'itérations est $\frac{\pi}{4}\sqrt{N}$. En fait, il se passe autre chose: si on dépasse ce nombre optimal d'itération, on va diminuer l'amplitude de l'état voulu et augmenter les probabilités des autres états: c'est cyclique. La figure suivante illustre une simulation sur plus d'itérations que ce qui est necessaire:
+On peut prouver, notamment géométriquement, que le nombre d'optimal d'itérations est $\frac{\pi}{4}\sqrt{N}$. En fait, il se passe autre chose: si on dépasse ce nombre optimal d'itération, on va diminuer l'amplitude de l'état voulu et augmenter les probabilités des autres états: c'est cyclique. La figure \ref{fig:groverGraph} illustre une simulation sur plus d'itérations que ce qui est necessaire.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.3]{Grover/grover_n16_1000.png}
   \caption{Evolution des amplitudes pour n=16, sur 1000 itérations}
+  \label{fig:groverGraph}
 \end{figure}
 
-En bleu, on représente la probabilité de tomber sur l'état cible, en rouge la probabilité de tomber sur un autre état (en vert, pour indication, la somme des probabilités pour vérifier que la somme vaut bien 1). On voit bien ici le rebouclement après $\frac{\pi}{4}\sqrt{N}$ itérations.
+En bleu, on représente le module de l'état cible, en rouge le module des autres états (en vert, pour indication, la somme des modules au carré pour vérifier l'unitarité de l'état). On voit bien ici le rebouclement après $\frac{\pi}{4}\sqrt{N}$ itérations.
 
 \section{Algorithme de Shor}
 
 On peut enfin étudier l'algorithme de Shor, proposé par Peter Shor en 1997 \cite{Shor97}.
 
 \begin{pb}
-  On s'intéresse au problème de la factorisation d'un nombre $N=q \times q$ avec $p$ et $q$ nombres entiers très grands.
+  On s'intéresse au problème de la factorisation d'un nombre $N=q \times q$ avec $p$ et $q$ nombres premiers très grands.
 \end{pb}
 
 Classiquement, ce problème est résolvable en $\mathcal{O}(\exp{[c . n^{\frac{1}{3}} (\log n)^{\frac{2}{3}} ]})$, par exemple avec l'algorithme du crible du corps algébrique \cite{NFS-RSA220}. Cet algorithme est certes efficace pour des nombres supérieurs à $10^{100}$, mais ne permet pas de factoriser pour des nombres de $2048$ ou $4096$ bits. Ce domaine de recherche avance rapidement, et de nouveaux algorithmes sont trouvés permettant d'améliorer les performances. On ne trouve en revanche toujours pas d'algorithmes permettant de résoudre ce problème en un temps polynomial.
 
-En utilisant l'informatique, Shor a démontré que ce problème était résolvable bien plus rapidement avec un processeur quantique, en un peu plus rapidement que $\mathcal{O}(n^3)$. En fait, Shor résout avec son algorithme une sous-partie d'un algorithme:
+En utilisant l'informatique quantique, Shor a démontré que ce problème était résolvable bien plus rapidement qu'en utilisant l'informatique classique, en un peu plus rapidement que $\mathcal{O}(n^3)$. En fait, Shor résout avec son algorithme une sous-partie de l'algorithme de la figure \ref{fig:algoshor}
+
+\pagebreak
+\begin{figure}[h]
+  
 
 \begin{algorithm}[H]
   \SetAlgoLined
@@ -213,6 +221,10 @@ En utilisant l'informatique, Shor a démontré que ce problème était résolvab
     }
   }
 \end{algorithm}
+\caption{Algorithme de factorisation en nombres premiers}
+\label{fig:algoshor}
+\end{figure}
+
 
 Cet algorithme permet de trouver les facteurs premiers $p$ et $q$. On peut prouver que la deuxième instruction revient à chercher la période de la fonction $a^r \Mod{N}$. C'est cette instruction spécifique qui est compliquée à résoudre classiquement, mais que Shor à réussi à résoudre en quantique.
 
