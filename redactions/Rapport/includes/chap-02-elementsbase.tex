@@ -5,10 +5,10 @@ Les notions de base d'informatique quantique sont décrites dans plusieurs ouvra
 
 \section{Postulats de base}
 
-On pose 3 postulats, servant de base aux raisonnements qui suivront. Ces postulats sont confirmés jusqu'a présent par les expériences.
+On pose 3 postulats, servant de base aux raisonnements qui suivront. Ces postulats sont confirmés jusqu'à présent par les expériences.
 
 \subsection{Etat d'un système quantique}
-Un système quantique peut être représenté par un vecteur d'état, de la même manière qu'un système physique classique. On le représente par la notation de Dirac, notée de la forme $\ket{\psi}$. Ce vecteur d'état est necessairement de norme 1 (la somme des modules au carré vaut 1). On peut distinguer deux types d'états pour un système quantique: les états de base, formant une base vectorielle, et les états superposés. Ces états superposés correspondent à une combinaison linéaire des états de base. On peut écrire généralement un état quantique de la façon suivante:
+Un système quantique peut être représenté par un vecteur d'état, de la même manière qu'un système physique classique. On le représente par la notation de Dirac, notée de la forme $\ket{\psi}$. Ce vecteur d'état est nécessairement de norme 1 (la somme des modules au carré vaut 1). On peut distinguer deux types d'états pour un système quantique: les états de base, formant une base orthonormée d'un espace vectoriel complexe, et les états superposés. Ces états superposés correspondent à une combinaison linéaire des états de base. On peut écrire généralement un état quantique de la façon suivante:
 
 \begin{equation}
     \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
@@ -23,9 +23,9 @@ Dans le cadre de l'informatique quantique, on utilise le système quantique le p
 \subsection{Mesure projective}
 Que se passe-t-il quand on mesure un système quantique ? On a évoqué au dessus la notion de superposition des états. L'expérience montre que, lorsqu'on va mesurer un système quantique, on va mesurer au hasard un des états de base, avec comme probabilité le carré du coefficient correspondant.
 
-Mathématiquement, la mesure effectue une projection de l'état du système sur un des états de base dont il est composé. Par exemple, si on a un qubit dans l'état $\ket{\psi} = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, alors la probabilité de mesurer 0, c'est-à-dire de projeter le système dans l'état pur $\ket{0}$ est $|\frac{1}{\sqrt{2}}|^2 = \frac{1}{2}$; et de même pour l'état pur $\ket{1}$. On a donc exactement la même probabilité de mesurer $\ket{0}$ que de mesurer $\ket{1}$.
+Mathématiquement, la mesure effectue une projection de l'état du système sur un des états de base dont il est composé. Par exemple, si on a un qubit dans l'état $\ket{\psi} = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, alors la probabilité de mesurer 0, c'est-à-dire de projeter le système dans l'état de base $\ket{0}$ est $|\frac{1}{\sqrt{2}}|^2 = \frac{1}{2}$; et de même pour l'état de base $\ket{1}$. On a donc exactement la même probabilité de mesurer $\ket{0}$ que de mesurer $\ket{1}$.
 
-Il faut noter que, lorsqu'on fait la mesure, on projete réellement le système quantique dans l'état pur. Concrètement, si on a un état superposé qu'on mesure, il se place dans l'état de base qu'on mesure, et toutes les mesures successives qu'on fera sur ce qubit donneront le même résultat. La mesure fait donc perdre l'état qu'on avait auparavant.
+Il faut noter que, lorsqu'on fait la mesure, on projette réellement le système quantique dans l'état de base. Concrètement, si on a un état superposé qu'on mesure, il se place dans l'état de base qu'on mesure, et toutes les mesures successives qu'on fera sur ce qubit donneront le même résultat. La mesure fait donc perdre l'état qu'on avait auparavant.
 
 \subsection{Dynamique du système}
 Comme n'importe quel système physique, on peut faire évoluer un système quantique dans le temps. Ici apparaissent deux propriétés. Tout d'abord, il découle du premier postulat que la dynamique d'un système quantique doit conserver la norme unité. En effet, un état quantique doit, pour être valide, avoir une norme de 1, et donc l'évolution d'un système quantique d'un premier état vers un autre doit conserver cette unitarité. Cela veut dire que la matrice représentant l'évolution du système quantique doit respecter la propriété suivante:
@@ -58,11 +58,11 @@ qu'on écrit généralement sous la forme plus simple:
 Prenons un 2-qubit formé par la combinaison de 2 qubits:
 
 \begin{align*}
-\ket{\psi} &= (\alpha_1\cdot\ket{0} + \beta_1\cdot\ket{1}) \otimes (\alpha_2\cdot\ket{0} + \beta_2\cdot\ket{1}) \\
-&= \alpha_1\alpha_2 \ket{0} \otimes \ket{0} + \alpha_1\beta_2 \ket{0} \otimes \ket{1} + \beta_1\alpha_2 \ket{1} \otimes \ket{0} + \beta_1\beta_2 \ket{1} \otimes \ket{1}
+\ket{\psi} &= (\alpha_1\cdot\ket{0} + \beta_1\cdot\ket{1}) \otimes (\alpha_2\cdot\ket{0} + \beta_2\cdot\ket{1}) ,\\
+&= \alpha_1\alpha_2 \ket{0} \otimes \ket{0} + \alpha_1\beta_2 \ket{0} \otimes \ket{1} + \beta_1\alpha_2 \ket{1} \otimes \ket{0} + \beta_1\beta_2 \ket{1} \otimes \ket{1}.
 \end{align*}
 
-On peut donc, si on a un 2-qubit combinaison linéaire de tous les états de base, le séparer en deux qubits individuels, sur lesquels on va pouvoir agir.
+On peut donc, si on a un 2-qubit combinaison linéaire de tous les états de base, le factoriser en deux qubits séparés qu'on peut caractériser.
 
 \medbreak
 
@@ -78,19 +78,19 @@ Il parait évident alors qu'on ne peut pas factoriser ce 2-qubit en produit tens
 \subsection{Portes quantiques}
 Dans la représentation d'état classique, et spécifiquement en informatique, on peut faire évoluer l'état au travers de portes. En informatique classique, on dispose ainsi de portes élémentaires telles que \texttt{AND}, \texttt{NOT}, \texttt{OR}, etc. 
 
-De la même manière, en respectant le troisième postulat posé précédement, on peut construire des portes logiques quantiques, les combiner, afin de créer des circuits quantiques. Ces portes quantiques sont necessairement unitaires, donc inversibles. En informatique quantique, on distingue donc plusieurs portes élémentaires, utilisés dans beaucoup de circuit \cite{Barenco95}:
+De la même manière, en respectant le troisième postulat posé précédement, on peut construire des portes logiques quantiques, les combiner, afin de créer des circuits quantiques. Ces portes quantiques sont nécessairement unitaires, donc inversibles. En informatique quantique, on distingue donc plusieurs portes élémentaires, utilisées dans beaucoup de circuit \cite{Barenco95}:
 
-Les portes quantiques sont complètement caractérisées par la façon dont elles transforment les états quantiques dans la base canonique. On peut alors utiliser des tables de vérité pour les définir, de la même façon qu'en informatique classique.
+Les portes quantiques sont complètement caractérisées par la façon dont elles transforment les états quantiques dans la base canonique. On peut alors utiliser des tables de vérité pour les définir, de la même façon qu'en informatique classique:
 
 \begin{enumerate}
-    \item La porte de Hadamard $H$. Elle permet de passer un qubit d'un état pur $\ket{0}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, ou de l'état de base $\ket{1}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} - \frac{1}{\sqrt{2}}\ket{1}$. Elle est très utilisée en début de circuit pour préparer les qubits entrants dans un état permettant l'évaluation parallèle de toutes les entrées;
+    \item La porte de Hadamard $H$. Elle permet de passer un qubit d'un état de base $\ket{0}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, ou de l'état de base $\ket{1}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} - \frac{1}{\sqrt{2}}\ket{1}$. Elle est très utilisée en début de circuit pour préparer les qubits entrants dans un état permettant l'évaluation parallèle de toutes les entrées;
     \item Les portes de Pauli $X$, $Y$ et $Z$ permettant d'effectuer des rotations aux états des qubits;
-    \item La porte de Toffoli, similaire d'un \texttt{NON} booléen à 3 qubit (il effectue un \texttt{NON} sur les deux derniers qubits quand le premier est à 1), est une porte universelle quantique \cite{shi2002toffoli}. Elle permet donc de construire l'ensemble des autres portes faisables.
+    \item La porte de Toffoli, similaire d'un \texttt{NON} booléen à 3 qubit (il effectue un \texttt{NON} sur le dernier qubit quand les deux premiers sont à $\ket{1}$), est une porte universelle quantique \cite{shi2002toffoli}. Elle permet donc de construire l'ensemble des autres portes faisables.
 \end{enumerate}
 
 Les tables de vérité des différentes portes quantiques évoquées sont disponibles en annexes.
 
-Un exemple de circuit est le suivant: On dispose d'un 3-qubit dans l'état $\ket{000}$. Au départ, on applique à ces trois qubits une porte de Hadamard, qui les fait se retrouver dans des états équilibrés (qui a la même probabilité de mesurer chacun des états de base). On arrive donc à un 3-qubit qui est équilibré entre chacun de ses états purs. On applique ensuite deux portes de Pauli $Z$, un au premier qubit, et un au troisième. On applique de la même façon 3 portes de Hadamard à la sortie, puis on mesure.
+Un exemple de circuit est le suivant: On dispose d'un 3-qubit dans l'état $\ket{000}$. Au départ, on applique à ces trois qubits une porte de Hadamard, qui les fait se retrouver dans une superposition équilibrée des états de base (c'est-à-dire de sorte qu'une mesure nous donne l'un des états de base avec une probabilité de $\frac{1}{8}$). On applique ensuite deux portes de Pauli $Z$, un au premier qubit, et un au troisième. On applique de la même façon 3 portes de Hadamard à la sortie, puis on mesure.
 \pagebreak
 \begin{figure}[t!]
     \centerline{
@@ -100,10 +100,10 @@ Un exemple de circuit est le suivant: On dispose d'un 3-qubit dans l'état $\ket
             & \lstick{\ket{0}} & \gate{H} & \gate{Z} & \gate{H} & \meter & \qwa
         }
     }
-    \caption{Exemple de circuit quantique}
+    \caption{Exemple de circuit quantique, avec $U_f$ pour $f(a, b, c) = (\neg{a})\oplus c$}
 \end{figure}
 
-Dans cet exemple, les deux portes de Pauli Z permettent d'appliquer une fonction $f$ booléenne. En informatique classique, pour évaluer cette fonction sur les $n$ entrées possibles, il faudrait effectuer $n$ évaluations de $f$. Ici, avec ce circuit quantique, on n'effectue qu'une seule évaluation quantique de $f$ sur l'état équilibré donné par les portes de Hadamard. On vient évaluer la fonction $f$ sur tout les états de base composant l'état quantique. Puisque cet état est équilibré, les $n$ états de base vont être évalués, c'est-à-dire toutes les entrées qu'on voulait évaluer en classique.
+Dans cet exemple, les deux portes de Pauli Z permettent d'appliquer une fonction $f$ booléenne. En informatique classique, pour évaluer cette fonction sur les $2^n$ entrées possibles, il faudrait effectuer $2^n$ évaluations de $f$. Ici, avec ce circuit quantique, on n'effectue qu'une seule évaluation quantique de $f$ sur l'état équilibré donné par les portes de Hadamard. On vient évaluer la fonction $f$ sur tout les états de base composant l'état quantique. Puisque cet état est équilibré, les $2^n$ états de base vont être évalués, c'est-à-dire toutes les entrées qu'on voulait évaluer en classique.
 
 
-L'avantage du quantique bien montré ici: Les deux portes du milieu vont faire changer l'état des qubits, mais en parallèle: on fait évoluer le système simultanément pour tout les états purs qui nous intéressent, puisqu'ils sont superposés.
+L'avantage du quantique bien montré ici: les deux portes du milieu vont faire changer l'état des qubits, mais en parallèle: on fait évoluer le système simultanément pour tous les états de base qui nous intéressent, puisqu'ils sont superposés.

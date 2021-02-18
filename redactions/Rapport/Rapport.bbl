@@ -26,7 +26,24 @@ D.~Deutsch, ``Quantum theory, the {C}hurch-{T}uring principle and the universal
 \bibitem{Igeta:88}
 K.~Igeta and Y.~Yamamoto, ``Quantum mechanical computers with single atom and
   photon fields,'' in {\em International Conference on Quantum Electronics},
-  p.~TuI4, Optical Society of America, 1988.
+  Optical Society of America, 1988.
+
+\bibitem{Zhu_2002}
+S.-L. Zhu and Z.~D. Wang, ``Implementation of universal quantum gates based on
+  nonadiabatic geometric phases,'' {\em Physical Review Letters}, vol.~89, Aug
+  2002.
+
+\bibitem{Zhu_13}
+J.~Zhu, S.~Kais, Q.~Wei, D.~Herschbach, and B.~Friedrich, ``Implementation of
+  quantum logic gates using polar molecules in pendular states,'' {\em The
+  Journal of Chemical Physics}, vol.~138, no.~2, p.~024104, 2013.
+
+\bibitem{1314241}
+F.~{Schmidt-Kaler}, H.~{Haffner}, M.~{Riebe}, S.~{Gulde}, C.~P.~T. {Lancaster},
+  T.~{Deuschle}, C.~{Becher}, C.~{Roos}, J.~{Eschner}, and R.~{Blatt},
+  ``{Realisation of the Cirac-Zoller controlled-NOT quantum gate},'' in {\em
+  2003 European Quantum Electronics Conference. EQEC 2003 (IEEE Cat
+  No.03TH8665)}, pp.~384--, 2003.
 
 \bibitem{Chuang1998ExperimentalIO}
 I.~Chuang, N.~Gershenfeld, and M.~Kubinec, ``Experimental implementation of
@@ -78,6 +95,11 @@ E.~Borbely, ``Grover search algorithm,'' 2007.
 P.~W. Shor, ``Polynomial-time algorithms for prime factorization and discrete
   logarithms on a quantum computer,'' {\em SIAM Journal on Computing}, vol.~26,
   pp.~1484--1509, 1997.
+
+\bibitem{RSA}
+R.~L. Rivest, A.~Shamir, and L.~Adleman, ``A method for obtaining digital
+  signatures and public-key cryptosystems,'' {\em Commun. ACM}, vol.~21,
+  p.~120–126, Feb. 1978.
 
 \bibitem{NFS-RSA220}
 S.~Bai, P.~Gaudry, A.~Kruppa, E.~Thom{\'e}, and P.~Zimmermann, ``{Factorisation

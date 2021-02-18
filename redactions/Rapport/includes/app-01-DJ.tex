@@ -92,7 +92,7 @@ o : \ket{x}(\ket{0} - \ket{1}) \mapsto \ket{x}(\ket{1} - \ket{0}).
 Autrement dit, dans ce cas, le vecteur $\ket{x}(\ket{0} - \ket{1})$
 est envoyé sur son opposé via $o$.
 
-Finalement, les deux cas précédents peuvent être résumé sous la forme suivante
+Finalement, les deux cas précédents peuvent être résumés sous la forme suivante
 \[
 o : \ket{x}(\ket{0} - \ket{1}) \mapsto (-1)^{f(x)}\ket{x}(\ket{0} - \ket{1}).
 \]
@@ -168,7 +168,7 @@ savoir si elle est constante ou équilibrée.
 
 
 On commence avec $\ket{u_0} = \ket{001}$. La première étape est
-l'application de la porte d'hadamard à $\ket{u_0}$:
+l'application de la porte d'Hadamard à $\ket{u_0}$:
 
 \begin{align}
 \ket{u_1} &= H\ket{u_0} = H\ket{0} \otimes H\ket{0} \otimes H\ket{1} \nonumber ,\\
@@ -234,13 +234,13 @@ Matriciellement, on peut donc écrire
 
 \subsubsection{Etape 3: porte de Hadamard}
 
-On applique donc une porte de hadamard à $\ket{u_2}$:
+On applique donc une porte de Hadamard à $\ket{u_2}$:
 \begin{equation}
   \label{eq:5}
 \ket{u_3} = \frac{1}{2\sqrt{2}} H \left( (-1)^{f(00)} \ket{00} + (-1)^{f(01)} \ket{01} + (-1)^{f(10)} \ket{10} + (-1)^{f(11)} \ket{11} \right) .
 \end{equation}
 
-Nous sommes sur une porte de hadamard pour 2 qubits, ce qui donne
+Nous sommes sur une porte de Hadamard pour 2 qubits, ce qui donne
 la relation matricielle suivante pour $\ket{u_3}$:
 
 \begin{align}
@@ -350,7 +350,7 @@ Reprenons cet algorithme avec $n=4$ qubits et affichons l'évolution des états 
   \caption{Evolution des états pour une fonction f constante, vecteurs d'états séparés et réunis}
 \end{figure}
 
-On voit ici l'ensemble des états que prends le registre de sortie. Dans le cas constant, on se retrouve bien à mesure exclusivement la valeur 0 (pour rappel, on ne mesure pas le dernier qubit qui est constant à 1). Pour les deux étapes intermédiaires, on visualise bien qu'on se retrouve dans une certaine superposition des états possibles. A noter, la visualisation présentée dans la colonne de gauche montre les états séparés. On peut rappeler que cette représentation n'est possible que parce que le 4-qubit est dans un état séparable. La représentation serait impossible si il était dans un état superposé (par exemple, si $\ket{u} = \frac{1}{2}(\ket{10001} + \ket{01001})$).
+On voit ici l'ensemble des états que prend le registre de sortie. Dans le cas constant, on se retrouve bien à mesurer exclusivement la valeur 0 (pour rappel, on ne mesure pas le dernier qubit qui est constant à 1). Pour les deux étapes intermédiaires, on visualise bien qu'on se retrouve dans une certaine superposition des états possibles. A noter, la visualisation présentée dans la colonne de gauche montre les états séparés. On peut rappeler que cette représentation n'est possible que parce que le 4-qubit est dans un état séparable. La représentation serait impossible si il était dans un état superposé (par exemple, si $\ket{u} = \frac{1}{2}(\ket{10001} + \ket{01001})$).
 
 \subsection{Fonction équilibrée quelconque $f_1(x)$}
 La figure suivante présente la même visualisation, pour une fonction équilibrée:

@@ -23,7 +23,9 @@
 \usepackage{listings}
 \usepackage{pgfplots}
 \usepackage{xcolor}
+\usepackage{amsmath}
 \usepackage[ruled,vlined]{algorithm2e}
+\captionsetup[figure]{labelformat=empty}
 
 \definecolor{mGreen}{rgb}{0,0.6,0}
 \definecolor{mGray}{rgb}{0.5,0.5,0.5}
@@ -60,7 +62,6 @@
 
 \title{Soutenance de rapport bibliographique - Informatique quantique}
 \author{Pierre Engelstein}
-% Rajouter nom des encadrants + membres du jury
 \institute{Polytech Angers}
 
 \begin{document}
@@ -68,137 +69,229 @@
 %====================================
 %================1===================
 
-\frame{\titlepage}
+% \frame{\titlepage}
 
-%% Intro
+\makeatletter
+\newcommand\titlegraphicii[1]{\def\inserttitlegraphicii{#1}}
+\titlegraphicii{}
+\setbeamertemplate{title page}
+{
+  \vbox{}
+   {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\hfill\inserttitlegraphicii\par}
+  \begin{centering}
+    \begin{beamercolorbox}[sep=8pt,center]{institute}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%     
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}%\vskip0.5em
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+  \end{centering}
+  %\vfill
+}
+\makeatother
+\author{Pierre Engelstein}
+\subtitle{\small Informatique quantique}
+\title{\tiny Soutenance de rapport bibliographique}
+\institute{Masters 2 Systèmes Dynamiques et Signaux}
+\date{\today}
+\titlegraphic{\includegraphics[width=2cm]{../Rapport/images/LogoUnivAngers.png}}
+\titlegraphicii{\includegraphics[width=2cm]{../Rapport/images/Polytech_Angers.png}}
 
-% Notion de Qubit
-% Combinaison de qubits: le produit tensoriel
-% Mesure des qubits
-% Représentations graphiques
+\begin{frame}[plain]
+  \maketitle
+  \tiny
+  {\centering\itshape Membres du jury\par}
+  Président: Pr. Laurent Hardouin\par\medskip
+  \begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.32\textwidth}@{}}
+  Examinateurs: & Dr. Nicolas Delanoue \\
+  & Pr. François Chapeau-Blondeau \\
+  & Pr. Sébastien Lahaye \\
+  & Dr. Mehdi Lhommeau \\
+  & Pr. David Rousseau
+  \end{tabular}%
+  \footnotesize
+  \tiny
+  \begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.3\textwidth}@{}}
+  Encadrants : & Dr. Nicolas Delanoue \\
+   & Pr. François Chapeau-Blondeau
+  \end{tabular}%
+\end{frame}
 
-%% Partie 1: Algorithme de Deutsch Jozsa
 
-% Présentation du problème
-% Notion d'oracle
-% Explication algébrique
-  % Porte de hadamard: se porter dans un état superposé
-  % Application de l'oracle
-  % Réapplication de Hadamard: forcer les résultats
-% Implémentation en QSharp: expliquer un exemple d'oracle
-% Visualisation géométrique
+% Phrases bien cadrées sur l'introduction
+% -> Performances de traitement de l'information inaccessibles en classique
+% -> Trois algorithme quantiques qui illustrent cette performance
+% -> 
 
-%% Partie 2: Algorithme de Grover
 
-% Présentation du problème
-% Miroir géométrique
-% Application d'une itération
-  % Opérateur s et w
-  % Obtention d'un état probabiliste
-  % Necessité de plusieurs itérations: jamais obtention d'un état pur
-% Implémentations: simulation sur ordinateur classique et implémentation quantique
+\begin{frame}
+  \tableofcontents
+\end{frame}
 
-%% Conclusion: Perspectives
-
-% Application de la méthode de newton ?
-% 
 
 %====================================
 %====================================
 
 % 4 minutes
-\section{Introduction}
+\section{Les 3 principes de base pour l'informatique quantique}
+
+% Dire que 3 principes de base: qubit, mesure, dynamique
+
+\begin{frame}
+\frametitle{3 Postulats \cite{Nielsen00, Mermin07, Bennett98}}
+
+\begin{enumerate}
+  \item L'état d'un système quantique
+  \item La dyamique d'un systèmes quantique
+  \item La mesure d'un système quantique
+\end{enumerate}
+
+\end{frame}
 
 % 2 minutes
 \begin{frame}
-\frametitle{Etat d'un système quantique}
-
+\frametitle{ I) : \'Etat d'un système quantique}
+\only<1>{
 \begin{definition}
-  Notation d'un état quantique :
+  Système quantique: vecteur d'état $\ket{\psi}$
+  
+  Dans un espace de Hilbert complexe $\mathcal{H}$.
+
+  De norme unité: $||\psi||^2 = 1$
 \begin{equation}
     \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
 \end{equation}
-Avec $\ket{k_i}$ vecteurs d'état purs.
-\end{definition}
+Avec $\{\ket{k_i}\}_i$ une base orthonormée de $\mathcal{H}$, 
 
-% Parler d'un espace de Hilbert (espace vectoriel muni de produit scalaire, et autres => à regarder)
-% 
+Et les coefficients $c_i \in \mathbb{C}$.
+\end{definition}
+}
+% On représente l'état d'un système quantique au moyen d'un vecteur d'état psi appartenant à un espace de Hilbert complexe. Vecteur d'état étant de norme unité.
+
 % Rajouter un exemple
 
-Système quantique élémentaire: le qubit : $\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$
+\only<2>{
+  Système quantique élémentaire: le qubit : $\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$, dans un espace de Hilbert de dimension $2$. 
+  
+  %Element fondamental de l'informatique quantique.
+\medbreak
+% Définir bien le qubit comme étant l'élément fondamental de l'informatique quantique
 
 \begin{example}
-\begin{equation}
-  \ket{\psi_1} = \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1}.
-\end{equation}
-avec
-\begin{equation}
-  \ket{0} \mapsto \begin{bmatrix}
-    1 \\ 0
-  \end{bmatrix}
-  ,
-  \ket{1} \mapsto \begin{bmatrix}
-    0 \\ 1
-  \end{bmatrix}
-\end{equation}
+  \begin{equation}
+    \ket{\psi_1} = \frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1},
+  \end{equation}
+  avec
+  \begin{equation}
+    \ket{0} \mapsto \begin{bmatrix}
+      1 \\ 0
+    \end{bmatrix}
+    ,
+    \ket{1} \mapsto \begin{bmatrix}
+      0 \\ 1
+    \end{bmatrix}
+  \end{equation}
 \end{example}
+}
+\end{frame}
+
+% 1 minute
+\begin{frame}
+  \frametitle{Dynamique des systèmes quantiques}
+
+  \begin{definition}
+    La dynamique des systèmes quantiques respecte deux principes:
+    \begin{list}{}
+      \item - Conservation de la norme unité
+      \item - Linéarité de l'évolution
+    \end{list}
+
+    On note $U$ matrice d'évolution du système, telle que:  $U \in \mathcal{H}$, $U^{\dagger}U = UU^{\dagger} = I$
+  \end{definition}
+
+  %Opérateur unitaire (définition comme dans le rapport), => rédiger ici!!! TODO
+  % Vision: état quantique en entrée, opérateur unitaire "boite noire" qui sort un état quantique de sortie. Vision fonction de transfert
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Portes quantiques}
+
+  \only<1>{
+  Porte de Hadamard:
+  \[
+    H \ket{\psi} = \frac{1}{\sqrt{2}} \begin{bmatrix}
+      1 & 1 \\
+      1 & -1 \\
+    \end{bmatrix} \ket{\psi}
+  \]
+
+  \begin{example}
+    Soit $\ket{\psi} = \ket{0} = \begin{bmatrix} 1 \\ 0 \\\end{bmatrix}$, alors $H\ket{\psi} = \begin{bmatrix}
+      \frac{1}{\sqrt{2}} \\
+      \frac{1}{\sqrt{2}} \\
+    \end{bmatrix}$
+  \end{example}
+  }
+  \only<2>{
+    Porte de Pauli X:
+    \[
+      X \ket{\psi} = \begin{bmatrix}
+        0 & 1 \\
+        1 & 0 \\
+      \end{bmatrix} \ket{\psi}
+    \]
+
+    \begin{example}
+      Soit $\ket{\psi} = \ket{0} = \begin{bmatrix} 1 \\ 0 \\\end{bmatrix}$, alors $X\ket{\psi} = \begin{bmatrix}
+        0 \\
+        1 \\
+      \end{bmatrix} = \ket{1}$
+    \end{example}
+    }
 
 \end{frame}
+
 
 % 1 minute
 \begin{frame}
 \frametitle{La mesure projective}
 \begin{definition}
-  Quand un système quantique est dans un état superposé $\ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i}$, on va avoir comme probabilité $c_i^2$ de mesurer l'état $\ket{k_i}$.
+  Quand un système quantique est dans un état $\ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i}$, on va avoir comme probabilité $|c_i|^2$ de mesurer l'état $\ket{k_i}$.
 \end{definition}
 
 \begin{rem}
   La mesure est \textbf{projective}: on pert l'état probabiliste.
 \end{rem}
-\end{frame}
 
+% Choix de la base projective (à noter ?)
 
-
-% 1 minute
-\begin{frame}
-\frametitle{Dynamique des systèmes quantiques}
-\begin{enumerate}
-  \item Conserve la norme unité
-  \item Evolution linéaire: limite dans les problèmes résolvables
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Vers l'informatique quantique}
-  \begin{itemize}
-    \item Utiliser de multiples qubits - intrication quantique
-    
-    \begin{align}
-      \ket{\psi_1} &= \frac{1}{2}\ket{00} + \frac{1}{2}\ket{01} + \frac{1}{2}\ket{10} +\frac{1}{2}\ket{11} \nonumber \\
-                   &= \frac{1}{2} (\ket{0} + \ket{1}) \otimes (\ket{0} + \ket{1})  \nonumber
-    \end{align}
-    \begin{align}
-      \ket{\psi_2} &= \frac{1}{4}\ket{00} + 0\ket{01} + 0\ket{10} +\frac{1}{4}\ket{11} \nonumber \\
-                   &= ?? \nonumber
-    \end{align}
-
-    \item Portes quantiques
-    \begin{itemize}
-      \item Portes élémentaires: Hadamard, Pauli, Toffoli
-      \item Construction de circuit
-    \end{itemize}
-  \end{itemize}
 \end{frame}
 
 %====================================
 %====================================
+\section{3 algorithmes quantiques}
+
+% Propriétés spécifiquement quantiques, montrent les apports spécifiques du quantique pour le traitement de l'information, permettent d'obtenir des performances inatteignables en classiques.
 
 % 4 minutes
-\section{Algorithme de Deutsch-Jozsa}
+\subsection{Algorithme de Deutsch-Jozsa}
 
 % 2 minutes
 \begin{frame}
-\frametitle{Présentation du problème}
+\frametitle{Algorithme de Deutsch-Jozsa \cite{Deutsch92}}
 
 \begin{pb}
   Déterminer en le moins d'itérations possibles si une fonction $f$ booléenne est constante ou équilibrée
@@ -237,75 +330,226 @@ Dans le cas quantique: 1 seule itération
 
 \end{frame}
 
-% 1 minutes
-\begin{frame}[fragile]
-\frametitle{Langages de programation quantique}
-
-\begin{lstlisting}[style=CStyle]
-import numpy as np
-from qiskit import *
-import matplotlib.pyplot as plt
-nb_qubits = 3
-circuit = QuantumCircuit(nb_qubits, nb_qubits)
-for i in range(nb_qubits):
-    circuit.h(i)
-circuit.barrier()
-circuit.z(0)
-circuit.z(2)
-circuit.barrier()
-for i in range(nb_qubits):
-    circuit.h(i)
-circuit.barrier()
-for i in range(nb_qubits):
-    circuit.measure(i, i)
-\end{lstlisting}
-
-\end{frame}
-
 %====================================
 %====================================
 
 % 4 minutes
-\section{Algorithme de Grover}
 
+\subsection{Algorithme de Grover}
 % 1 minutes
 \begin{frame}
-\frametitle{Présentation du problème}
+\frametitle{Algorithme de Grover \cite{Grover96}}
+
+\begin{pb}
+  On souhaite chercher une entrée spécifique dans une liste non triée à N éléments de façon efficace.
+\end{pb}
+
+\medbreak
+Dans le cas classique: $N$ itération successives.
+\medbreak
+Dans le cas quantique: $\mathcal{O}(\sqrt{N})$
+
 \end{frame}
 
 % 2 minutes
 \begin{frame}
-\frametitle{Itération unique}
+\frametitle{Opérateur de grover}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+  \only<1,2,3>{
+\begin{figure}[htbp]
+  \centering
+  \centerline{
+      \Qcircuit @C=1em @R=.7em {
+        & \lstick{\ket{0}^n} \barrier[-1.75em]{1}  & \gate{H^{\otimes n}} \barrier[-1.75em]{1} & \multigate{1}{U_w} \barrier[-1.5em]{1} & \multigate{1}{U_s} \barrier[-1.25em]{1} & \meter \\
+        & \lstick{\ket{1}} & \gate{H} & \ghost{U_w} &  \ghost{U_s} & \qw & \\
+        \hspace{3em} \ket{u_{0}} & \hspace{8em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}}
+      }
+    }
+  \caption{Schéma du circuit de l'algorithme de Grover}
+  \label{fig:grover}
+\end{figure}
+  }
+  \only<4>{
+    \begin{figure}[htbp]
+      \centering
+      \centerline{
+          \Qcircuit @C=1em @R=.7em {
+            & & & & \mbox{$\mathcal{O}(\sqrt N)$ itérations} \\
+            & \lstick{\ket{0}^n} \barrier[-1.75em]{1}  & \gate{H^{\otimes n}} \barrier[-1.75em]{1} & \multigate{1}{U_w} \barrier[-1.5em]{1} & \multigate{1}{U_s} \barrier[-1.25em]{1} & \meter \\
+            & \lstick{\ket{1}} & \gate{H} & \ghost{U_w} &  \ghost{U_s} & \qw & \\
+            \hspace{3em} \ket{u_{0}} & \hspace{8em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}} \gategroup{2}{4}{3}{5}{.7em}{^\}}
+          }
+        }
+      \caption{Schéma du circuit de l'algorithme de Grover}
+      \label{fig:grover}
+    \end{figure}
+  }
+\end{column}
+
+
+\pgfplotstableread[row sep=\\,col sep=&]{
+    state & amplitude \\
+    $\ket{000}$ & 0.35355  \\
+    $\ket{001}$ & 0.35355  \\
+    $\ket{010}$ & 0.35355  \\
+    $\ket{011}$ & 0.35355  \\
+    $\ket{100}$ & 0.35355  \\
+    $\ket{101}$ & 0.35355  \\
+    $\ket{110}$ & 0.35355  \\
+    $\ket{111}$ & 0.35355  \\
+}\afterHadamard
+\pgfplotstableread[row sep=\\,col sep=&]{
+    state & amplitude \\
+    $\ket{000}$ & 0.35355  \\
+    $\ket{001}$ & 0.35355  \\
+    $\ket{010}$ & -0.35355  \\
+    $\ket{011}$ & 0.35355  \\
+    $\ket{100}$ & 0.35355  \\
+    $\ket{101}$ & 0.35355  \\
+    $\ket{110}$ & 0.35355  \\
+    $\ket{111}$ & 0.35355  \\
+}\afterUw
+\pgfplotstableread[row sep=\\,col sep=&]{
+    state & amplitude \\
+    $\ket{000}$ & 0.176  \\
+    $\ket{001}$ & 0.176  \\
+    $\ket{010}$ & 0.884  \\
+    $\ket{011}$ & 0.176  \\
+    $\ket{100}$ & 0.176  \\
+    $\ket{101}$ & 0.176  \\
+    $\ket{110}$ & 0.176  \\
+    $\ket{111}$ & 0.176  \\
+}\afterUs
+
+
+\begin{column}{0.5\textwidth}
+\only<1>{
+\begin{figure}[t]{}
+  \centering
+  \begin{tikzpicture}[scale=0.55]
+    \begin{axis}[
+            ybar,
+            symbolic x coords={$\ket{000}$, $\ket{001}$, $\ket{010}$, $\ket{011}$, $\ket{100}$, $\ket{101}$, $\ket{110}$, $\ket{111}$},
+            xtick=data,
+        ]
+        \addplot table[x=state,y=amplitude]{\afterHadamard};
+    \end{axis}
+  \end{tikzpicture}
+%     \label{fig:groverAmp}
+    \caption{$\ket{u_1}$}
+\end{figure}
+}
+\only<2>{
+\begin{figure}[b]{}
+    \centering
+    \begin{tikzpicture}[scale=0.55]
+      \begin{axis}[
+              ybar,
+              symbolic x coords={$\ket{000}$, $\ket{001}$, $\ket{010}$, $\ket{011}$, $\ket{100}$, $\ket{101}$, $\ket{110}$, $\ket{111}$},
+              xtick=data,
+          ]
+          \addplot table[x=state,y=amplitude]{\afterUw};
+      \end{axis}
+      \draw[line width=0.1 mm] (0,4.6) -- (6.85,4.6);
+    \end{tikzpicture}
+    \caption{$\ket{u_2}$}
+\end{figure}
+}
+\only<3>{
+\begin{figure}[b]
+  \centering
+  \begin{tikzpicture}[scale=0.55]
+    \begin{axis}[
+            ybar,
+            symbolic x coords={$\ket{000}$, $\ket{001}$, $\ket{010}$, $\ket{011}$, $\ket{100}$, $\ket{101}$, $\ket{110}$, $\ket{111}$},
+            xtick=data,
+        ]
+        \addplot table[x=state,y=amplitude]{\afterUs};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{$\ket{u_3}$}
+\end{figure}
+}
+
+
+
+
+
+% \only<4>{
+%   \begin{figure}[h]
+%     \centering
+%     \includegraphics[scale=0.3]{../Rapport/images/Grover/grover_n16_1000.png}
+%     \caption{Evolution des modules pour n=16, sur 1000 itérations}
+%     \label{fig:groverGraph}
+%   \end{figure}
+% }
+
+\end{column}
+\end{columns}
 \end{frame}
 
-% 1 minutes
+%====================================
+%====================================
+\subsection{Algorithme de Shor}
+
 \begin{frame}
-\frametitle{Implémentations classiques et quantiques}
+\frametitle{Algorithme de Shor \cite{Shor97}}
+
+Problème de factorisation de grands entiers en nombres premiers: résoudre $N = p \times q$ avec $p$ et $q$ entiers très grands inconnus. 
+
+\medbreak
+
+- Algorithmes classiques: complexité exponentielle
+\medbreak
+- Algorithmes quantiques: complexité polynomiale
+
+% Dans les grandes lignes
+
+% Algorithmes classiques: complexité exponentielle
+% Algorithme quantique: complexité polynomiale
+
+% On montre que le problème de factorisation se converti en recherche de période abordé par la tranformée de Fourier quantique.
+
 \end{frame}
 
-%====================================
-%====================================
+\section{Pistes de recherche (pour le stage)}
+% Grandes pistes de recherche
+% Pistes pour le stage
+\begin{frame}
+  \frametitle{Travail à venir}
+  % -> Par ex DJ extension à autres catégories
+
+\end{frame}
 
 % 2 minutes
-\section{Conclusions}
-
+\section{Conclusion}
 \begin{frame}
-\frametitle{Le qubit}
+\frametitle{Conclusion}
+% -> Domaine très riche en plein essort, plein de boites se positionnent dessus, plein de labos
 \end{frame}
 
 \begin{frame}
-\frametitle{Biliographie}
-\begin{itemize}
-    \fontsize{6pt}{7.2}\selectfont
+\frametitle{Bibliographie}
 
-    \item R. Buyya, R. N. Calheiros, J. Son, A. V. Dastjerdi and Y. Yoon, "Software-Defined Cloud Computing: Architectural elements and open challenges," 2014 International Conference on Advances in Computing, Communications and Informatics (ICACCI), New Delhi, 2014, pp. 1-12
-    \item Bhore, Pratik. (2016). A Survey on Storage Virtualization and its Levels along with the Benefits and Limitations. INTERNATIONAL JOURNAL OF COMPUTER SCIENCES AND ENGINEERING. 4. 115-121.
-    \item M. F. Bari et al., "Data Center Network Virtualization: A Survey," in IEEE Communications Surveys \& Tutorials, vol. 15, no. 2, pp. 909-928
-    \item M. Alouane and H. El Bakkali, "Virtualization in Cloud Computing: Existing solutions and new approach," 2016 2nd International Conference on Cloud Computing Technologies and Applications (CloudTech), Marrakech, 2016, pp. 116-123
-    \item Chrobak, Pawel. (2014). Implementation of Virtual Desktop Infrastructure in academic laboratories. 1139-1146.
-    \item Nagesh, O \& Kumar, Tapas \& Venkateswararao, V.. (2017). A Survey on Security Aspects of Server Virtualization in Cloud Computing. International Journal of Electrical and Computer Engineering. 7. 1326-1336.
-\end{itemize}
+\tiny
+\bibliographystyle{ieeetr}
+\bibliography{biblio}
 
+% -> Refs sur la base (1-2 refs), par exemple IEEE et livres de cours
+% -> Ref pour DJ, Grover et Shor
+% -> Refs sur les signaux IEEE ?
+% Referencer vers la biblio avec bibtex ou juste un enumerate
+
+% \begin{itemize}
+%     % \fontsize{6pt}{7.2}\selectfont
+%     % \item R. Buyya, R. N. Calheiros, J. Son, A. V. Dastjerdi and Y. Yoon, "Software-Defined Cloud Computing: Architectural elements and open challenges," 2014 International Conference on Advances in Computing, Communications and Informatics (ICACCI), New Delhi, 2014, pp. 1-12
+%     % \item Bhore, Pratik. (2016). A Survey on Storage Virtualization and its Levels along with the Benefits and Limitations. INTERNATIONAL JOURNAL OF COMPUTER SCIENCES AND ENGINEERING. 4. 115-121.
+%     % \item M. F. Bari et al., "Data Center Network Virtualization: A Survey," in IEEE Communications Surveys \& Tutorials, vol. 15, no. 2, pp. 909-928
+%     % \item M. Alouane and H. El Bakkali, "Virtualization in Cloud Computing: Existing solutions and new approach," 2016 2nd International Conference on Cloud Computing Technologies and Applications (CloudTech), Marrakech, 2016, pp. 116-123
+%     % \item Chrobak, Pawel. (2014). Implementation of Virtual Desktop Infrastructure in academic laboratories. 1139-1146.
+%     % \item Nagesh, O \& Kumar, Tapas \& Venkateswararao, V.. (2017). A Survey on Security Aspects of Server Virtualization in Cloud Computing. International Journal of Electrical and Computer Engineering. 7. 1326-1336.
+% \end{itemize}
 \end{frame}
 
 \end{document}

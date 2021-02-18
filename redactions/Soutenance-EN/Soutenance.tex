@@ -1,0 +1,97 @@
+\documentclass{beamer}
+\usetheme{default}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage[qm]{qcircuit}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage[ruled,vlined]{algorithm2e}
+\captionsetup[figure]{labelformat=empty}
+
+\begin{document}
+
+%====================================
+%================1===================
+
+\makeatletter
+\newcommand\titlegraphicii[1]{\def\inserttitlegraphicii{#1}}
+\titlegraphicii{}
+\setbeamertemplate{title page}
+{
+  \vbox{}
+   {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\hfill\inserttitlegraphicii\par}
+  \begin{centering}
+    \begin{beamercolorbox}[sep=8pt,center]{institute}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%     
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}%\vskip0.5em
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+  \end{centering}
+  %\vfill
+}
+\makeatother
+\author{Pierre Engelstein}
+\title{\small Quantum computing}
+\institute{Masters 2 Systèmes Dynamiques et Signaux}
+\date{\today}
+\titlegraphic{\includegraphics[width=2cm]{../Rapport/images/LogoUnivAngers.png}}
+\titlegraphicii{\includegraphics[width=2cm]{../Rapport/images/Polytech_Angers.png}}
+
+\begin{frame}[plain]
+  \maketitle
+  \footnotesize
+  \tiny
+  \begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.3\textwidth}@{}}
+  Supervisors : & Dr. Nicolas Delanoue \\
+   & Pr. François Chapeau-Blondeau
+  \end{tabular}%
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+\section{Quantum computing principles}
+
+\begin{frame}
+  \frametitle{Classical computing}
+\end{frame}
+
+\section{Exemple of application: cryptography}
+\begin{frame}
+\end{frame}
+
+\end{document}
+

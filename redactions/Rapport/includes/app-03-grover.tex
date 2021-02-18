@@ -114,7 +114,7 @@ On applique $U_w$ puis $U_s$:
 
 $U_w \ket{s} = (I - 2 \ket{w}\bra{w})\ket{s} \nonumber = \ket{s} - 2 \ket{w}\braket{w|s}$
 
-Or, $\braket{w|s}$ est un produit scalaire. $\ket{w}$ est définit plus haut, et $\ket{s}$ est l'état équiprobable obtenu après la porte de hadamard. Le résultat est donc $\braket{w|s} = \frac{1}{\sqrt{2^n}}$. On peut donc réécrire:
+Or, $\braket{w|s}$ est un produit scalaire. $\ket{w}$ est définit plus haut, et $\ket{s}$ est l'état équiprobable obtenu après la porte de Hadamard. Le résultat est donc $\braket{w|s} = \frac{1}{\sqrt{2^n}}$. On peut donc réécrire:
 
 $\ket{u_3} = U_w \ket{s} = \ket{s} - \frac{2}{\sqrt{2^n}}\ket{w}$
 
@@ -130,7 +130,7 @@ On applique ensuite l'opérateur $U_s$ au résultat de $U_w$. On peut voir qu'en
   \ket{u_4}&=\frac{2^n - 4}{2^n}\ket{s} + \frac{2}{\sqrt{2^n}}\ket{w}
 \end{align}
 
-Plus généralement, cette application de $U_w$ puis $U_s$ reviens à appliquer la matrice suivante à l'état d'entrée, dans la base $\{\ket{w}, \ket{s}\}$:
+Plus généralement, cette application de $U_w$ puis $U_s$ revient à appliquer la matrice suivante à l'état d'entrée, dans la base $\{\ket{w}, \ket{s}\}$:
 $
 \begin{bmatrix}
     1 & \frac{2}{\sqrt{2^n}} \\ \frac{-2}{\sqrt{N}} & \frac{2^n - 4}{2^n}
@@ -153,7 +153,7 @@ On applique la porte de Hadamard à l'état initial $\ket{u_0}$:
   \ket{u_1} = \frac{1}{16} \displaystyle\sum_{x=0}^{15} \ket{x}(\ket{0} - \ket{1})
 \end{align}
 
-On obtient donc les deux états formant notre base pour les calculs suivant: $\ket{s} = \ket{u_1}$ et $\ket{w}$.
+On obtient donc les deux états formant notre base pour les calculs suivants: $\ket{s} = \ket{u_1}$ et $\ket{w}$.
 
 \subsubsection*{Etape 2: Opérateur de Grover}
 

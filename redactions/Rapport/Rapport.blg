@@ -1,49 +1,49 @@
-This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2020/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Rapport.aux
 The style file: ieeetr.bst
 Database file #1: biblio.bib
 Warning--empty note in NFS-RSA220
 Warning--empty journal in gidney2019factor
-You've used 23 entries,
+You've used 27 entries,
             1876 wiz_defined-function locations,
-            634 strings with 6992 characters,
-and the built_in function-call counts, 6128 in all, are:
-= -- 619
-> -- 218
+            663 strings with 7835 characters,
+and the built_in function-call counts, 7288 in all, are:
+= -- 723
+> -- 286
 < -- 0
-+ -- 83
-- -- 60
-* -- 384
-:= -- 825
-add.period$ -- 26
-call.type$ -- 23
-change.case$ -- 20
++ -- 107
+- -- 80
+* -- 468
+:= -- 991
+add.period$ -- 30
+call.type$ -- 27
+change.case$ -- 24
 chr.to.int$ -- 0
-cite$ -- 25
-duplicate$ -- 320
-empty$ -- 586
-format.name$ -- 60
-if$ -- 1527
+cite$ -- 29
+duplicate$ -- 388
+empty$ -- 679
+format.name$ -- 80
+if$ -- 1809
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 20
-newline$ -- 75
-num.names$ -- 24
-pop$ -- 89
+int.to.str$ -- 27
+missing$ -- 24
+newline$ -- 87
+num.names$ -- 28
+pop$ -- 102
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 267
+skip$ -- 321
 stack$ -- 0
-substring$ -- 407
-swap$ -- 152
+substring$ -- 448
+swap$ -- 186
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 2
-while$ -- 57
-width$ -- 25
-write$ -- 210
+while$ -- 64
+width$ -- 29
+write$ -- 248
 (There were 2 warnings)

@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+
+\bibitem{Nielsen00}
+M.~A. Nielsen and I.~L. Chuang, {\em Quantum Computation and Quantum
+  Information}.
+\newblock Cambridge: Cambridge University Press, 2000.
+
+\bibitem{Mermin07}
+D.~N. Mermin, {\em Quantum Computer Science: An introduction}.
+\newblock Cambridge: Cambridge University Press, 2007.
+
+\bibitem{Bennett98}
+C.~H. Bennett and P.~W. Shor, ``Quantum information theory,'' {\em IEEE
+  Transactions on Information Theory}, vol.~44, pp.~2724--2742, 1998.
+
+\bibitem{Deutsch92}
+D.~Deutsch and R.~Jozsa, ``Rapid solution of problems by quantum computation,''
+  {\em Proceedings of the Royal Society of London A}, vol.~439, pp.~553--558,
+  1992.
+
+\bibitem{Grover96}
+L.~K. Grover, {\em A Fast Quantum Mechanical Algorithm for Database Search},
+  p.~212–219.
+\newblock STOC '96, New York, NY, USA: Association for Computing Machinery,
+  1996.
+
+\bibitem{Shor97}
+P.~W. Shor, ``Polynomial-time algorithms for prime factorization and discrete
+  logarithms on a quantum computer,'' {\em SIAM Journal on Computing}, vol.~26,
+  pp.~1484--1509, 1997.
+
+\end{thebibliography}
