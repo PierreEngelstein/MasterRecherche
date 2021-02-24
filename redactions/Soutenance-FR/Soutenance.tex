@@ -56,7 +56,7 @@
 \newtheorem{pb}{Problème}
 \newtheorem{rem}{Remarque}
 \newtheorem{ex}{Exemple}
-% \newtheorem{definition}{Définition}
+%\newtheorem{definition}{Définition}
 
 \titlegraphic{}
 
@@ -145,38 +145,39 @@
 %====================================
 
 % 4 minutes
-\section{Les 3 principes de base pour l'informatique quantique}
+\section[3 principes]{Les 3 principes de base pour l'informatique quantique}
 
 % Dire que 3 principes de base: qubit, mesure, dynamique
 
 \begin{frame}
-\frametitle{3 Postulats \cite{Nielsen00, Mermin07, Bennett98}}
+\frametitle{3 Postulats}
 
 \begin{enumerate}
   \item L'état d'un système quantique
-  \item La dyamique d'un systèmes quantique
+  \item La dynamique d'un système quantique
   \item La mesure d'un système quantique
 \end{enumerate}
 
+\medbreak
+Références bibliographiques: \cite{Nielsen00, Mermin07, Bennett98}
 \end{frame}
 
 % 2 minutes
 \begin{frame}
-\frametitle{ I) : \'Etat d'un système quantique}
+\frametitle{ Postulat 1 : \'Etat d'un système quantique}
 \only<1>{
-\begin{definition}
-  Système quantique: vecteur d'état $\ket{\psi}$
+\begin{block}{Définition} % Changer de "definition" à "définition"
+  Système quantique: vecteur d'état $\ket{\psi}$ 
   
-  Dans un espace de Hilbert complexe $\mathcal{H}$.
+  \begin{itemize}
+    \item dans un espace de Hilbert complexe $\mathcal{H}$,
+    \item de norme unité: $||\psi||^2 = 1$,
+    \item avec des coordonnées: \begin{equation} \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i}, \end{equation}
+    \item où $\{\ket{k_i}\}_i$ une base orthonormée de $\mathcal{H}$,
+    \item et les coefficients $c_i \in \mathbb{C}$.
+  \end{itemize}
 
-  De norme unité: $||\psi||^2 = 1$
-\begin{equation}
-    \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
-\end{equation}
-Avec $\{\ket{k_i}\}_i$ une base orthonormée de $\mathcal{H}$, 
-
-Et les coefficients $c_i \in \mathbb{C}$.
-\end{definition}
+\end{block}
 }
 % On représente l'état d'un système quantique au moyen d'un vecteur d'état psi appartenant à un espace de Hilbert complexe. Vecteur d'état étant de norme unité.
 
@@ -184,7 +185,7 @@ Et les coefficients $c_i \in \mathbb{C}$.
 
 \only<2>{
   Système quantique élémentaire: le qubit : $\ket{\psi} = \alpha \ket{0} + \beta \ket{1}$, dans un espace de Hilbert de dimension $2$. 
-  
+
   %Element fondamental de l'informatique quantique.
 \medbreak
 % Définir bien le qubit comme étant l'élément fondamental de l'informatique quantique
@@ -195,13 +196,13 @@ Et les coefficients $c_i \in \mathbb{C}$.
   \end{equation}
   avec
   \begin{equation}
-    \ket{0} \mapsto \begin{bmatrix}
+    \begin{bmatrix}
       1 \\ 0
-    \end{bmatrix}
-    ,
-    \ket{1} \mapsto \begin{bmatrix}
+    \end{bmatrix} \text{coordonnées de} \ket{0} 
+     \text{et}
+    \begin{bmatrix}
       0 \\ 1
-    \end{bmatrix}
+    \end{bmatrix} \text{coordonnées de} \ket{1}.
   \end{equation}
 \end{example}
 }
@@ -209,17 +210,19 @@ Et les coefficients $c_i \in \mathbb{C}$.
 
 % 1 minute
 \begin{frame}
-  \frametitle{Dynamique des systèmes quantiques}
+  \frametitle{Postulat 2: Dynamique des systèmes quantiques}
 
-  \begin{definition}
+  \begin{block}{Définition}
     La dynamique des systèmes quantiques respecte deux principes:
     \begin{list}{}
       \item - Conservation de la norme unité
       \item - Linéarité de l'évolution
     \end{list}
+  \end{block}
 
-    On note $U$ matrice d'évolution du système, telle que:  $U \in \mathcal{H}$, $U^{\dagger}U = UU^{\dagger} = I$
-  \end{definition}
+  \begin{block}{Avec un système de coordonnées}
+    Une évolution du système est donnée par une matrice $U$, telle que: $U^{\dagger}U = UU^{\dagger} = I$
+  \end{block}
 
   %Opérateur unitaire (définition comme dans le rapport), => rédiger ici!!! TODO
   % Vision: état quantique en entrée, opérateur unitaire "boite noire" qui sort un état quantique de sortie. Vision fonction de transfert
@@ -229,45 +232,54 @@ Et les coefficients $c_i \in \mathbb{C}$.
 \begin{frame}
   \frametitle{Portes quantiques}
 
-  \only<1>{
+  \only<2>{
+
+    \begin{block}{Exemple}
   Porte de Hadamard:
   \[
-    H \ket{\psi} = \frac{1}{\sqrt{2}} \begin{bmatrix}
+    H = \frac{1}{\sqrt{2}} \begin{bmatrix}
       1 & 1 \\
       1 & -1 \\
-    \end{bmatrix} \ket{\psi}
+    \end{bmatrix}
   \]
+  \end{block}
 
-  \begin{example}
+  \begin{block}{}
     Soit $\ket{\psi} = \ket{0} = \begin{bmatrix} 1 \\ 0 \\\end{bmatrix}$, alors $H\ket{\psi} = \begin{bmatrix}
       \frac{1}{\sqrt{2}} \\
       \frac{1}{\sqrt{2}} \\
     \end{bmatrix}$
-  \end{example}
+  \end{block}
   }
-  \only<2>{
-    Porte de Pauli X:
+  \only<1>{
+    \begin{block}{Exemple}
+    Porte de Pauli X :
     \[
-      X \ket{\psi} = \begin{bmatrix}
+      X = \begin{bmatrix}
         0 & 1 \\
         1 & 0 \\
-      \end{bmatrix} \ket{\psi}
+      \end{bmatrix}
     \]
-
-    \begin{example}
+  \end{block}
+    \begin{block}{}
       Soit $\ket{\psi} = \ket{0} = \begin{bmatrix} 1 \\ 0 \\\end{bmatrix}$, alors $X\ket{\psi} = \begin{bmatrix}
         0 \\
         1 \\
       \end{bmatrix} = \ket{1}$
-    \end{example}
+    \end{block}
+    \begin{block}{Remarque}
+      La porte de Pauli X est l'équivalent de la porte \texttt{NON}
+    \end{block}
     }
+
+
 
 \end{frame}
 
 
 % 1 minute
 \begin{frame}
-\frametitle{La mesure projective}
+\frametitle{Postulat 3: La mesure projective}
 \begin{definition}
   Quand un système quantique est dans un état $\ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i}$, on va avoir comme probabilité $|c_i|^2$ de mesurer l'état $\ket{k_i}$.
 \end{definition}
@@ -370,21 +382,7 @@ Dans le cas quantique: $\mathcal{O}(\sqrt{N})$
   \label{fig:grover}
 \end{figure}
   }
-  \only<4>{
-    \begin{figure}[htbp]
-      \centering
-      \centerline{
-          \Qcircuit @C=1em @R=.7em {
-            & & & & \mbox{$\mathcal{O}(\sqrt N)$ itérations} \\
-            & \lstick{\ket{0}^n} \barrier[-1.75em]{1}  & \gate{H^{\otimes n}} \barrier[-1.75em]{1} & \multigate{1}{U_w} \barrier[-1.5em]{1} & \multigate{1}{U_s} \barrier[-1.25em]{1} & \meter \\
-            & \lstick{\ket{1}} & \gate{H} & \ghost{U_w} &  \ghost{U_s} & \qw & \\
-            \hspace{3em} \ket{u_{0}} & \hspace{8em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}} \gategroup{2}{4}{3}{5}{.7em}{^\}}
-          }
-        }
-      \caption{Schéma du circuit de l'algorithme de Grover}
-      \label{fig:grover}
-    \end{figure}
-  }
+
 \end{column}
 
 
@@ -473,9 +471,6 @@ Dans le cas quantique: $\mathcal{O}(\sqrt{N})$
 }
 
 
-
-
-
 % \only<4>{
 %   \begin{figure}[h]
 %     \centering
@@ -486,7 +481,24 @@ Dans le cas quantique: $\mathcal{O}(\sqrt{N})$
 % }
 
 \end{column}
+
 \end{columns}
+
+\only<4>{
+  \begin{figure}[htbp]
+    \centering
+    \centerline{
+        \Qcircuit @C=1em @R=.7em {
+          & & & & \mbox{$\mathcal{O}(\sqrt N)$ itérations} \\
+          & \lstick{\ket{0}^n} \barrier[-1.75em]{1}  & \gate{H^{\otimes n}} \barrier[-1.75em]{1} & \multigate{1}{U_w} \barrier[-1.5em]{1} & \multigate{1}{U_s} \barrier[-1.25em]{1} & \meter \\
+          & \lstick{\ket{1}} & \gate{H} & \ghost{U_w} &  \ghost{U_s} & \qw & \\
+          \hspace{3em} \ket{u_{0}} & \hspace{8em} \ket{u_{1}} &  \hspace{10em} \ket{u_{2}} & \hspace{10em} \ket{u_{3}} \gategroup{2}{4}{3}{5}{.7em}{^\}}
+        }
+      }
+    \caption{Schéma du circuit de l'algorithme de Grover}
+    \label{fig:grover}
+  \end{figure}
+}
 \end{frame}
 
 %====================================
@@ -520,12 +532,24 @@ Problème de factorisation de grands entiers en nombres premiers: résoudre $N =
   \frametitle{Travail à venir}
   % -> Par ex DJ extension à autres catégories
 
+  \begin{enumerate}
+    \item \'Etendre Deutsch-Jozsa à d'autres problèmes (exemple de Bernstein-Vazirani)
+    \item Optimalité de la décomposition en portes élémentaires \texttt{CNOT}
+  \end{enumerate}
+
 \end{frame}
 
 % 2 minutes
 \section{Conclusion}
 \begin{frame}
 \frametitle{Conclusion}
+
+Domaine de recherche actif, en plein essort.
+
+\medbreak
+
+De nombreuses entreprises se positionnent dessus: IBM, Microsoft, Google, Intel, Atos.
+
 % -> Domaine très riche en plein essort, plein de boites se positionnent dessus, plein de labos
 \end{frame}
 
