@@ -23,7 +23,7 @@ for i in range(0, nb_iter):
     # print(x)
 print(x)
 # print(g)
-1/0
+# 1/0
 
 vect_in = np.matrix([[0], [1]])
 grover = np.matrix([[1, 2/math.sqrt(N)], [-2/math.sqrt(N), (N-4)/N]])
@@ -50,7 +50,7 @@ plt.plot(range(0, nb_iter), values_s, 'r--', label="|s>")
 plt.plot(range(0, nb_iter), values_w, 'b--', label="|w>") 
 plt.plot(range(0, nb_iter), values_tot, 'g--', label="a²+b²")
 
-plt.scatter(values_s, values_w)
+# plt.scatter(values_s, values_w)
 
 plt.legend(loc="lower right")
 plt.show()

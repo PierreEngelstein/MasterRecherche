@@ -231,6 +231,14 @@ class TestIFunctions(unittest.TestCase):
         self.assertEqual(res[0], Interval(6, 7))
         self.assertTrue(math.isnan(res[1].inf))
         self.assertTrue(math.isnan(res[1].sup))
+
+        res = inter(Interval(6, 9), Interval(4, float("nan")))
+        self.assertTrue(math.isnan(res.inf))
+        self.assertTrue(math.isnan(res.sup))
+
+        res = inter(Interval(float("nan"), 9), Interval(4, 10))
+        self.assertTrue(math.isnan(res.inf))
+        self.assertTrue(math.isnan(res.sup))
         print("[iFUNCTIONS] inter OK")
 
     def test_size(self):

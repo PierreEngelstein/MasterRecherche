@@ -21,7 +21,7 @@
 
 - Autres:
   - https://www.nature.com/articles/s41534-017-0017-3
-
+  - https://arxiv.org/pdf/quant-ph/9607024.pdf => estimation de la médianne (a voir, pour algo détermination fonction constante ou non)
 
 Pour le rapport, rajouter deutsch (en exemple simple pour commencer, poser les bases.)
 
@@ -44,6 +44,7 @@ Sources quantum programming:
     - http://tph.tuwien.ac.at/~oemer/doc/structquprog.pdf
     	- From page 113: QCL quick reference
 
+http://dagstuhl.sunsite.rwth-aachen.de/volltexte/2019/10329/pdf/dagrep_v008_i009_p112_18381.pdf
 
 
 Idée constance fonction:
@@ -51,3 +52,5 @@ Idée constance fonction:
 
 
 https://www.wolframalpha.com/input/?i=TensorProduct%5B%7B%7B1%2C+0%7D%2C+%7B0%2C+-1%7D%7D%2C%7B%7B1%2C+0%7D%2C+%7B0%2C+-1%7D%7D%2C%7B%7B1%2C+0%7D%2C+%7B0%2C+-1%7D%7D+%5D
+
+https://algassert.com/quirk#circuit=%7B%22cols%22%3A%5B%5B%22QFT3%22%5D%2C%5B%22inputA3%22%2C1%2C1%2C%22%2B%3DA3%22%5D%2C%5B%22~39sb%22%5D%2C%5B%5D%2C%5B%5D%2C%5B%22X%22%2C%22%E2%80%A2%22%5D%2C%5B1%2C%22H%22%2C%22H%22%5D%2C%5B%22X%22%2C%22Z%22%2C%22%E2%80%A2%22%5D%2C%5B%22inputA3%22%2C1%2C1%2C%22-%3DA3%22%5D%2C%5B%22QFT%E2%80%A03%22%5D%5D%2C%22gates%22%3A%5B%7B%22id%22%3A%22~39sb%22%2C%22matrix%22%3A%22%7B%7B%C2%BD%2C0%2C%C2%BD%2C0%2C0%2C%C2%BD%2C0%2C-%C2%BD%7D%2C%7B0%2C%C2%BD%2C0%2C%C2%BD%2C%C2%BD%2C0%2C-%C2%BD%2C0%7D%2C%7B0%2C%C2%BD%2C0%2C-%C2%BD%2C%C2%BD%2C0%2C%C2%BD%2C0%7D%2C%7B%C2%BD%2C0%2C-%C2%BD%2C0%2C0%2C%C2%BD%2C0%2C%C2%BD%7D%2C%7B%C2%BD%2C0%2C%C2%BD%2C0%2C0%2C-%C2%BD%2C0%2C%C2%BD%7D%2C%7B0%2C%C2%BD%2C0%2C%C2%BD%2C-%C2%BD%2C0%2C%C2%BD%2C0%7D%2C%7B0%2C%C2%BD%2C0%2C-%C2%BD%2C-%C2%BD%2C0%2C-%C2%BD%2C0%7D%2C%7B%C2%BD%2C0%2C-%C2%BD%2C0%2C0%2C-%C2%BD%2C0%2C-%C2%BD%7D%7D%22%7D%5D%7D

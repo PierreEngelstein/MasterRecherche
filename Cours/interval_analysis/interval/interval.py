@@ -29,8 +29,10 @@ class Interval:
     def __add__(self, other):
         if isinstance(other, Interval):
             return Interval(self.inf + other.inf, self.sup + other.sup)
-        else:  # this is an number
+        elif isinstance(other, (int, float, complex)):  # this is an number
             return Interval(self.inf + other, self.sup + other)
+        else:
+            return Interval(float("nan"), float("nan"))
 
     # reverse addition (other + self)
     def __radd__(self, other):
@@ -82,10 +84,12 @@ class Interval:
                     max = i
             
             return Interval(min, max)
-        else:  # this is an number
+        elif isinstance(other, (int, float, complex)):  # this is an number
             if other < 0:
                 return Interval(self._mul_inf(self.sup, other), self._mul_inf(self.inf, other))
             return Interval(self._mul_inf(self.inf, other), self._mul_inf(self.sup, other))
+        else:
+            return Interval(float("nan"), float("nan"))
 
     # reverse multiplication (other * self)
     def __rmul__(self, other):
@@ -95,7 +99,7 @@ class Interval:
     def __rtruediv__(self, other):
         if isinstance(other, Interval):
             return other / self
-        else:  # this is an number
+        elif isinstance(other, (int, float, complex)):  # this is an number
             if(self.inf != 0 and self.sup != 0 and (0 < self.inf or 0 > self.sup)):
                 return other * Interval(1/self.sup, 1/self.inf)
             if(self.inf != 0 and self.sup != 0 and (0 > self.inf and 0 < self.sup)):
@@ -104,7 +108,8 @@ class Interval:
                 return Interval(other/other.sup, float("+inf"))
             if(self.inf != 0 and self.sup == 0):
                 return Interval(float("-inf"), other/other.inf)
-            return Interval()
+        else:
+            return Interval(float("nan"), float("nan"))
 
     # division for python 3 (self / other)
     def __truediv__(self, other):
@@ -117,11 +122,14 @@ class Interval:
                 return self * Interval(1/other.sup, float("+inf"))
             if(other.inf != 0 and other.sup == 0):
                 return self * Interval(float("-inf"), 1/other.inf)
-        else:
+            return Interval(float("nan"), float("nan"))
+        elif isinstance(other, (int, float, complex)):
             if other == 0:
                 return Interval(float("-inf"), float("+inf"))
             else:
                 return Interval(self.inf/other, self.sup/other)
+        else:
+            return Interval(float("nan"), float("nan"))
 
     # reverse division for python 2 (other / self)
     def __rdiv__(self, other):

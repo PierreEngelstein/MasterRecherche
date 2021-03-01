@@ -1,13 +1,59 @@
-Rapport:
-- Rajouter les explications sur la programmation (q# microsoft / python qiskit IBM)
-- Sphères de bloch:
-  - 1 qubit peut être représenté pratiquement par un point sur une sphère (de bloch). Quand plusieurs qubits, espace trop grand pour représenter
-  - rajouter symbole du produit tensoriel entre chaque qubit
-  - aligner les unes en dessous des autres + deuxième représentation à côté
-  - DJ: insister que les qubits sont séparables (écrivable en tant que produit tensoriel de chaque composants)
-  	Expliquer quand c'est intriqué (non séparable en produit tensoriel)
-  - Taille des boules: probabilité des états (introduire avec 1 qubit après H)
+10 pages:
+  - Elements de base
+    - 3 secteurs structurants: Dire qu'on présente des postulats qui ne sont pas expliqués, ont des interactions entre chaque, mais sont les 3 éléments de base
+      1- L'état quantique: vecteur d'état, norme unité => Qubit = système quantique le plus simple (qui est à 2 dimensions)
+        -> on représente par un vecteur d'état, norme 1, états de base orthonormés et combinaisons linéaires de ces deux normés. Accès à tout les états intermédiaires entre les états de base
+        -> Modules carrés 
+        -> 2 états de base, plus d'autres qui sont une superposition linéaire des états de base |0> et |1>
+      2- Mesure projective
+        -> On constate que ça se passe comme ... (injustifiable à conditions préalables). Vecteur d'état, référé à une base posé par l'appareil de mesure. La mesure est une projection du vecteur d'état sur un des vecteurs de base, aléatoirement. On ne peut en dire que la probabilité de projection (module au carré)
+      3- L'évolution de l'état: la dynamique. Opérateur unitaire sur l'espace vectoriel. Base orthonormée, espace vectoriels.
+        -> évolution au moyen d'un opérateur unitaire (conservation de la norme). (passer d'un état valide à une état valide). Evolution necessairement linéaire.
+        -> Postulat que l'évolution est necessairement linéaire (en plus que unitaire). Pas d'explications mais plutôt un postulat de base.
 
+    - Superposition d'états de base, qubit, ...
+    - Portes quantiques (boites, opération unitaire, entrée / sortie, bloc fonctionnel)
+      -> parallèle avec informatique classique / signaux systèmes / information
+
+    - Dire que les règles du jeu permettent d'améliorer les capacité de traitement en parallèle
+      -> Transition vers la suite ?
+
+  - Deutsch-Jozsa+Bernstein/Vazirani: laisser la figure 3.1 plus explications =>
+    - Démarre avec entrées superposées: on peut traiter toutes les entrées possibles à la fois
+    - Evaluation parallèle mtérialisée par opérateurs unitaires
+    - Sortie: superposition de toutes les réponses. Mais on a pas accès à la mesure. Ici pas important (cf. suite)
+    - Traitement unitaire pour décider du résultat (réponse binaire oui/non => pas besoin du détail de toutes les sorties, seulement décider entre deux cas)
+      -> pas de vocation à voir tout l'état
+    - Evoquer à Bernstein/Vazirani: évaluation en parallèle d'une fonction => enrichit classes de problèmes (pas plus qu'une ligne ou deux de texte)
+
+  - Grover
+    - Indiquer nombre optimal d'itérations
+    - Ciblage de la requete en sqrt(n) a chaque iteration
+    - Sur toutes les requetes en itération, on arrive à se rapprocher de la solution pour focaliser la requete suivante et encore et encore mais pas trop (sqrt(n)).
+
+  - Apport du quantique pour l'information, informatique, traitement de l'information. Synthèse pédagogique qui montre les principes
+    - 3 algorithmes: DJ/Vazirani, Grover, Shor
+      -> Sur Shor, evoquer cassage RSA et crypto quantique / post-quantique (mais rapidement, en application concrètes (IDQ=ID Quantique))
+    -> Poser le problème de manière claire et synthétique. Efforts de formulation: en peu de mots faire passer toutes les idées importantes de façon prévise. Faire voir que le quantique apporte des performances inatteignables en classique. (traitement parallèle, gain en complexité algorithmique)
+       -> Toutes les entrées possibles => toutes les réponses possibles => traitement pour choisir la réponse correcte.
+
+  - Sujets d'ouverture:
+    - construction des circuits: optimal ou pas de décomposer en CNOT ?
+    - Spécifications: inventer un algorithme permettant de déterminer dans quel classe on est ?
+      -> qu'est ce qu'on attend de l'algorithme ?
+      -> Quelles contraintes sur la matrice et sur la mesure pour statuer à coup sur ?
+      -> Peut on l'algébriser ? => caractérisation systématique des problèmes pouvant profiter d'une amélioration quantique ?
+      -> Statuer a coup sur pour le pb de Deutsch Jozsa, en faisant différement de leur façon ? => écrire les contraintes algébriques du problème sur la matrice U ?
+    - Quelles fonctions booléennes dichotomiques peut on appliquer à la façon Deutsch-Jozsa ? (autre que constante - équilibrée)
+    - Ecrire sous forme de problèmes d'optimisation ? Savoir si l'algorithme est optimal ? (machine commerciale d-wave)
+    - Preuves de programmes ?
+
+  - Biblio (latex: bibtex): extraire les articles qui font du sens. Sur les 3 algos => Les 1eres publications/propositions (avec leur dates) et en complément références pédagogiques plus récentes qui synthétise les différents aspects.
+    -1: References originales + dates
+    -2: References pedagogiques / synthétiques "Ces principes sont exposés dans ... et ... et ..., on va les présenter ensuite)
+    -3: Avancées ouvertes 
+    -4: Status des mises en oeuvres expérimentales (ne pas faire de pub pour Microsoft ou IBM, mais référencer => refs académiques sur les travaux / produits des constructeurs) "Microsoft [ref] met en place ..., utilisé par ... [x] dans leurs travaux".
+    -5: Questions ouvertes: (ex pour shor: difficulté d'implémentation pratique) + dates récentes (pb encore actif / ouvert)
 
 Soutenance
 - FR:

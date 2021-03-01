@@ -28,4 +28,4 @@ def c_sqr(a, b):
     """ :param a (Interval)
         :param b (Interval)
     """
-    return inter(a, b*b), inter(b, i_sqrt(a))
+    return inter(a, i_sqr(b)), inter(b, union(i_sqrt(a), -i_sqrt(a)))

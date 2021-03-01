@@ -1,4 +1,5 @@
 from math import pow, exp, sqrt, pi, sin, cos, isnan
+import math
 from interval.interval import Interval
 import random as rd
 
@@ -17,8 +18,26 @@ def normalize_i_angle(angle):
         :param angle: the angle we want to normalize (an interval)
         :return : normalized angle (Interval)
     """
-    # TODO
-    return angle
+    if isinstance(angle, Interval):
+        if math.isnan(angle.inf) or math.isnan(angle.sup):
+            return Interval(float('nan'), float('nan'))
+        if angle.sup < 0 and angle.inf < 0:
+            diff = abs(angle.inf) - abs(angle.sup)
+        else:
+            diff = abs(angle.sup - angle.inf)
+
+        if diff >= 2*pi:
+            return Interval(0, 2*pi)
+        elif diff != diff % (2*pi):
+            print(Interval(angle.inf % (2*pi), angle.sup % (2*pi)))
+            return angle
+        else:
+            if angle.inf < 0:
+                return Interval(angle.inf + 2*pi, angle.sup + 2*pi)
+            if angle.inf > 0:
+                return angle
+        return angle
+    return None
 
 
 def i_cos(angle):
@@ -55,7 +74,9 @@ def i_sin(angle):
         :return : interval sin value (float)
     """
     if isinstance(angle, Interval):
-        return i_cos(pi/2 - angle)
+        angle = angle - pi/2
+        angle = normalize_i_angle(angle)
+        return i_cos(angle)
     else:
         print(f"i_sin is not defined for {type(angle)}")
         return None
@@ -148,6 +169,8 @@ def inter(i1, i2):
         :return the intersection of i1 and i2 (Box/Interval)
     """
     if isinstance(i1, Interval) and isinstance(i2, Interval):
+        if((math.isnan(i2.inf) or math.isnan(i2.sup)) or (math.isnan(i1.inf) or math.isnan(i1.sup))):
+            return Interval(float("nan"), float("nan"))
         if i1.sup < i2.inf or i2.sup < i1.inf:
             return Interval(float("nan"), float("nan"))
         return Interval(max(i1.inf, i2.inf), min(i1.sup, i2.sup))
@@ -182,8 +205,9 @@ def inter_angle(a1, a2):
         :return the intersection of a1 and a2 (Box/Interval)
     """
     if isinstance(a1, Interval) and isinstance(a2, Interval):
-        # TODO
-        return Interval()
+        angle1 = normalize_i_angle(a1)
+        angle2 = normalize_i_angle(a2)
+        return normalize_i_angle(inter(angle1, angle2))
     else:
         print(f"inter_angle  is not defined between {a1.__class__.__name__} and {a2.__class__.__name__}")
         return None
