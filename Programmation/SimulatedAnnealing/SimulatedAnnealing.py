@@ -5,13 +5,13 @@ Implementation of the simulated annealing algorithm.
 import numpy as np
 import matplotlib.pyplot as plt
 from random import uniform
-from math import exp, cos
+from math import exp, cos, sin
 
-interval = (-10, 10)
+interval = (-50, 100)
 
 # Function to optimize
 def f(x):
-    return np.abs(x)
+    return (x**2)*sin(x**3 * cos(x**2))
 
 def clip(x):
     a, b = interval
@@ -24,6 +24,7 @@ def random_start():
 def cost_function(x):
     return f(x)
 
+# Find a random point around x
 def random_neighbour(x, fraction=1):
     amplitude = (max(interval) - min(interval)) * fraction / 10
     delta = (-amplitude/2) + amplitude * np.random.random_sample()
@@ -35,9 +36,19 @@ def acceptance_probability(cost, new_cost, temperature):
     else:
         return np.exp(- (new_cost - cost) / temperature)
 
+# Defines the criteria of acceptance of the new state / cost
+def MetropolisCriteria(delta, temperature):
+    if delta < 0:
+        return True
+    if(np.random.random() < exp(-delta / temperature)):
+        return True
+    return False
+
+# Compute temperature of the system (cooling linearly or by step)
 def temperature(fraction):
     return max(0.01, min(1, 1 - fraction))
 
+# Annealing process
 def annealing(maxsteps = 1000):
     state = random_start()
     print("initial state: " + str(state))
@@ -48,7 +59,8 @@ def annealing(maxsteps = 1000):
         T = temperature(fraction)
         new_state = random_neighbour(state, fraction)
         new_cost = cost_function(new_state)
-        if(acceptance_probability(cost, new_cost, T) > np.random.random()):
+
+        if(MetropolisCriteria(new_cost - cost, T)):
             state, cost = new_state, new_cost
             states.append(state)
             costs.append(cost)
@@ -59,9 +71,16 @@ state, cost, states, costs = annealing(maxsteps=1000)
 
 print(state, cost)
 
+
 plt.figure()
-plt.subplot(121)
+plt.subplot(131)
 plt.plot(states)
-plt.subplot(122)
+plt.subplot(132)
 plt.plot(costs)
+plt.subplot(133)
+# Plot the minimal value found
+xs = np.arange(min(interval), max(interval), 0.01)
+ys = (list(map(f, xs)))
+plt.plot(xs, ys)
+plt.axvline(x=state, color='r')
 plt.show()
