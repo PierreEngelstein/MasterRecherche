@@ -1,0 +1,20 @@
+
+--- Circuit pour x = (a & b & c & ...)
+
+|a>--------H--■-|--
+|b>--------H--■-|--
+|ctrl_0>------X-|----■--|
+|c>--------H----|----■--|
+|ctrl_1>--------|----X--|
+----------------|-------|
+----------------1-------2
+
+à 1: |ctrl_0> = |a> & |b> superposé
+à 2: |ctrl_1> = |c> & |ctrl_0> = |a> & |b> & |c> superposé
+
+
+
+========================
+https://people.maths.bris.ac.uk/~csxam/teaching/qc2020/ => cours entier sur info quantique
+http://theory.caltech.edu/~preskill/ph219/
+https://cds.cern.ch/record/612920/files/0304099.pdf

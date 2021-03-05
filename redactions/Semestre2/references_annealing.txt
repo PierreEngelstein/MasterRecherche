@@ -1,0 +1,47 @@
+- Algos d'optimisation:
+  - Annealing (simulatded annealing / quantum annealing)
+  - Parallel tempering (to check)
+  - Population annealing (to check)
+  - isoenergetic cluster updates (to check)
+
+- Quantum annealing:
+  -> Un autre modèle de calcul quantique, dont l'informatique quantique adiabatique fait partie. L'idée est d'optimiser un problème en faisant une diminution de l'énergie du système. C'est un algo de recherche global, ne permettant à priori pas d'améliorer les résultats à partir de tours précédents (https://arxiv.org/pdf/1606.06833.pdf).
+  -> La difficulté a l'air de provenir d'arriver à formuler un problème sous forme de modèle d'Ising ou QUBO, après ça, c'est une "boite noire" (?)
+  -> Que veut dire "changer l'Hamiltonien du système" ? Comment peut-on effectuer, en pratique, cette évolution ?
+  -> D'pù la question: que veut dire appliquer un Hamiltonien au système, hormis connaître son énergie ?
+  -> Dans H(t) = A(t)H_0 + B(t)H_1, regarder à choisir d'autres Hamiltonien H_0 et H_1 que le sigmax et le modèle d'Ising => modèles non stochastiques (?)
+  -> Pas de consensus sur l'accélération qu'apporte le recuit quantique: pas sûr que ce soit pertinent (accélération constante dans certains cas, qui peut être dépassée avec un matériel classique plus puissant). Cf algos de Monte Carlo (?)
+  -> Regarder Simulated Quantum Annealing (SQA) + path-integral Monte Carlo ***
+
+  - Wikipedia articles:
+    - "Simulated Annealing" https://en.wikipedia.org/wiki/Simulated_annealing (en & fr)
+    - "Quantum Annealing" https://en.wikipedia.org/wiki/Quantum_annealing (en)
+  - D-Wave Documentation:
+    - "Technical Description of the QPU" https://docs.dwavesys.com/docs/latest/c_qpu_0.html
+  - Youtube Videos
+    - Quantum ML:
+      - "Classical Ising Model" https://www.youtube.com/watch?v=Wy9YoEYv-fA
+      - "Transverse Field Ising Model" https://www.youtube.com/watch?v=egli0tC1tRo
+      - "Adiabatic Quantum Computing" https://www.youtube.com/watch?v=csgEVurrBpU
+      - "Quantum Annealing" https://www.youtube.com/watch?v=7btX7OuR2QM
+    - "Webinar: Quantum Computing by a Quantum Annealer" https://www.youtube.com/watch?v=NwoD82hDImM
+    - D-Wave:
+      - "What is Quantum Annealing" https://www.youtube.com/watch?v=zvfkXjzzYOo
+      - "How The Quantum Annealing Process Works" https://www.youtube.com/watch?v=UV_RlCAc5Zs
+      - "Physics of Quantum Annealing - Hamiltonian & Eigenspectrum" https://www.youtube.com/watch?v=tnikftltqE0
+      - "Quantum Computing Tutorial Part 1: Quantum annealing, QUBOs and more" https://www.youtube.com/watch?v=teraaPiaG8s
+  - Articles:
+    - https://arxiv.org/pdf/1404.2465.pdf : description of what is quantum annealing. No maths. Examples of applications.
+    - "Quantum annealing of the Traveling Salesman Problem" https://arxiv.org/pdf/cond-mat/0402330.pdf
+    - "Quantum computing by Adiabatic Evolution" https://arxiv.org/pdf/quant-ph/0001106.pdf
+    - "Mathematical Foundation of Quantum Annealing" https://arxiv.org/pdf/0806.1859.pdf
+    - "Perspectives of quantum annealing: Methods and implementations" https://arxiv.org/pdf/1903.06559.pdf ***
+    - "Why and when pausing is beneficial in quantum annealing" https://arxiv.org/pdf/2005.01888.pdf
+    - "Modernizing Quantum Annealing using Local Searches" https://arxiv.org/pdf/1606.06833.pdf
+    - "A Quantum Adiabatic Evolution Algorithm Applied to Random Instances of an NP-Complete Problem" https://arxiv.org/pdf/quant-ph/0104129.pdf
+    - "The Ising model: teaching an old problem new tricks" https://dwavesys.com/sites/default/files/weightedmaxsat_v2.pdf ***
+    - "Simulated Quantum Annealing Can Be Exponentially Faster than Classical Simulated Annealing" https://arxiv.org/pdf/1601.03030.pdf
+  - Presentations:
+    - "Overview of adiabatic quantum computation" https://www.cs.umd.edu/~amchilds/talks/cifar13-tutorial.pdf
+    - https://www.isi.edu/sites/default/files/top_level/events/aqc2014/day2-talk5-Troyer.pdf
+    - https://www.dwavesys.com/sites/default/files/mwj_dwave_qubits2018.pdf
