@@ -1,6 +1,5 @@
-
 from typing import List
-from math import cos, sqrt, exp
+from math import sqrt, exp
 import numpy as np
 import random as rn
 import matplotlib.pyplot as plt
