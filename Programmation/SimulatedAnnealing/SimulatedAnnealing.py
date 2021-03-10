@@ -11,7 +11,7 @@ interval = (-10, 10)
 
 # Function to optimize
 def f(x):
-    return sin(x)
+    return log((exp(x)))
 
 def clip(x):
     a, b = interval
@@ -65,7 +65,7 @@ def annealing(maxsteps = 1000):
             state, cost = new_state, new_cost
             states.append(state)
             costs.append(cost)
-    
+
     return state, cost_function(state), states, costs
 
 
@@ -97,15 +97,24 @@ maxfreq = n.max()
 plt.show()
 
 
-# plt.figure()
-# plt.subplot(131)
-# plt.plot(states)
-# plt.subplot(132)
-# plt.plot(costs)
-# plt.subplot(133)
-# # Plot the minimal value found
-# xs = np.arange(min(interval), max(interval), 0.01)
-# ys = (list(map(f, xs)))
-# plt.plot(xs, ys)
-# plt.axvline(x=state, color='r')
-# plt.show()
+# import dwave_networkx
+# import networkx
+# import dimod
+# g = networkx.Graph()
+# g.add_weighted_edges_from({(0, 1, .1), (0, 2, .5), (0, 3, .1), (1, 2, .1),(1, 3, .5), (2, 3, .1)})
+#
+# dwave_networkx.algorithms.traveling_salesperson(g, dimod.ExactSolver(), start=0)
+
+#
+# # plt.figure()
+# # plt.subplot(131)
+# # plt.plot(states)
+# # plt.subplot(132)
+# # plt.plot(costs)
+# # plt.subplot(133)
+# # # Plot the minimal value found
+# # xs = np.arange(min(interval), max(interval), 0.01)
+# # ys = (list(map(f, xs)))
+# # plt.plot(xs, ys)
+# # plt.axvline(x=state, color='r')
+# # plt.show()

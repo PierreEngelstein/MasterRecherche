@@ -1,5 +1,5 @@
 
---- Circuit pour x = (a & b & c & ...)
+--- Circuit pour x = (a & b & c)
 
 |a>--------H--■-|--
 |b>--------H--■-|--
@@ -12,9 +12,9 @@
 à 1: |ctrl_0> = |a> & |b> superposé
 à 2: |ctrl_1> = |c> & |ctrl_0> = |a> & |b> & |c> superposé
 
-
-
 ========================
 https://people.maths.bris.ac.uk/~csxam/teaching/qc2020/ => cours entier sur info quantique
 http://theory.caltech.edu/~preskill/ph219/
 https://cds.cern.ch/record/612920/files/0304099.pdf
+http://www.cecs.uci.edu/~papers/compendium94-03/papers/2002/dac02/pdffiles/28_4.pdf
+https://arxiv.org/pdf/2003.14122.pdf

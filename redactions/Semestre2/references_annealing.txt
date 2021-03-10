@@ -12,12 +12,15 @@
   -> Dans H(t) = A(t)H_0 + B(t)H_1, regarder à choisir d'autres Hamiltonien H_0 et H_1 que le sigmax et le modèle d'Ising => modèles non stochastiques (?)
   -> Pas de consensus sur l'accélération qu'apporte le recuit quantique: pas sûr que ce soit pertinent (accélération constante dans certains cas, qui peut être dépassée avec un matériel classique plus puissant). Cf algos de Monte Carlo (?)
   -> Regarder Simulated Quantum Annealing (SQA) + path-integral Monte Carlo ***
+  -> Exponentielles de matrices et formule de Baker-Campbell-Hausdorff
 
   - Wikipedia articles:
     - "Simulated Annealing" https://en.wikipedia.org/wiki/Simulated_annealing (en & fr)
     - "Quantum Annealing" https://en.wikipedia.org/wiki/Quantum_annealing (en)
   - D-Wave Documentation:
     - "Technical Description of the QPU" https://docs.dwavesys.com/docs/latest/c_qpu_0.html
+  - Courses:
+    - https://people.eecs.berkeley.edu/~vazirani/f19quantum.html ; https://people.eecs.berkeley.edu/~vazirani/pubs/
   - Youtube Videos
     - Quantum ML:
       - "Classical Ising Model" https://www.youtube.com/watch?v=Wy9YoEYv-fA
@@ -41,7 +44,29 @@
     - "A Quantum Adiabatic Evolution Algorithm Applied to Random Instances of an NP-Complete Problem" https://arxiv.org/pdf/quant-ph/0104129.pdf
     - "The Ising model: teaching an old problem new tricks" https://dwavesys.com/sites/default/files/weightedmaxsat_v2.pdf ***
     - "Simulated Quantum Annealing Can Be Exponentially Faster than Classical Simulated Annealing" https://arxiv.org/pdf/1601.03030.pdf
+    - "Message-passing algorithm of quantum annealing with nonstoquastic Hamiltonian" https://arxiv.org/pdf/1901.06901.pdf
+    - "LIMITS ON QUANTUM ADIABATIC OPTIMIZATION" https://people.eecs.berkeley.edu/~vazirani/pubs/qao.pdf
+    - "How Powerful is Adiabatic Quantum Computation ?" https://arxiv.org/pdf/quant-ph/0206003v1.pdf ***
+    - "Ising formulations of many NP problems" https://arxiv.org/pdf/1302.5843.pdf ***
+    - "A QUBO Model for the Traveling Salesman Problem with Time Windows" https://www.mdpi.com/1999-4893/12/11/224 ***
   - Presentations:
     - "Overview of adiabatic quantum computation" https://www.cs.umd.edu/~amchilds/talks/cifar13-tutorial.pdf
     - https://www.isi.edu/sites/default/files/top_level/events/aqc2014/day2-talk5-Troyer.pdf
     - https://www.dwavesys.com/sites/default/files/mwj_dwave_qubits2018.pdf
+    - https://arxiv.org/pdf/1811.11538.pdf
+
+A FAIRE
+
+TSP => mettre sous forme de Ising / QUBO (qubo préférable pour matcher avec D-Wave)
+   -> Les limitations de D-Wave (peut-on évaluer n'importe quelle fonction booléenne en Ising ?)
+   -> En fait, le problème principal n'est pas le recuit quantique. Le vrai problème est la modélisation (méthodologique) du problème sous forme QUBO / Ising. CF articles suivants:
+      - https://arxiv.org/pdf/1811.07403.pdf
+      - https://medium.com/toshiba-sbm/solving-traveling-salesman-problem-with-sbm-simulated-bifurcation-machine-89740c83ed37
+      - 
+
+Creuser article de 2003 table vérité -> circuit quantique.
+  -> Peut-on évaluer n'importe quelle fonction booléenne ?
+    - Oui: méthode de Younes et Miller, 2003. Permet d'implémenter les portes élémentaires (AND, OR, NOT, XOR, ...)
+    On peut aussi optimiser le circuit entier si on veut, en utilisant la table de vérité, suivant la même méthode.
+    - La question maintenant: peut on systématiquement passer de la version étendue, non optimale, à la version optimale, sans évaluer la table de vérité ?
+  -> implémenter en {-1, 1} au lieu de {0, 1} => A faire

@@ -29,6 +29,21 @@ class Node3D(Node):
     def __str__(self) -> str:
         return "[x: " + str(self.x) + ", y: " + str(self.y) + + ", z: " + str(self.z) +  "]"
 
+class Node6D(Node):
+    def __init__(self, x, y, z, a, b, c) -> None:
+        super().__init__(x, y)
+        self.z = z
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def distance(self, other) -> float:
+        # print("dist 6d")
+        return sqrt((self.x - other.x)**2 + (self.y - other.y)**2 + + (self.z - other.z)**2 + (self.a - other.a)**2 + (self.b - other.b)**2 + (self.c - other.c)**2)
+    
+    def __str__(self) -> str:
+        return "[x: " + str(self.x) + ", y: " + str(self.y) + ", z: " + str(self.z) + ", a: " + str(self.a) + ", b: " + str(self.b) + ", c: " + str(self.c) +  "]"
+
 class TSP(object):
     '''
         Handles the Travelling Salesman Problem using Simulated Annealing
@@ -130,16 +145,32 @@ class TSP(object):
         y = []
         if type(solution[0]) == Node3D:
             z = []
+        if type(solution[0]) == Node6D:
+            z = []
+            a = []
+            b = []
+            c = []
         for i in solution:
             x.append(i.x)
             y.append(i.y)
             if type(solution[0]) == Node3D:
                 z.append(i.z)
+            if type(solution[0] == Node6D):
+                z.append(i.z)
+                a.append(i.a)
+                b.append(i.b)
+                c.append(i.c)
         x.append(solution[0].x)
         y.append(solution[0].y)
         if type(solution[0]) == Node3D:
             z.append(solution[0].z)
             return x, y, z
+        if type(solution[0]) == Node6D:
+            z.append(solution[0].z)
+            a.append(solution[0].a)
+            b.append(solution[0].b)
+            c.append(solution[0].c)
+            return x, y, z, a, b, c
         return x, y
 
 
@@ -181,21 +212,38 @@ def simulate(type: str, nb_nodes: int, range_start: float, range_stop: float) ->
             ax.scatter(x, y, z, c='black')
             ax.plot(x, y, z)
             plt.pause(0.001)
+    elif(type == '6d'):
+        for i in range(0, nb_nodes):
+            new_node = Node6D(rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop))
+            list.append(new_node)
+        # ax = fig.add_subplot(111, projection='3d')
+        my_tsp = TSP(list)
+        start = time.time()
+        my_tsp.anneal()
+        delta = time.time() - start
+        print("anneal took " + "{:.4f}".format(delta) + " seconds")
+        # for i in range(0, len(my_tsp.states)):
+        #     x, y, z = my_tsp.splitAxis(my_tsp.states[i])
+        #     ax.clear()
+        #     ax.title.set_text('Cost: ' + str(my_tsp.costs[i]) + ' ; Temperature: ' + str(my_tsp.temps[i]) + "; Iteration " + str(i+1) + "/" + str(len(my_tsp.states)))
+        #     ax.scatter(x, y, z, c='black')
+        #     ax.plot(x, y, z)
+        #     plt.pause(0.001)
     else:
         print("Unkown type, must be '2d' or '3d'")
     plt.pause(5)
 
 # Single pass of simulation
-simulate('3d', 50, -30, 30)
+simulate('6d', 250, -30, 30)
 
 # Multiple passes: histogram of best solution
 nb_passes = 1000
-nb_nodes = 40
+nb_nodes = 50
 range_start = -100
 range_stop = 100
 list: List[Node] = []
 for i in range(0, nb_nodes):
-    new_node = Node3D(rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop))
+    new_node = Node6D(rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop), rn.randrange(range_start, range_stop))
     list.append(new_node)
 costs: List[float] = []
 for i in range(0, nb_passes):
