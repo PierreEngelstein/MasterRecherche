@@ -11,22 +11,28 @@ The second implementation is an optimized one, using the method presented by You
 '''
 from qiskit import *
 from qiskit.circuit.library.standard_gates.x import XGate
-
+from qiskit.circuit.library.standard_gates.z import ZGate
 
 def AND():
     _circ = QuantumCircuit(3, name="AND")
     _circ.ccx(0, 1, 2)
+    # _circ.append(ZGate().control(2), [0, 1, 2])
     return _circ.to_instruction()
 
 def AND_NOT():
     ''' r = a && !b '''
     _circ = QuantumCircuit(3, name="AND_NOT")
     _circ.ccx(0, 1, 2)
+    # _circ.append(ZGate().control(2), [0, 1, 2])
     _circ.cx(0, 2)
+    # _circ.append(ZGate().control(1), [0, 2])
     return _circ.to_instruction()
 
 def OR():
     _circ = QuantumCircuit(3, name="OR")
+    # _circ.append(ZGate().control(1), [0, 2])
+    # _circ.append(ZGate().control(1), [1, 2])
+    # _circ.append(ZGate().control(2), [0, 1, 2])
     _circ.cx(0, 2)
     _circ.cx(1, 2)
     _circ.ccx(0, 1, 2)
@@ -34,12 +40,15 @@ def OR():
 
 def XOR():
     _circ = QuantumCircuit(3, name="XOR")
+    # _circ.append(ZGate().control(1), [0, 2])
+    # _circ.append(ZGate().control(1), [1, 2])
     _circ.cx(0, 2)
     _circ.cx(1, 2)
     return _circ
 
 def NOT():
     _circ = QuantumCircuit(1, name="NOT")
+    # _circ.append(ZGate(), [0])
     _circ.x(0)
     return _circ.to_instruction()
 
@@ -50,6 +59,13 @@ def OptimizedCircuit():
     _circ.append(XGate().control(3), [0, 1, 2, 4])
     _circ.append(XGate().control(3), [0, 1, 3, 4])
     _circ.toffoli(0, 1, 4)
+
+    # _circ.append(ZGate().control(2), [0, 2, 4])
+    # _circ.append(ZGate().control(4), [0, 1, 2, 3, 4])
+    # _circ.append(ZGate().control(3), [0, 1, 2, 4])
+    # _circ.append(ZGate().control(3), [0, 1, 3, 4])
+    # _circ.append(ZGate().control(2), [0, 1, 4])
+
     return _circ.to_instruction()
 
 
@@ -80,7 +96,13 @@ qc.measure(2,  2)
 qc.measure(3,  1)
 qc.measure(12, 0)
 
+
+
 circuit_decp = qc.decompose()
+circuit_decp.draw(output='latex_source', filename='circuit.tex')
+
+# target = qiskit.quantum_info.Statevector.from_instruction(qc)
+# print(target)
 
 result = qiskit.visualization.circuit_drawer(qc, output="text")
 print(result)
@@ -101,18 +123,42 @@ print("OPTIMIZED CIRCUIT BUILD")
 print("************")
 
 qc = QuantumCircuit(5, 5)
-qc.h(0)
-qc.h(1)
-qc.h(2)
-qc.h(3)
+# qc.h(0)
+# qc.h(1)
+# qc.h(2)
+# qc.h(3)
 qc.barrier()
 qc.append(OptimizedCircuit(), [0, 1, 2, 3, 4])
 qc.barrier()
-qc.measure(0, 4)
-qc.measure(1, 3)
-qc.measure(2, 2)
-qc.measure(3, 1)
-qc.measure(4, 0)
+# qc.measure(0, 4)
+# qc.measure(1, 3)
+# qc.measure(2, 2)
+# qc.measure(3, 1)
+# qc.measure(4, 0)
+
+import numpy as np
+backend = Aer.get_backend('unitary_simulator')
+job = execute(qc, backend)
+result = job.result()
+result_matrix = result.get_unitary(qc, decimals=3)
+a = np.asarray(result_matrix)
+np.savetxt("unitary.csv", a, delimiter=',')
+print(result_matrix)
+
+for i in result_matrix:
+    for j in i:
+        print(int(j.real), end=' ')
+    print()
+
+print("**********")
+
+res_transpose = np.dot(np.transpose(result_matrix), result_matrix)
+for i in res_transpose:
+    for j in i:
+        print(int(j.real), end=' ')
+    print()
+
+1/0
 
 circuit_decp = qc.decompose()
 
@@ -126,3 +172,4 @@ counts = result.get_counts(qc)
 for res in sorted(counts.int_raw):
     print("{0:05b}".format(res))
 print(counts)
+
