@@ -97,9 +97,10 @@ qc.measure(3,  1)
 qc.measure(12, 0)
 
 
-
+qc.draw(output='mpl', filename='circuit.png')
 circuit_decp = qc.decompose()
-circuit_decp.draw(output='latex_source', filename='circuit.tex')
+# circuit_decp.draw(output='mpl', filename='circuit.png')
+# circuit_decp.draw(output='latex_source', filename='circuit.tex')
 
 # target = qiskit.quantum_info.Statevector.from_instruction(qc)
 # print(target)
