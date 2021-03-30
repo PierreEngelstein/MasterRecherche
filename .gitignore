@@ -13,3 +13,5 @@ bin
 *.pyc
 .idea
 .code
+cmake-build-debug
+libraries_ibex
