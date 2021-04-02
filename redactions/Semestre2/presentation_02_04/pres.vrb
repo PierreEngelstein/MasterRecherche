@@ -17,3 +17,5 @@ sample_set_1 = exact_sampler.sample_qubo(Q2)
 print(sample_set_1)
 
 \end{lstlisting}
+
+Formulation de problèmes NP sous forme d'Ising\footnote{Lucas, A., "Ising formulations of many NP problems", Frontiers in Physics, 2014}.

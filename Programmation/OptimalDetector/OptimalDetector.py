@@ -105,6 +105,13 @@ print(norm(mu2))
 print("|mu2|: ")
 print(norm(mu3))
 
+# mu = np.hstack((mu1, mu2, mu3))
+# phi = np.hstack((psi_1, psi_2, psi_3))
+# print("== Matrix Mu ==")
+# print(mu)
+# error = np.trace(np.dot(np.matrix(phi - mu).getH(), (phi - mu)))
+# print("Squared error = " + str(error))
+
 ''' Check that pi1, pi2 and pi3 check the conditions given in the paper '''
 print()
 print("== Solution validity check ==")

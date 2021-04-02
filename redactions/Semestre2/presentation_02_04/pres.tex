@@ -54,6 +54,26 @@
 }
 
 \begin{document}
+
+\title{Réunion d'avancement}
+\author{Pierre Engelstein}
+\date{\today}
+
+\begin{frame}[plain]
+    \maketitle
+  \end{frame}
+
+\begin{frame}
+    \frametitle{Sommaire}
+
+    \begin{enumerate}
+        \item Construction de circuit
+        \item Recuit quantique
+        \item Détection optimale
+    \end{enumerate}
+
+\end{frame}
+
 \section[Construction de circuits]{Construction de circuits}
 
 \begin{frame}
@@ -61,9 +81,9 @@
 
     \begin{block}{Porte de Pauli X contrôlée par $n$ qubits }
 
-        On note le contrôle par 1 avec $\bullet$ (le qubit de sortie $\ket{x_3}$ vaut 1 quant le qubit de contrôle vaut 1);
+        On note le contrôle par 1 avec $\bullet$;
 
-        On note le contrôle par 0 avec $\circ$ (le qubit de sortie $\ket{x_3}$ vaut 1 quant le qubit de contrôle vaut 0).
+        On note le contrôle par 0 avec $\circ$;
 
         Le contrôle global est un \texttt{ET} des contrôles individuels.
 
@@ -90,7 +110,7 @@
     \frametitle{Construction du circuit}
 
     \only<1>{
-    \begin{block}{4 étapes de compilation}
+    \begin{block}{4 étapes}
         \begin{enumerate}
             \item \'Ecriture de la table de vérité,
             \item Pour chaque sortie donnant 1, former une porte \texttt{NOT} controlée. Chaque entrée va servir de contrôle, par 1 si l’entrée est à 1, et par 0 si l’entrée est à 0,
@@ -98,7 +118,9 @@
             \item Simplification du circuit.
         \end{enumerate}
     \end{block}
-    }
+
+    Méthode montrée par Younes et Miller en 2003\footnote{Younes, A. and Miller, J., “Automated Method for Building CNOT Based Quantum Circuits for Boolean Functions”, 2003}
+    }.
 
     \only<2, 3, 4, 5>{
     \begin{columns}
@@ -290,7 +312,7 @@
 
 \begin{frame}
     \frametitle{Développement du circuit}
-    En reprennant l'exemple développé précédemment  $f(x_1, x_2, x_3) = (x_1 \land x_2) \lor (x_3 \land \neg x_2) \lor (x_1 \land x_3)$, on développe pour obtenir le circuit suivant:
+    En reprennant l'exemple développé précédemment  $f(x_1, x_2, x_3) = (x_1 \land x_2) \lor (x_3 \land \neg x_2) \lor (x_1 \land x_3)$, on obtient:
 
     \begin{figure}[H]
         \centering
@@ -323,6 +345,13 @@
         \caption{\'Equivalent sans contrôles par 0}
         \label{fig:basic_control_dvlp}
     \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Simplification}
+    \begin{block}{Proposition}
+        Considérons un circuit \texttt{X} contenant un couple de portes identiques. Le circuit privé de ce couple de portes est équivalent à \texttt{X}.
+    \end{block}
 \end{frame}
 
 \begin{frame}
@@ -396,19 +425,42 @@
 
 \begin{frame}
     \frametitle{Construction de circuits composés}
-    On peux combiner des fonctions élémentaires pour former des circuits plus complexes.
 
-    \begin{figure}[H]
-        \centering
-        \centerline{
-            \includegraphics[scale=0.25]{circuit.png}
-        }
-        \caption{$f(a, b, c, d) = ((a \land b) \lor (a \land \neg b \land c)) \land ((d \oplus a) \lor (a \oplus c \oplus d))$}
-        \label{fig:circ_ex_1_1_1}
-    \end{figure}
+    \begin{block}{Proposition}
+        \tiny
+        A partir de ces briques, on peut construire pour une expression booléenne un circuit.
+    \end{block}
+
+    \medbreak
+
+    \begin{block}{Exemple}
+
+        \tiny $f(a, b, c, d) = ((a \land b) \lor (a \land \neg b \land c)) \land ((d \oplus a) \lor (a \oplus c \oplus d))$
+
+        \begin{figure}[H]
+            \centering
+            \centerline{
+                \includegraphics[scale=0.20]{circuit.png}
+            }
+            \label{fig:circ_ex_1_1_1}
+        \end{figure}
+    \end{block}
 \end{frame}
 
-\section[Problèmes combinatoires]{Optimisation de problèmes combinatoires - Recuit quantique}
+\begin{frame}
+    \frametitle{Applications}
+
+    En pouvant construire des circuits booléens, on peut résoudre, par exemple en utilisant l'algorithme de Grover \footnote{Rodriguez, J., "\'Evaluation du potentiel des machines quantiques pour l'optimisation combinatoire", Juillet 2020. }:
+
+    \begin{enumerate}
+        \item Recherche de minimum
+        \item Minimisation de somme
+        \item Couverture de sommet
+        \item Problème du voyageur de commerce
+    \end{enumerate}
+\end{frame}
+
+\section[Recuit quantique]{Optimisation de problèmes combinatoires - Recuit quantique}
 
 \begin{frame}
     \frametitle{Modèle d'Ising}
@@ -495,11 +547,97 @@ sample_set_1 = exact_sampler.sample_qubo(Q2)
 print(sample_set_1)
 
 \end{lstlisting}
+
+Formulation de problèmes NP sous forme d'Ising\footnote{Lucas, A., "Ising formulations of many NP problems", Frontiers in Physics, 2014}.
 \end{frame}
 
 \section[Détection optimale]{Détecteur quantique optimal}
 
 \begin{frame}
+    \frametitle{Détecteur optimal - moindres carrés}
+    \begin{block}{Problème}
+        Soit ${\ket{\phi_i}}$ un ensemble de $m$ vecteurs d'état dans $\mathcal{H}$ engendrant un sous espace $\mathcal{U} \subseteq \mathcal{H}$. On note $dim(\mathcal{U}) = r$, $dim(\mathcal{H}) = n$ et $\Phi$ la matrice $n \times m$ de colonnes $\ket{\phi_i}$.
+
+        Soit ${\ket{\hat{\mu_i}}}$ les $m$ vecteurs optimaux de mesure minimisant l'erreur quadratique $E = \displaystyle \sum_{i=1}^{m} \braket{e_i|e_i}$, $\ket{e_i} = \ket{\phi_i} - \ket{\mu_i}$. On note $\hat{M}$ la matrice de colonnes $\ket{\hat{\mu_i}}$.
+    \end{block}
+    \begin{block}{Théorème}
+        La matrice $\hat{M}$ optimale est donnée par $\hat{M} = \Phi((\Phi^{\star}\Phi)^{\frac{1}{2}}  )^{\dagger}$.
+
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Détecteur optimal - SdP}
+
+    \begin{block}{Problème primal}
+        Soit ${\rho_i}$ $m$ opérateurs densités de $\mathcal{H}$, ayant chacun une probabilité $p_i > 0$.
+
+        \begin{equation}
+            \max\limits_{\Pi_i} (\displaystyle \sum_{i=1}^{m} Tr(p_i \rho_i \Pi_i))
+        \end{equation}
+
+        Soumis à 
+        \begin{equation*}
+            \Pi_i > 0, 1 \leq i \leq m
+        \end{equation*}
+        \begin{equation*}
+            \displaystyle \sum_{i=1}^{m} \Pi_i = I
+        \end{equation*}
+        
+    \end{block}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Détecteur optimal - SdP}
+
+    \begin{block}{Problème dual}
+        Soit ${\rho_i}$ $m$ opérateurs densités de $\mathcal{H}$, ayant chacun une probabilité $p_i > 0$.
+
+        \begin{equation}
+            \min\limits_{X} Tr(X)
+        \end{equation}
+
+        Soumis à 
+        \begin{equation*}
+            X \geq p_i\rho_i, 1 \leq i \leq m
+        \end{equation*}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Détecteur optimal - SdP}
+
+    \begin{block}{Exemple}
+
+        Soient 3 opérateurs de densité $\rho_i$ = $\ket{\phi_i}\bra{\phi_i}$, avec 
+
+        \begin{equation*}
+            \ket{\phi_1} = \begin{bmatrix} 1 \\0\end{bmatrix} , \ket{\phi_2} = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 1 \end{bmatrix} , \ket{\phi_3} = \begin{bmatrix}1 \\ 0 \end{bmatrix},
+        \end{equation*}
+
+        Ayant comme probabilités $p_1 = 0.1$, $p_2 = 0.6$, $p_3 = 0.3$.
+
+        \medbreak
+
+        Les vecteurs de mesure optimaux $\ket{\mu_i}$ calculés sont:
+
+        \begin{equation*}
+            \ket{\mu_1} = \begin{bmatrix} 0 \\0 \end{bmatrix} , \ket{\mu_2} = \begin{bmatrix} 0.849 \\ 0.527 \end{bmatrix} , \ket{\mu_3} = \begin{bmatrix} -0.524 \\ 0.849 \end{bmatrix}.
+        \end{equation*}
+        
+    \end{block}
+\end{frame}
+
+\section{Travaux à venir}
+\begin{frame}
+    \frametitle{Compte rendu et travaux à venir}
+
+    \begin{enumerate}
+        \item Construction de circuits: ce n'est pas un secteur où des travaux novateurs pourraient être effectués;
+        \item Recuit quantique: on peut envisager d'identifier un problème non courant proche des spécialités du LARIS (robotique, automatique) et effectuer des comparaisons de performances entre les solveurs classiques et le solveur quantique de D-Wave;
+        \item Détection optimale: pouvoir utiliser le critère de l'information mutuelle pour optimiser le schéma de détection.
+    \end{enumerate}
 \end{frame}
 
 \end{document}
