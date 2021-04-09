@@ -1,4 +1,4 @@
-''' Implementation of optimal quantum detectors via SdP (https://arxiv.org/pdf/quant-ph/0205178.pdf) '''
+''' Implementation of dual version optimal quantum detectors via SdP (https://arxiv.org/pdf/quant-ph/0205178.pdf) '''
 
 from math import sqrt
 import cvxpy as cp

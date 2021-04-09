@@ -1,0 +1,57 @@
+Constants
+    P1[2][2] = ((0, 0); (0, 0));
+    P2[2][2] = ((0.723,  0.447); (0.447,  0.276));
+    P3[2][2] = ((0.276, -0.447); (-0.447, 0.724));
+    limit_matrix = 1;
+
+function tr(matrix[2][2])
+    return matrix(1)(1) + matrix(2)(2)
+end
+
+function log2(value)
+    return ln(value)/ln(2)
+end
+
+function MutualInformation(_M1[2][2], _M2[2][2], _M3[2][2], _P1[2][2], _P2[2][2], _P3[2][2])
+    sum_m1 = tr(_M1 * _P1) + tr(_M1 * _P2) + tr(_M1 * _P3);
+    sum_m2 = tr(_M2 * _P1) + tr(_M2 * _P2) + tr(_M2 * _P3);
+    sum_m3 = tr(_M3 * _P1) + tr(_M3 * _P2) + tr(_M3 * _P3);
+    entropy_m = (sum_m1 * log2(sum_m1) + sum_m2 * log2(sum_m2) + sum_m3 * log2(sum_m3));
+
+    sum_p1 = tr(_M1 * _P1) + tr(_M2 * _P1) + tr(_M3 * _P1);
+    sum_p2 = tr(_M1 * _P2) + tr(_M2 * _P2) + tr(_M3 * _P2);
+    sum_p3 = tr(_M1 * _P3) + tr(_M2 * _P3) + tr(_M3 * _P3);
+    entropy_p = sum_p1 * log2(sum_p1) + sum_p2 * log2(sum_p2) + sum_p3 * log2(sum_p3);
+
+    entropy_mp = tr(_M1 * _P1) * log2(tr(_M1 * _P1))  + tr(_M2 * _P1) * log2(tr(_M2 * _P1)) + tr(_M3 * _P1) * log2(tr(_M3 * _P1))
+               + tr(_M1 * _P2) * log2(tr(_M1 * _P2))  + tr(_M2 * _P2) * log2(tr(_M2 * _P2)) + tr(_M3 * _P2) * log2(tr(_M3 * _P2))
+               + tr(_M1 * _P3) * log2(tr(_M1 * _P3))  + tr(_M2 * _P3) * log2(tr(_M2 * _P3)) + tr(_M3 * _P3) * log2(tr(_M3 * _P3));
+
+    return entropy_m + entropy_p - entropy_mp;
+end
+
+Variables
+    M1[2][2] in (([-limit_matrix, limit_matrix], [-limit_matrix, limit_matrix]); ([-limit_matrix, limit_matrix], [-limit_matrix, limit_matrix]));
+    M2[2][2] in (([-limit_matrix, limit_matrix], [-limit_matrix, limit_matrix]); ([-limit_matrix, limit_matrix], [-limit_matrix, limit_matrix]));
+    M3[2][2] in (([-limit_matrix, limit_matrix], [-limit_matrix, limit_matrix]); ([-limit_matrix, limit_matrix], [-limit_matrix, limit_matrix]));
+
+Minimize
+    MutualInformation(M1, M2, M3, P1, P2, P3)
+
+Constraints
+    // Coherent probabilities (sum of probabilities = 1)
+    M1 + M2 + M3 = ((1, 0); (0, 1));
+
+    // Symetric matrices
+    M1(1)(2) = M1(2)(1);
+    M2(1)(2) = M2(2)(1);
+    M3(1)(2) = M3(2)(1);
+
+    //SdP constraints
+    M1(1)(1) > 0;
+    M2(1)(1) > 0;
+    M3(1)(1) > 0;
+    M1(1)(1) * M1(2)(2) - M1(1)(2) * M1(2)(1) > 0;
+    M2(1)(1) * M2(2)(2) - M2(1)(2) * M2(2)(1) > 0;
+    M3(1)(1) * M3(2)(2) - M3(1)(2) * M3(2)(1) > 0;
+end

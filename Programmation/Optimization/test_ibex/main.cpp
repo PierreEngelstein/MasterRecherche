@@ -6,7 +6,8 @@
 #define print(x) print_base(std::cout, x)
 #define println(x) print(x << std::endl);
 
-int main() {
+int main_1()
+{
     {
         println("**********")
         ibex::Interval x(0, 1);
@@ -239,6 +240,27 @@ int main() {
         ibex::CtcFixPoint fix(ct, 0.001);
         fix.contract(box);
         println("box - fixpoint(MyContractor): " << box)
+    }
+
+    {
+
+
+        println("**********")
+        double _p1[9][2] = {{0.1, 0.1}, {0, 0},
+                           {0, 0}, {0, 0}};
+        ibex::IntervalMatrix p1(2, 2, _p1);
+
+        double _p2[9][2] = {{0.3, 0.3}, {0.3, 0.3},
+                            {0.3, 0.3}, {0.3, 0.3}};
+        ibex::IntervalMatrix p2(2, 2, _p2);
+
+        double _p3[9][2] = {{0, 0}, {0, 0},
+                            {0, 0}, {0.1, 0.1}};
+        ibex::IntervalMatrix p3(2, 2, _p3);
+
+        println(p1)
+        println(p2)
+        println(p1[0][0] + p1[1][1])
     }
     return 0;
 }

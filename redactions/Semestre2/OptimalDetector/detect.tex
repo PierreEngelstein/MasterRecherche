@@ -1,0 +1,229 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage{qcircuit}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{appendix}
+\usepackage{hyperref}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{cleveref}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{amssymb}
+\DeclareMathOperator{\tr}{tr}
+
+
+\title{Détecteur quantique optimal}
+\date{}
+
+\begin{document}
+    \maketitle
+
+    Soient $\{\rho_i, 1 \leq i \leq m\}$ m opérateurs densités avec leur $p_i$ probabilités respectives. On écrit $\rho_i' = p_i \rho_i$. On cherche à obtenir les $\Pi_i$ opérateurs de mesure optimaux.
+
+    \section*{Programmation SdP - Problème primal}
+
+
+    \subsection*{Formulation}
+
+    On résout le problème suivant:
+
+    \begin{equation}
+        \max\limits_{\Pi_i} (\displaystyle \sum_{i=1}^{m} Tr(\rho_i' \Pi_i)
+    \end{equation}
+
+    Tel que:
+
+    \begin{align}
+        & \Pi_i > 0, \quad 1 \leq i \leq m \nonumber \\
+        & \displaystyle \sum_{i=1}^{m} \Pi_i = I
+    \end{align}
+
+    \subsection*{Exemple}
+    Soient 3 opérateurs densités $\rho_i = \ket{\phi_i}\bra{\phi_i}$ avec 
+
+    \begin{equation*}
+        \ket{\phi_1} = \begin{bmatrix} 1 \\0\end{bmatrix} , \quad \ket{\phi_2} = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 1 \end{bmatrix} , \quad \ket{\phi_3} = \begin{bmatrix}1 \\ 0 \end{bmatrix},
+    \end{equation*}
+    Ayant comme probabilités $p_1 = 0.1$, $p_2 = 0.6$, $p_3 = 0.3$.
+
+    On a donc :
+    
+    \begin{align}
+        \rho_1' & = p_1 \rho_1 = \begin{bmatrix} 0.1 & 0 \\ 0 & 0 \end{bmatrix} , \quad \rho_2' & = p_2 \rho_2 = \begin{bmatrix} 0.3 & 0.3 \\ 0.3 & 0.3 \end{bmatrix}, \quad \rho_3' & = p_3 \rho_3 = \begin{bmatrix} 0 & 0 \\ 0 & 0.1 \end{bmatrix} \nonumber
+    \end{align}
+
+    Le problème se ré-écrit avec les valeurs numériques:
+
+    \begin{equation}
+        \max\limits_{\Pi_i} \bigg(Tr( \begin{bmatrix} 0.1 & 0 \\ 0 & 0 \end{bmatrix} \Pi_1) + Tr(\begin{bmatrix} 0.3 & 0.3 \\ 0.3 & 0.3 \end{bmatrix} \Pi_2 ) + Tr(\begin{bmatrix} 0 & 0 \\ 0 & 0.1 \end{bmatrix}\Pi_3) \bigg),
+    \end{equation}
+
+    Tel que:
+
+    \begin{align}
+        & \Pi_1 > 0 , \quad \Pi_2 > 0 , \quad \Pi_3 > 0 \nonumber \\
+        & \Pi_1 + \Pi_2 + \Pi_3 = I_n
+    \end{align}
+
+    Développons les valeurs des traces:
+
+    \noindent\begin{minipage}{.5\linewidth}
+        \begin{align}
+            tr_1 & = Tr( \begin{bmatrix} 0.1 & 0 \\ 0 & 0 \end{bmatrix} \Pi_1 ) \nonumber \\
+            & = Tr( \begin{bmatrix} 0.1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} \Pi_{1_{11}} & \Pi_{1_{12}} \\ \Pi_{1_{21}} & \Pi_{1_{22}} \end{bmatrix} ) \nonumber \\
+            & = Tr( \begin{bmatrix} 0.1\Pi_{1_{11}} & 0.1 \Pi_{1_{12}} \\ 0 & 0 \end{bmatrix}) \nonumber \\
+            & = 0.1\Pi_{1_{11}} \label{eq:tr_1}
+        \end{align}
+    \end{minipage}
+    \begin{minipage}{.5\linewidth}
+        \begin{align}
+            tr_2 & = Tr( \begin{bmatrix} 0.3 & 0.3 \\ 0.3 & 0.3 \end{bmatrix} \Pi_2 ) \nonumber \\
+            & = Tr( \begin{bmatrix} 0.3 & 0.3 \\ 0.3 & 0.3 \end{bmatrix} \begin{bmatrix} \Pi_{2_{11}} & \Pi_{2_{12}} \\ \Pi_{2_{21}} & \Pi_{2_{22}} \end{bmatrix} ) \nonumber \\
+            & = Tr( \begin{bmatrix} 0.3\Pi_{2_{11}} + 0.3 \Pi_{2_{21}} & 0.3\Pi_{2_{12}} + 0.3 \Pi_{2_{22}} \\ 0.3\Pi_{2_{11}} + 0.3 \Pi_{2_{21}} & 0.3\Pi_{2_{12}} + 0.3 \Pi_{2_{22}} \end{bmatrix}) \nonumber \\
+            & = 0.3(\Pi_{2_{11}} + \Pi_{2_{12}} + \Pi_{2_{21}} + \Pi_{2_{22}}) \label{eq:tr_2} \\
+            \nonumber
+        \end{align}
+    \end{minipage}
+    \begin{minipage}{.5\linewidth}
+        \begin{align}
+            tr_3 & = Tr( \begin{bmatrix} 0 & 0 \\ 0 & 0.1 \end{bmatrix} \Pi_3 ) \nonumber \\
+            & = Tr( \begin{bmatrix} 0 & 0 \\ 0 & 0.1 \end{bmatrix} \begin{bmatrix} \Pi_{3_{11}} & \Pi_{3_{12}} \\ \Pi_{3_{21}} & \Pi_{3_{22}} \end{bmatrix} ) \nonumber \\
+            & = Tr( \begin{bmatrix} 0 & 0 \\ 0.1\Pi_{3_{11}} & 0.1 \Pi_{3_{12}}  \end{bmatrix}) \nonumber \\
+            & = 0.1\Pi_{3_{22}} \label{eq:tr_3}
+        \end{align}
+    \end{minipage}
+
+    Nous avons donc la formulation finale du problème primal d'exemple en additionant \ref{eq:tr_1}, \ref{eq:tr_2} et \ref{eq:tr_3}:
+
+    \begin{equation}
+        \max\limits_{\Pi_i} (0.1\Pi_{1_{11}} + 0.3(\Pi_{2_{11}} + \Pi_{2_{12}} + \Pi_{2_{21}} + \Pi_{2_{22}}) + 0.1\Pi_{3_{22}} )
+    \end{equation}
+
+    Ce qui nous donne les opérateurs de mesure suivants (calculés avec \href{https://www.cvxpy.org/}{\texttt{cvxpy}}) :
+
+    \begin{align}
+        \Pi_1 = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix} , \quad \Pi_2 = \begin{bmatrix} 0.723 & 0.447 \\ 0.447 & 0.276 \end{bmatrix} , \quad \Pi_3 = \begin{bmatrix} 0.276 & -0.447 \\ -0.447 & 0.724 \end{bmatrix} \nonumber
+    \end{align}
+
+    \section*{Information Mutuelle}
+\medbreak
+
+    L'information mutuelle de deux variables aléatoires $X$ et $Y$ est définie par :
+
+    \begin{align}
+        I(X; Y) = H(X) + H(Y) - H(X,Y).
+    \end{align}
+
+    Dans le cas de la détection optimale quantique, on va appliquer ce critère comme critère à optimiser. On considère les deux variables aléatoires comme étant :
+    \begin{align*}
+        X &= \{ \rho_i = p_i \ket{\phi_i}\bra{\phi_i}, 1 \leq i \leq m\}, \\
+        Y &= \{ \Pi_i  = \ket{\mu_i}\bra{\mu_i}, 1 \leq i \leq m\},
+    \end{align*}
+    correspondant aux opérateurs densité des états à mesurer pour $X$ (pondérées par les probabilités préalables), et aux opérateurs de mesure pour $Y$.
+
+    Les probabilités jointes des deux variables vont correspondre à la trace de la multiplication des matrices :
+    \begin{align}
+        P(X = \rho_i, Y = \Pi_j) = \tr(\rho_i \Pi_j)
+    \end{align}
+
+    Les probabilités marginales découlent en étant simplement la somme des probabilités jointes : 
+
+    \begin{align}
+        P(X = \rho_i) = \displaystyle \sum_{j=1}^{m} \tr (\rho_i \Pi_j)
+    \end{align}
+
+    On peut donc ensuite calculer les entropies marginales $H(\rho)$ et $H(\Pi)$:
+
+    \begin{align}
+        H(\rho) & = - \displaystyle \sum_{i=1}^{m} P(\rho_i) \log_2 P(\rho_i), \nonumber \\
+        &= - \displaystyle \sum_{i=1}^{m} \left(\displaystyle \sum_{j=1}^{m} \tr(\rho_i \Pi_j) \right) \log_2 \displaystyle \sum_{j=1}^{m} \tr(\rho_i \Pi_j), \\
+        H(\Pi) &= - \displaystyle \sum_{i=1}^{m} P(\Pi_i) \log_2 P(\Pi_i), \nonumber \\
+        &= - \displaystyle \sum_{i=1}^{m} \left(\displaystyle \sum_{j=1}^{m} \tr(\Pi_i \rho_j) \right) \log_2 \displaystyle \sum_{j=1}^{m} \tr(\Pi_i \rho_j ),
+    \end{align}
+    Et l'entropie conjointe de $X$ et $Y$ est donnée par :
+
+    \begin{align}
+        H(\rho, \Pi) = - \displaystyle \sum_{i=1}^{m} \displaystyle \sum_{j=1}^{m} \tr(\rho_i \Pi_j ) \log_2( \tr(\rho_i \Pi_j) )
+    \end{align}
+
+    Pour simplifier l'écriture, on note $\alpha_{ij} = \tr(\rho_i \Pi_j)$. Le critère à minimiser est donc exprimé par :
+
+    \begin{align}
+        I(\rho; \Pi) &= H(\rho) + H(\Pi) - H(\rho, \Pi) \nonumber \\
+        &= - \displaystyle \sum_{i=1}^{m} [\displaystyle \sum_{j=1}^{m} \alpha_{ij} ] \log_2 \displaystyle \sum_{j=1}^{m} \alpha_{ij} - \displaystyle \sum_{i=1}^{m} [\displaystyle \sum_{j=1}^{m} \alpha_{ji} ] \log_2 \displaystyle \sum_{j=1}^{m} \alpha_{ji} + \displaystyle \sum_{i=1}^{m} \displaystyle \sum_{j=1}^{m} \alpha_{ij} \log_2( \alpha_{ij} ) \nonumber \\
+        &= - \displaystyle \sum_{i=1}^{m} \big[ (\displaystyle \sum_{j=1}^{m} \alpha_{ij} ) \log_2 \displaystyle \sum_{j=1}^{m} \alpha_{ij} + (\displaystyle \sum_{j=1}^{m} \alpha_{ji} ) \log_2 \displaystyle \sum_{j=1}^{m} \alpha_{ji} - \displaystyle \sum_{j=1}^{m} (\alpha_{ij} \log_2 \alpha_{ij}  ) \big]
+    \end{align}
+
+    Le problème se formule comme un problème de maximization de l'information mutuelle: on cherche à maximiser l'information qu'on peut obtenir sur $\rho_i$ quand on a les opérateurs de mesure $\Pi_i$:
+
+    \begin{align}
+        \max\limits_{\Pi} I(\rho, \Pi)
+    \end{align}
+    tel que :
+
+    \begin{align}
+        \Pi_i \succeq 0 \quad 1 \leq i \leq m \\
+        \displaystyle \sum_{i=1}^{m} \Pi_i = I
+    \end{align}
+
+    \subsection*{Application numérique}
+
+    Ce problème de maximisation n'est pas convexe, on ne peut donc pas le résoudre simplement avec une librarie telle que \texttt{cvxpy}. Une bonne solution consiste à utiliser l'analyse par intervalle pour résoudre ce problème, et nous utilisons la librarie \texttt{ibex} pour résoudre ce problème.
+
+    \begin{center}
+        \begin{tabular}{|c||c c c||} 
+            \hline
+              & $\rho_1'$ & $\rho_2'$ & $\rho_3'$ \\ [0.5ex] 
+            \hline\hline
+            $\Pi_1$ & $Tr(\Pi_1 \rho_1 )$ & $Tr(\Pi_1 \rho_2 )$ & $Tr(\Pi_1 \rho_3 )$ \\ 
+            \hline
+            $\Pi_2$ & $Tr(\Pi_2 \rho_1 )$ & $Tr(\Pi_2 \rho_2 )$ & $Tr(\Pi_2 \rho_3 )$ \\
+            \hline
+            $\Pi_3$ & $Tr(\Pi_3 \rho_1 )$ & $Tr(\Pi_2 \rho_2 )$ & $Tr(\Pi_3 \rho_3 )$ \\ [1ex] 
+            \hline
+        \end{tabular}
+    \end{center}
+
+    
+
+
+    % L'information mutuelle quantique entre deux états d'opérateurs densité $\rho_A$ et $\rho_B$ est donnée par 
+
+    % \begin{equation}
+    %     I(A;B) = S(A) + S(B) - S(AB)
+    % \end{equation}
+
+    % Avec $S(A)$ et $S(B)$ les entropies de Von Neumann $S(A) = -Tr(\rho_A log(\rho_A))$ et $S(AB)$ l'entropie de l'état total (?). Si $\rho$ est un état pur, alors on peut écrire l'entropie de Von Neumann comme somme des entropies de Shannon des valeurs propres: $S(A) = \displaystyle \sum_{\lambda} -\lambda log_2 (\lambda)$.
+
+    % Le problème d'optimisation au sens de l'information mutuelle peut s'écrire:
+
+    % \begin{equation}
+    %     \max\limits_{\Pi_i} (\displaystyle \sum_{i=1}^{m} I(\rho_i', \Pi_i))
+    % \end{equation}
+
+    % Tel que:
+    % \begin{equation*}
+    %     I(\rho_i', \Pi_i) \in [0, 1], 1 \leq i \leq m
+    % \end{equation*}
+
+    % Soit, en développant:
+    % \begin{align}
+    %     \max\limits_{\Pi_i} & (\displaystyle \sum_{i=1}^{m} S(\rho_i') + S(\Pi_i) - S(\rho_i\Pi_i)) \nonumber \\
+    %     \Leftrightarrow \max\limits_{\Pi_i} & (\displaystyle \sum_{i=1}^{m} -Tr(\rho_i' log(\rho_i')) -Tr(\Pi_i log(\Pi_i)) - S(\rho_i'\Pi_i)) \nonumber \\
+    %     \Leftrightarrow \min\limits_{\Pi_i} & (\displaystyle \sum_{i=1}^{m} Tr(\rho_i' log(\rho_i')) + Tr(\Pi_i log(\Pi_i)) + S(\rho_i'\Pi_i))
+    % \end{align}
+\end{document}
