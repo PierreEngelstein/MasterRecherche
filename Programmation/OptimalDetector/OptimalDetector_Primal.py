@@ -45,61 +45,6 @@ proba_correct = p1 * np.trace(np.dot(Pi_1_sol, np.dot(phi_1, np.transpose(phi_1)
 print(str(1-proba_correct))
 print("**********")
 
-def entropy_von_neumann(state):
-    """
-        Computes the Von Neumann entropy of a given density matrix.
-        Parameters
-        ----------
-            state : Density matrix
-    """
-    eigenvals = np.linalg.eigvals(state)
-    h = 0
-    for i in eigenvals:
-        if i > 0:
-            h -= i * log2(i)
-    return h
-
-Phi_test_1 = np.dot(phi_2, np.transpose(phi_2)) * p2
-print(Phi_test_1)
-# Using kron for tensor product, not sure if simple matrix multiplication or kron product here ?
-I_1 = entropy_von_neumann(Phi_test_1) + entropy_von_neumann(Pi_1_sol) - entropy_von_neumann(np.kron(Phi_test_1, Pi_1_sol))
-print("I(Phi_1, Pi_1) = " + str(I_1))
-print(np.dot(Phi_test_1, Pi_1_sol))
-print()
-print(np.kron(Phi_test_1, Pi_1_sol))
-
-# print("H(Phi_test_1) = " + str(np.around(entropy(Phi_test_1), 3)))
-# Phi_test_2 = [[0.5, 0], [0, 0.5]]
-# print("H(Phi_test_2) = " + str(np.around(entropy(Phi_test_2), 3)))
-# Phi_test_3 = np.dot(phi_1, np.transpose(phi_1))
-# print("H(Phi_test_2) = " + str(np.around(entropy(Phi_test_3), 3)))
-print()
-a = [[-0.524],[0.849]]
-print(np.dot(a, np.transpose(a)))
-print(entropy_von_neumann(Phi_test_1))
-print(entropy_von_neumann(np.dot(a, np.transpose(a))))
-print(entropy_von_neumann(np.kron(Phi_test_1, np.dot(a, np.transpose(a)))))
-print(entropy_von_neumann(Phi_test_1) + entropy_von_neumann(np.dot(a, np.transpose(a))) - entropy_von_neumann(np.kron(Phi_test_1, np.dot(a, np.transpose(a)))))
-
-print("**********")
-
-def entropy_shannon(matrix):
-    H = 0
-    for i in matrix:
-        for j in i:
-            H -= j * log2(j)
-    return H
-
-a = [[0.5], [0.1], [0.2], [0.2]]
-b = [[0.1], [0.4], [0.2], [0.3]]
-a_b = np.dot(a, np.transpose(b))
-I_a_b = entropy_shannon(a) + entropy_shannon(b) - entropy_shannon(a_b)
-print(np.around(I_a_b, 4))
-
-
-print("**********")
-
-
 def I(Mu_Vect, Phi_Vect):
     '''
        Computes mutual information from 2 sets of density operators.
@@ -137,6 +82,9 @@ mu_Vect = [Pi_1_sol, Pi_2_sol, Pi_3_sol]
 mu_Vect = [[[0.6255946156, 0.375000003751], [0.444509082871, 0.26748142285]]  ,  [[0, 0], [0.021823459898, 0.265445434171]] , [[0.374405389634, -0.37499999475], [-0.466332533768, 0.46707313398]] ]
 # A symetric one
 # mu_Vect = [[[0.823093293514, 0.335635486626], [0.335635477626, 0.178134012135]]  ,  [[0.123383189926, -0.243314709776], [-0.243314700776, 0.662625197298]] , [[0.0535235075613, -0.0923207678493], [-0.0923207678493, 0.159240781568]] ]
+# Another symetric one
+# mu_Vect = [[[0.494309400282, 0.46042366814], [0.46042366814, 0.525919152913]]  ,  [[0.215181242609, -0.227882790059], [-0.227882790059, 0.287941374384]] , [[0.29050934811, -0.232540869079], [-0.232540869079, 0.186139481704]] ]
+
 phi_Vect= [rho_1prime, rho_2prime, rho_3prime]
 
 I_mu_phi = I(mu_Vect, phi_Vect)

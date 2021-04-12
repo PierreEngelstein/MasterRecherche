@@ -15,3 +15,5 @@ bin
 .code
 cmake-build-debug
 libraries_ibex
+*.cov
+*.cov~
