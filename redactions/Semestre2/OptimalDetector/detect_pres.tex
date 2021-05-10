@@ -1,0 +1,152 @@
+\documentclass{beamer}
+\usetheme{Frankfurt}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage[qm]{qcircuit}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{color, colortbl,booktabs}
+\usepackage[ruled,vlined]{algorithm2e}
+\captionsetup[figure]{labelformat=empty}
+\DeclareMathOperator{\tr}{tr}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+\definecolor{Gray}{gray}{0.9}
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
+
+\begin{document}
+
+\title{Réunion d'avancement: Optimisation - Information Mutuelle}
+\author{Pierre Engelstein}
+\date{\today}
+
+\begin{frame}[plain]
+    \maketitle
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Définition}
+        L'information mutuelle de deux variables aléatoires $X$ et $Y$ est définie par
+        \begin{align}
+            I(X; Y) &= H(X) + H(Y) - H(X, Y) \\
+            &= H(Y) - H(Y | X) \\
+            &= H(X) - H(X | Y)
+            % &= \sum_{i=1}^{m}{\left(\left(\sum_{j=1}^{m}{a\left(j , i\right)}
+            % \right)\,{\it log}_{2}\left(\sum_{j=1}^{m}{a\left(j , i\right)}
+            % \right)+\left(\sum_{j=1}^{m}{a\left(i , j\right)}\right)\,
+            % {\it log}_{2}\left(\sum_{j=1}^{m}{a\left(i , j\right)}\right)-\sum_{
+            % j=1}^{m}{a\left(i , j\right)\,{\it log}_{2}\left(a\left(i , j\right)
+            % \right)}\right)}
+        \end{align}
+
+        \begin{columns}
+            \begin{column}{0.5\textwidth}
+                \tiny
+                \begin{enumerate}
+                    \item $H(X)$ et $H(Y)$ entropies marginales de $X$ et $Y$; 
+                    \item $H(X, Y)$ entropie conjointe de $X$ et $Y$;
+                    \item $H(X|Y)$ entropie de $X$ sachant $Y$.
+                \end{enumerate}
+            \end{column}
+            \begin{column}{0.5\textwidth}
+                \tiny
+                \begin{align*}
+                    X &= \{ \rho_i = \ket{\phi_i}\bra{\phi_i}, 1 \leq i \leq m\}, \nonumber\\
+                    Y &= \{ \Pi_i  = \ket{\mu_i}\bra{\mu_i}, 1 \leq i \leq m\} \nonumber
+                \end{align*}
+                Avec $\{p_i\}$ distribution marginale de $X$.
+            \end{column}
+        \end{columns}
+
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Formulation des probabilités}
+        Probabilités jointes entrées - sorties:
+        \begin{align}
+            P(X = \rho_i, Y = \Pi_j) = p_i \tr(\rho_i \Pi_j)
+        \end{align}
+
+        Probabilité marginale de sortie:
+        \begin{align}
+            P(Y = \Pi_j) = \displaystyle \sum_{i=1}^{m} p_i \tr (\rho_i \Pi_j)
+        \end{align}
+
+        Probabilités conditionnelles:
+        \begin{align}
+            P(Y = \Pi_j | X = \rho_i) = \frac{\tr(\rho_i \Pi_j)}{\displaystyle \sum_{k=1}^{m} \tr (\rho_i \Pi_k)}
+        \end{align}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Formulation des entropies}
+        \small
+        Entropies de $X$ et $Y$
+        \begin{align}
+            H(\rho) &= - \displaystyle \sum_{i=1}^{m} P(\rho_i) \log_2 P(\rho_i), \\
+            H(\Pi) &= - \displaystyle \sum_{i=1}^{m} P(\Pi_i) \log_2 P(\Pi_i)
+        \end{align}
+        Entropie conjointe:
+        \begin{align}
+            H(\rho, \Pi) = - \displaystyle \sum_{i=1}^{m} \displaystyle \sum_{j=1}^{m} \tr(\rho_i \Pi_j ) \log_2( \tr(\rho_i \Pi_j) )
+        \end{align}
+        Entropie conditionnelle:
+        \begin{align}
+            H(\Pi | \rho) = \displaystyle \sum_{i=1}^{m} \displaystyle \sum_{j=1}^{m} \frac{\tr(\rho_i \Pi_j)}{\displaystyle \sum_{k=1}^{m} \tr (\rho_i \Pi_k)}
+        \end{align}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Travail à venir}
+
+    \begin{enumerate}
+        \item Reformulation du problème avec des états orthogonaux de façon à reconnaître une solution correcte immédiatement;
+        \item Coder la fonction $f(x) = x \log_2(x)$ pour éviter le problème du $log(0)$ qui envoie à l'infini l'intervale de solution.
+    \end{enumerate}
+
+\end{frame}
+
+\end{document}

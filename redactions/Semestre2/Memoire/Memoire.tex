@@ -1,0 +1,187 @@
+% Plan:
+% 1 - Théorie info quantique
+%   -> Rappels formalisme + précisions sur POVM
+% 2 - Optimisation non linéaire sous contraintes avec analyse par intervalle
+% 3 - Mesure optimale quantique - information mutuelle
+
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage{qcircuit}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{appendix}
+\usepackage{hyperref}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{cleveref}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[display]
+{\normalfont%
+    \Large% %change this size to your needs for the first line
+    \bfseries}{\chaptertitlename\ \thechapter}{15pt}{%
+    \Large %change this size to your needs for the second line
+    }
+\usetikzlibrary{angles,quotes}
+% \usepackage{a4wide}
+
+\makeatletter
+\newcommand\frontmatter{
+    \cleardoublepage
+    \pagenumbering{roman}
+}
+\newcommand\mainmatter{
+    \cleardoublepage
+    \pagenumbering{arabic}
+}
+\newcommand\backmatter{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+}
+\newcommand{\tens}[1]{%
+  \mathbin{\mathop{\otimes}\limits_{#1}}%
+}
+
+\makeatother
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\graphicspath{{images/}}
+
+\newtheorem{definition}{Définition}
+\newtheorem{pb}{Problème}
+\newtheorem{rem}{Remarque}
+\newtheorem{ex}{Exemple}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+      \begin{figure}[!tbp]
+        \centering
+        \begin{minipage}[b]{0.4\textwidth}
+          \includegraphics[width=\textwidth]{Polytech_Angers.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.4\textwidth}
+          \includegraphics[width=\textwidth]{LogoUnivAngers.png}
+        \end{minipage}
+      \end{figure}
+      {\large Master Systèmes Dynamiques et Signaux}\\[0.5cm]
+      {\large Mémoire de master}\\[0.5cm]
+      \rule{\linewidth}{0.5mm} \\[0.4cm]
+      { \huge \bfseries Informatique Quantique \\[0.4cm] }
+      \rule{\linewidth}{0.5mm} \\[1.5cm]
+      \noindent
+      \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \normalsize
+          \emph{Auteur :}\\
+          M. Pierre \textsc{Engelstein}\\
+          \end{flushleft}
+          \end{minipage}%
+          \begin{minipage}{0.4\textwidth}
+          \begin{flushright} \normalsize
+          \emph{Encadrants :}\\
+          Dr. Nicolas \textsc{Delanoue}\\
+          Pr. François \textsc{Chapeau-Blondeau}\\
+          \end{flushright}
+      \end{minipage}
+      \vfill
+      \normalsize
+      \emph{Jury :}
+      \begin{tabular}{lc}
+          Pr.~Laurent \textsc{Hardouin}\\
+          Dr.~Nicolas \textsc{Delanoue}\\
+          Pr.~François \textsc{Chapeau-Blondeau}\\
+          Pr.~Sébastien \textsc{Lahaye}\\
+          Dr.~Mehdi  \textsc{Lhommeau}\\
+          Pr.~David  \textsc{Rousseau}\\
+      \end{tabular}
+
+      \vspace{2cm}
+      
+      Version du \\ \today
+      % {2020-2021}
+    \end{center}
+\end{titlepage}
+
+\frontmatter
+
+\section*{Remerciements}
+Je remercie Dr. Nicolas Delanoue et Pr. François Chapeau-Blondeau pour leur encadrement sur ce travail. Je remercie également mes parents pour les encouragements et l'aide apportés sur cette année de Master.
+
+\pagebreak
+\tableofcontents
+
+\pagebreak
+\listoffigures
+
+\mainmatter
+
+\input{includes/chap-01-intro.tex}
+\input{includes/chap-02-elementsbase.tex}
+\input{includes/chap-03-miseenoeuvre.tex}
+\input{includes/chap-04-Algorithmes.tex}
+\input{includes/chap-05-perpectives.tex}
+\input{includes/chap-06-ouverture.tex}
+\input{includes/chap-07-conclu.tex}
+
+\begin{appendix}
+\input{includes/app-01-DJ.tex}
+\input{includes/app-02-vazirani.tex}
+\input{includes/app-03-grover.tex}
+
+\end{appendix}
+% \input{includes/chap-06-QFT.tex}
+
+
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliographie}
+\bibliographystyle{ieeetr}
+\bibliography{biblio}
+
+\clearpage
+\thispagestyle{empty}
+
+\vspace*{\fill}
+\noindent\rule[2pt]{\textwidth}{0.5pt}\\
+{\textbf{Résumé ---}}
+Ce rapport bibliographique présente les différents éléments de base nécessaires à la compréhension de l'informatique quantique. On y présente en premier les concepts fondateurs de l'informatique quantique: le qubit, les mécanismes d'évolution des systèmes quantiques et enfin la mesure projective. On y montre ensuite trois algorithmes fondateurs en illustrant les problèmes résolus et leur fonctionnement. Ces trois algorithmes permettent de montrer l'apport de l'informatique quantique, ils permettent en effet d'obtenir des performances de traitement de l'information inaccessibles en classique.
+
+{\textbf{Mots clés :}}
+Informatique quantique, qubit, mesure projective, Deutsch-Jozsa, Grover, Shor, parallélisation.
+\\
+\noindent\rule[2pt]{\textwidth}{0.5pt}
+
+
+\vspace*{\fill}
+\noindent\rule[2pt]{\textwidth}{0.5pt}\\
+{\textbf{Abstract ---}}
+This bibliographic report presents the fundamental aspects of quantum computing. We firstly show 3 concepts required to understand quantum computing: the notion of qubit, the mechanisms of evolution of quantum systems and the projective measurement of qubits. We then show three major quantum algorithms (Deustch-Jozsa, Grover and Shor), explaining the problems they solve and how they work. With this report, we understand how quantum computing improves the solving of a certain category of problems, via parallelism. 
+
+{\textbf{Keywords :}}
+Quantum computing, qubit, projective measurement, Deutsch-Jozsa, Grover, Shor, parallelism.
+\\
+\noindent\rule[2pt]{\textwidth}{0.5pt}
+
+\begin{center}
+  Polytech Angers\\
+  62, avenue Notre Dame du Lac\\
+  49000 Angers
+\end{center}
+\vspace*{\fill}
+
+\end{document}

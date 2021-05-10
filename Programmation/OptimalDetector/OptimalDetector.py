@@ -3,21 +3,91 @@
 from math import sqrt
 import cvxpy as cp
 import numpy as np
+import time
+from matplotlib import pyplot as plt
+
+def optimal_matrices(rho_vect):
+    size_len = len(rho_vect[0][0])
+    X = cp.Variable((size_len, size_len), symmetric=True)
+    constraints = []
+    for i in rho_vect:
+        constraints += [X >> i]
+    pb = cp.Problem(cp.Minimize(cp.trace(X)), constraints)
+    pb.solve()
+    X_sol = X.value
+    
+    tp = ()
+    qs = []
+    for i in rho_vect:
+        X_p = X_sol - i
+        w, v = np.linalg.eig(X_p)
+        q = np.transpose([v[:,list(w).index(min(w))]])
+        qs.append(q)
+        q_v = np.transpose([np.hstack((np.dot(q, np.transpose(q))[:,0], np.dot(q, np.transpose(q))[:,1]))])
+        tp = tp + (q_v,)
+    Y = np.hstack(tp)
+    sz = np.dot(np.linalg.inv(np.dot(np.transpose(Y), Y)), np.transpose(Y)).shape[1]
+    b = np.zeros((sz, 1))
+    b[0] = 1
+    b[sz - 1] = 1
+    solution = np.dot( np.dot(np.linalg.inv(np.dot(np.transpose(Y), Y)), np.transpose(Y)) , b )
+
+    mu_vect = []
+    for i in range(0, len(qs)):
+        a = round(solution[i][0], 8)
+        mu = sqrt(abs(a)) * qs[i]
+        mu_vect.append(mu)
+
+    return mu_vect
 
 def norm(fct):
     return sqrt(np.dot(np.transpose(fct), fct))
 
-# Initial qubits states
-psi_1, p1 = [[1], [0]], 0.1
-psi_2, p2 = [[1/sqrt(2)], [1/sqrt(2)]], 0.6
-psi_3, p3 = [[0], [1]], 0.3
-# psi_3, p3 = [[1/3], [(2*sqrt(2))/3]], 0.3
+# Graph time for amount of input quantum states
+result = []
+for k in range(2, 1000):
+    vect = []
+    start = 1
+    end = k
+    print(k)
+    proba = (1/(end - start))
+    for i in range(start, end):
+        psi = [[1/i], [(sqrt((i**2)-1))/i]]
+        psi_inv = [[(sqrt((i**2)-1))/i], [1/i]]
+        rho = proba * np.dot(psi, np.transpose(psi))
+        rho_inv = proba * np.dot(psi_inv, np.transpose(psi_inv))
+        vect.append(rho)
+        vect.append(rho_inv)
+    now = time.time()
+    mu_vect = optimal_matrices(vect)
+    delta = time.time() - now
+    result.append(delta)
 
+plt.plot(range(2, 1000), result)
+plt.title("Temps d'optimisation en fonction du nombre de matrices de densité d'entrées")
+plt.xlabel("Nombre de matrices de densité d'entrées")
+plt.ylabel("Temps d'optimisation (secondes)")
+plt.show()
+
+
+# Initial qubits states
+psi_1, p1 = [[0], [1]], 0.4
+psi_2, p2 = [[1/sqrt(2)], [1/sqrt(2)]], 0.6
 # Compute p_i' = p_i * psi_i
 rho_1prime = p1 * np.dot(psi_1, np.transpose(psi_1))
 rho_2prime = p2 * np.dot(psi_2, np.transpose(psi_2))
-rho_3prime = p3 * np.dot(psi_3, np.transpose(psi_3))
+rho_3prime = p2 * np.dot(psi_2, np.transpose(psi_2))
+now = time.time()
+mu_vect = optimal_matrices([rho_1prime, rho_2prime])
+delta = time.time() - now
+print("solve time: " + str(delta) + " seconds")
 
+for i in mu_vect:
+    # print(np.dot(i, np.transpose(i)))
+    pi = np.dot(i, np.transpose(i))
+    # print(pi)
+    # print("**********")
+1/0
 # Formulate the problem and constraints, and solve
 X = cp.Variable((2, 2), symmetric=True)
 constraints =  [X >> rho_1prime]
@@ -66,7 +136,6 @@ b = [1, 0, 0, 1]
 # 1/0
 # Approximate solution to Y*a=b using least squares method
 solution = np.dot( np.dot(np.linalg.inv(np.dot(np.transpose(Y), Y)), np.transpose(Y)) , [1, 0, 0, 1]  )
-
 a1 = round(solution[0], 3)
 a2 = round(solution[1], 3)
 a3 = round(solution[2], 3)

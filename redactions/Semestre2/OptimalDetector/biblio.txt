@@ -1,0 +1,30 @@
+"Optimal discrimination of quantum states with a fixed rate ofinconclusive outcomes" https://arxiv.org/pdf/1206.4145.pdf
+   -> utilisation de 3 opérateurs de mesure pour 2 états (succès - échec - inconclusif)
+
+https://www.researchgate.net/publication/323694558_Optimal_measurement_strategies_for_the_trine_states_with_arbitrary_prior_probabilities
+
+"Accessible information and optimal strategies for real symmetrical quantum sources" https://arxiv.org/pdf/quant-ph/9812062v2.pdf
+   -> 1999
+   -> Max information mutuelle. Cas spécifique états équirépartits sur la sphère de Bloch (equiprobables ?)
+
+"Information and quantum measurement" https://ieeexplore.ieee.org/abstract/document/1055941
+   -> 1978
+   -> Définition du problème identique au notre, indique que I(P) convexe mais pas de preuve...
+
+"Optimal measurements for the discrimination of quantum states with a fixed rate of inconclusive results" https://arxiv.org/pdf/1504.03917.pdf
+   -> 2015
+   -> Distinction de N états quantiques. Utilisation de la notion de "résultat inconclusif", minimisation de la probabilité d'erreur de détection.
+
+"Structure of minimum-error quantum state discrimination" https://arxiv.org/abs/1210.2845
+   -> 2012
+   -> Conditions d'optimalité, utilisation de l'erreur comme critère à minimiser. Optimisation convexe passée en problème dual. Cas symmetrique
+
+"Traitement du signal quantique : Effets de bruit utile et intrication." https://hal.univ-angers.fr/tel-02362771/document
+
+
+"A method for globally minimizing concave functions over convex sets" https://link.springer.com/content/pdf/10.1007/BF01589330.pdf
+   -> 1980
+   -> A priori méthode globale, a voir efficacité
+
+https://minlp.com/baron
+   -> Une alternative à IbexOpt, payante...

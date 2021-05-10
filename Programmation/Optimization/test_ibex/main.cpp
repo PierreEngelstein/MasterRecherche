@@ -6,7 +6,7 @@
 #define print(x) print_base(std::cout, x)
 #define println(x) print(x << std::endl);
 
-int main_1()
+int main_11()
 {
     {
         println("**********")

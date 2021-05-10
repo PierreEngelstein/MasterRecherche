@@ -1,0 +1,209 @@
+@page "/"
+@implements IDisposable
+@using Plotly.Blazor.Traces.ScatterLib
+@using IntSharp.Types
+@using IntervalEval
+@using Plotly.Blazor.LayoutLib
+@using System.Threading
+@using System.Diagnostics
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="container">
+                <div class="row">
+                    <label class="form-label">Current iteration: @($"{_currentIteration} / {_iterations}") </label>
+                </div>
+                <div class="row">
+                    <label class="form-label">Execution time: @($"{_executionTime} s") </label>
+                </div>
+                <div class="row">
+                    <label class="form-label">Max interval width: @($"{_maxIntervalWidth}") </label>
+                </div>
+                <div class="row">
+                    <label class="form-label">Boxes amount: @($"{_intervalAmount}") </label>
+                </div>
+                <div class="row">
+                    <label class="form-label" for="typeNumber">Optimization iterations</label>
+                </div>
+                <div class="row">
+                    <div class="form-outline">
+                        <input
+                            type="number"
+                            id="typeNumber"
+                            value="@_iterations"
+                            @onchange="@(async e => await SelectIterations(e, _tokenSource.Token))">
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="form-label">Optimization type : @_optimizationType</label>
+                </div>
+                <div class="row">
+                    <button class="btn btn-outline-secondary" @onclick="@(async () => await SelectOptimizationType("Maximize", _tokenSource.Token))">Maximize</button>
+                </div>
+                <div class="row">
+                    <button class="btn btn-outline-secondary" @onclick="@(async () => await SelectOptimizationType("Minimize", _tokenSource.Token))">Minimize</button>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <select @onchange="@(async e => await SelectDimension(e, _tokenSource.Token))">
+                            <option value="2D">2D</option>
+                            <option value="3D">3D</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <select @onchange="@(async e => await SelectProblem(e, _tokenSource.Token))" style="max-width: 1000%">
+                            @foreach (var problemDescriptor in _currentProblems)
+                            {
+                                <option value="@_currentProblems.IndexOf(problemDescriptor)">@problemDescriptor</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-outline-secondary" @onclick="@(() => _tokenSource.Cancel())">Cancel running operation</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <PlotlyChart @bind-Config="@_config" @bind-Layout="@_layout" @bind-Data="@_data" @ref="_chart"/>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private PlotlyChart _chart;
+    private Config _config;
+    private Layout _layout;
+    private IList<ITrace> _data;
+    private OptimizationType _optimizationType = OptimizationType.Maximization;
+    private List<ProblemDescriptor> _currentProblems;
+    private ProblemDescriptor _selectedProblem;
+    private int _iterations = 1;
+    private string _dimension = "2D";
+    private CancellationTokenSource _tokenSource;
+    private int _currentIteration;
+    private double _executionTime;
+    private double _maxIntervalWidth;
+    private double _intervalAmount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _tokenSource = new CancellationTokenSource();
+        _currentProblems = ProblemDescriptor.Problems2D;
+        _selectedProblem = _currentProblems[0];
+        _data = new List<ITrace>();
+        _config = new Config();
+        _currentIteration = 0;
+        Optimizer.OptimizationIterations.OnChange += OnIterationChange;
+        _layout = new Layout
+        {
+            Width = 500, Height = 500, Title = new Title{Text = _currentProblems[0].ToString()}
+        };
+        await Optimize(_iterations, _optimizationType, _tokenSource.Token);
+    }
+    
+    private void OnIterationChange(object sender, int iteration)
+    {
+        _currentIteration = iteration-1;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SelectProblem(ChangeEventArgs e, CancellationToken token = default)
+    {
+        if (!int.TryParse((string) e.Value, out var selectedProblemIndex)) return;
+        _selectedProblem = _currentProblems[selectedProblemIndex];
+        Console.WriteLine(_selectedProblem);
+        await Optimize(_iterations, _optimizationType, token);
+    }
+
+    private async Task SelectDimension(ChangeEventArgs e, CancellationToken token = default)
+    {
+        _dimension = (string) e.Value;
+        _currentProblems = string.Equals(_dimension, "3D") ? ProblemDescriptor.Problems3D : ProblemDescriptor.Problems2D;
+        _selectedProblem = _currentProblems[0];
+        await Optimize(_iterations, _optimizationType, token);
+    }
+
+    private async Task SelectOptimizationType(string optimizationType, CancellationToken token = default)
+    {
+        if (string.Equals(optimizationType, "Maximize"))
+        {
+            _optimizationType = OptimizationType.Maximization;
+        }else if (string.Equals(optimizationType, "Minimize"))
+        {
+            _optimizationType = OptimizationType.Minimization;
+        }
+        await Optimize(_iterations, _optimizationType, token);
+    }
+
+    private async Task SelectIterations(ChangeEventArgs e, CancellationToken token = default)
+    {
+        if (!int.TryParse((string) e.Value, out var selectedIterations)) return;
+        _iterations = selectedIterations;
+        await Optimize(_iterations, _optimizationType, token);
+    }
+
+    private async Task Optimize(int iterations, OptimizationType optimizationType, CancellationToken token = default)
+    {
+        await Task.Run(() =>
+        {
+            _iterations = iterations;
+            _data.Clear();
+            _chart?.Purge();
+            var sw = new Stopwatch();
+            sw.Start();
+            var result = Optimizer.Optimize(string.Equals(_dimension, "2D") ? new[]
+            {
+                Interval.FromInfSup(-2, 2),
+                Interval.FromInfSup(-2, 2)
+            } : new[]
+            {
+                Interval.FromInfSup(-2, 2),
+                Interval.FromInfSup(-2, 2),
+                Interval.FromInfSup(-2, 2)
+            }, _selectedProblem.Function, _selectedProblem.Constraints, optimizationType, iterations, false, token);
+            sw.Stop();
+            _maxIntervalWidth = result.MaxWidth();
+            _intervalAmount = result.Count();
+            _executionTime = sw.ElapsedMilliseconds / 1000.0;
+            InvokeAsync(StateHasChanged);
+            foreach (var intervals in result.Select(enumerable => enumerable as Interval[] ?? enumerable.ToArray()))
+            {
+                _data.Add(string.Equals(_dimension, "2D") ? new Scatter
+                {
+                    Mode = ModeFlag.Lines | ModeFlag.Markers,
+                    Fill = FillEnum.ToSelf,
+                    X = new List<object> {intervals[0].Infimum, intervals[0].Infimum, intervals[0].Supremum, intervals[0].Supremum, intervals[0].Infimum},
+                    Y = new List<object> {intervals[1].Infimum, intervals[1].Supremum, intervals[1].Supremum, intervals[1].Infimum, intervals[1].Infimum}
+                } : new Mesh3D
+                {
+                    X = new List<object> {intervals[0].Infimum, intervals[0].Infimum, intervals[0].Supremum, intervals[0].Supremum, intervals[0].Infimum, intervals[0].Infimum, intervals[0].Supremum, intervals[0].Supremum},
+                    Y = new List<object> {intervals[1].Infimum, intervals[1].Supremum, intervals[1].Supremum, intervals[1].Infimum, intervals[1].Infimum, intervals[1].Supremum, intervals[1].Supremum, intervals[1].Infimum},
+                    Z = new List<object> {intervals[2].Infimum, intervals[2].Infimum, intervals[2].Infimum, intervals[2].Infimum, intervals[2].Supremum, intervals[2].Supremum, intervals[2].Supremum, intervals[2].Supremum},
+                    I = new List<object> {7, 0, 0, 0, 4, 4, 6, 6, 4, 0, 3, 2},
+                    J = new List<object> {3, 4, 1, 2, 5, 6, 5, 2, 0, 1, 6, 3},
+                    K = new List<object> {0, 7, 2, 3, 6, 7, 1, 1, 5, 5, 7, 6}
+                });
+            }
+            _layout.Width = 500;
+            _layout.Height = 500;
+            _layout.Title = new Title {Text = _selectedProblem.ToString()};
+            if (_chart == null) return;
+            _chart.Layout = _layout;
+            _chart?.Update();
+        }, token);
+        await InvokeAsync(StateHasChanged);
+        _tokenSource.Dispose();
+        _tokenSource = new CancellationTokenSource();
+    }
+
+    public void Dispose()
+    {
+        _tokenSource.Cancel();
+        _tokenSource.Dispose();
+        Optimizer.OptimizationIterations.OnChange -= OnIterationChange;
+    }
+
+}

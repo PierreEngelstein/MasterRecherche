@@ -1,0 +1,142 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage{qcircuit}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{appendix}
+\usepackage{hyperref}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{cleveref}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{amssymb}
+\DeclareMathOperator{\tr}{tr}
+
+
+\title{Information mutuelle pour la construction d'un détecteur quantique optimal}
+\date{}
+
+\begin{document}
+    \maketitle
+
+    Le problème de la détection d'état quantique porte sur un ensemble de $m$ états quantiques représentés par les opérateurs densité $\{\rho_i \; , \; 1 \leq i \leq m\}$ munis des probabilités préalables $\{p_i \geq 0 \; , \; 1 \leq i \leq m \}$. L'objectif est d'obtenir un ensemble de $m$ opérateurs de mesure $\{\Pi_j \; , \; 1 \leq i \leq m\}$ permettant de mesurer le mieux possible par rapport aux probabilités les états d'entrée qui nous arrivent.
+
+    Les opérateurs $\rho_i$ et $\Pi_i$ sont des matrices Hermitiennes semi-définies positives, de la forme $\begin{bmatrix}a & b+ic \\ b-ic & d \end{bmatrix}$.
+
+
+    Plusieurs critères ont été proposés à optimiser afin de construire ces détecteurs optimaux. D'une part, on a la possibilité de travailler sur la minimisation de l'erreur de mesure (l'erreur moyenne ou l'erreur quadratique). D'autre part, et c'est ce sur quoi nous avons travaillé, on peut considérer le critère de l'information mutuelle comme critère à maximiser. Ce critère indique la dépendance de deux variables aléatoires entre elles, il permet dans notre cas de bien caractériser la quantité d'information qu'on peut retirer des états d'entrée en ayant les opérateurs de mesure
+\medbreak
+    L'information mutuelle de deux variables aléatoires $X$ et $Y$ est donnée par:
+
+    \begin{align}
+        I(X;Y) = \displaystyle \sum_{y \in Y} \displaystyle \sum_{x \in X} p_{(X, Y)}(x, y) \log \big(\frac{p_{(X, Y)}(x, y)}{p_X(x) p_Y(y)}\big),
+    \end{align}
+
+    mais peut aussi être écrite en fonction des entropies des variables aléatoires:
+
+    \begin{align}
+        I(X; Y) &= H(X) - H(X | Y) \\
+                &= H(Y) - H(Y | X) \\
+                &= H(X) + H(Y) - H(X, Y).
+    \end{align}
+
+    Avec $H(X)$ entropie marginale de $X$, $H(Y)$ entropie marginale de $Y$, $H(X|Y)$ entropie conditionelle de $X$ sachant $Y$ et enfin $H(X, Y)$ entropie jointe de $X$ et $Y$. On peut utiliser indifférement $\log_2$, $\log_{10}$ ou $\ln$ pour le logarithme, le changement étant à une constante près.
+
+    Dans le cas classique, les entropies marginales, conditionnelles et jointes sont définies par: 
+    
+    \begin{align}
+        H(X) &= -\displaystyle \sum_{x \in X} p(x) \log(p(x)) , \\
+        H(Y) &= -\displaystyle \sum_{y \in Y} p(y) \log(p(y)) , \\
+        H(X, Y) &= -\displaystyle \sum_{x \in X} \displaystyle \sum_{y \in Y} p(x, y) \log(p(x, y)), \\
+        H(Y|X) &= -\displaystyle \sum_{x \in X, y \in Y} p(x, y) \log \big(\frac{p(x, y)}{p(x)}\big)
+    \end{align}
+
+    Dans le cas quantique, les formules restent les mêmes, mais on exprime les probabilités des variables en fonction des valeurs des états quantiques d'entrée.
+
+    En fonction d'un état d'entrée $\rho_i$ de probabilité préalable $p_i$, et d'un opérateur de sortie $\Pi_i$, on peut définir leur probabilité jointe :
+
+    \begin{align}
+        p(X = \rho_i, Y = \Pi_i) = p_i \tr(\rho_i \Pi_i).
+    \end{align}
+
+    On en déduit les probabilités marginales:
+
+    \begin{align}
+        p(X = \rho_i) = \displaystyle \sum_{j}p_i \tr(\rho_i \Pi_j)  \\
+        p(Y = \Pi_j) = \displaystyle \sum_{i}p_i \tr(\rho_i \Pi_j),
+    \end{align}
+
+    Et les probabilités conditionelles:
+
+    \begin{align}
+        P(Y=\Pi_j | X=\rho_i) = \frac{\tr(\rho_i \Pi_j)}{\displaystyle \sum_{k} \tr(\rho_i \Pi_k)}
+    \end{align}
+
+    L'information mutuelle pour notre problème peut donc être ré-écrite de la façon suivante, en utilisant $\alpha_{ij} = \tr(\rho_i \Pi_j)$ :
+
+    \begin{align}
+        \label{eq:mi}
+        I(\rho; \Pi) &= H(\rho) + H(\Pi) - H(\rho, \Pi) \nonumber \\
+        &= - \displaystyle \sum_{i=1}^{m} \big(\displaystyle \sum_{j=1}^{m} \alpha_{ij} \big) \log \big( \displaystyle \sum_{j=1}^{m} \alpha_{ij} \big) - \displaystyle \sum_{i=1}^{m} \big(\displaystyle \sum_{j=1}^{m} \alpha_{ji} \big) \log \big( \displaystyle \sum_{j=1}^{m} \alpha_{ji}\big) + \displaystyle \sum_{i=1}^{m} \displaystyle \sum_{j=1}^{m} \alpha_{ij} \log( \alpha_{ij} )
+    \end{align}
+
+    On peut aussi exprimer l'information mutuelle en fonction de l'entropie conditionnelle, mais il est plus efficace d'utiliser celle donnée à l'équation \ref{eq:mi} pour la résolution numérique.
+
+    Le problème se formule comme un problème de maximization de l'information mutuelle: on cherche à maximiser l'information qu'on peut obtenir sur $\rho_i$ quand on a les opérateurs de mesure $\Pi_i$:
+
+    \begin{align}
+        \max\limits_{\Pi} I(\rho, \Pi)
+    \end{align}
+    tel que :
+
+    \begin{align}
+        \Pi_j \succeq 0 \quad 1 \leq j \leq m \label{eq:contrainte_sdp} \\
+        \displaystyle \sum_{j=1}^{m} \Pi_j = I \label{eq:contrainte_somme_id}
+    \end{align}
+
+    La contrainte \ref{eq:contrainte_sdp} correspond à la semi-définition positive des opérateurs de mesure $\Pi_j$. Enfin, la contrainte \ref{eq:contrainte_somme_id} permet d'obtenir des opérateurs de mesure cohérents pour que les probabilités de mesure $p(j) = \tr (\rho \Pi_j)$ soient positives et se somment à 1.
+
+    On est en présence d'une fonction convexe, et les contraintes engendrent un ensemble admissible convexe. C'est le cas idéal lors d'une minimisation, mais le problème est une maximisation, donc concave, on ne peut donc pas juste faire une descente de gradient pour le résoudre. On peut utiliser un certain nombre de méthodes approximatives, nous utilisons le calcul par intervalle afin d'obtenir un résultat sûr dans un intervalle.
+
+    \medbreak
+
+    La définition du problème permet de résoudre notament les cas immédiats des opérateurs de densité orthogonaux, mais la résolution devient très lente lorsqu'on passe à d'autres cas non orthogonaux. On rajoute des conditions au problème pour accélérer la résolution.
+    
+    Le premier élément à simplifier est l'expression de l'entropie marginale de $X=\rho_i$. En effet, nous l'avons exprimé en fonction de la trace de la multiplication matricielle, mais on peut reprendre la définition donnée lors du cas classique qui indique que $ H(X) = -\displaystyle \sum_{x \in X} p(x) \log(p(x))$. Le problème nous indique que nous connaissons les probabilités préalables des états d'entrée, on peut donc directement exprimer cette entropie en fonction de ces données et donc sans les variables de sortie $\Pi_i$.
+
+    Ensuite, on sait que les opérateurs de mesure se somment à l'identité. Cela signifie d'une part qu'on peut passer d'un problème à $m$ matrices à un problème à $m-1$ matrices pour $m \geq 2$. Les matrices étant carrées de dimension $n$, on passe de $m \times n^2$ variables à $(m - 1) \times n^2$ variables, ce qui est non négligeable.
+
+    Enfin, le problème et les contraintes sont symmétriques, on peut intervertir les $\Pi_j$ sans influencer le résultat de la fonction coût. Cela nous permet de couper le problème au moins en deux pour réduire à nouveau le temps de calcul. Du fait de la somme à l'identité, on peut ajouter en condition que $\Pi_{1_{1, 1}} \leq \frac{1}{m}$ pour $m$ opérateurs de mesure, puis $\Pi_{2_{1, 1}} \leq \frac{1}{m-1}$, etc.
+
+    \medbreak
+
+    Pour la résolution de ce problème, utilisons la librairie \texttt{ibex} permettant de faire du calcul par intervale, et possède entre autres un outil d'optimisation, \texttt{ibexopt}. Le problème est formulé avec un langage dédié, \texttt{minibex}. Nous avons eu besoin de définir un opérateur additionnel à ceux présents, l'opérateur \texttt{xlog} permettant d'effectuer l'opération $x \times \log(x)$ en redéfinissant $0 \times \log(0) = 0$ pour que les intervalles ne tombent pas à l'infiniquand ils contiennent 0. De plus, \texttt{minibex} ne considère que des problèmes de minimisation, on ré-écrit le problème en prenant la fonction coût opposée : $\max f(x) \Leftrightarrow \min -f(x)$.
+    \medbreak
+    Le premier test effectué est sur le cas de deux états d'entrée $\ket{\psi_1} = \ket{0}$ et $\ket{\psi_2} = \ket{1}$ ayant pour probabilité respective $p_1 = 0.1$ et $p_2 = 0.9$. Le résultat théorique est connu: les états étant orthogonaux, on doit obtenir les opérateurs de mesure égaux aux opérateurs densité d'entrée. On obtient bien avec \texttt{ibex} les opérateurs suivant:
+
+    $\Pi_1 = \begin{bmatrix} 0 & 0 \\ 0 & 1\end{bmatrix} , \quad \Pi_2 = \begin{bmatrix} 1 & 0 \\ 0 & 0\end{bmatrix},$
+
+    qui correspondent bien à deux opérateurs de mesure orthogonaux. Dans ce cas, l'information mutuelle est comprise dans l'intervalle $I(\rho, \Pi) \in [0.3250, 0.3254]$, avec un temps de calcul de 24 millisecondes.
+\medbreak
+    Le deuxième cas qu'on peut présenter est le suivant: $\ket{\psi_1} = \ket{0}$ et $\ket{\psi_1} = \ket{+}$ avec comme probabilité respectives $p_1 = 0.1$ et $p_2 = 0.9$. Le résultat théorique n'est pas donné, et on obtient avec \texttt{ibex} le résultat suivant:
+
+    $\Pi_1 = \begin{bmatrix} 0.446 & 0.497 \\ 0.497 & 0.554\end{bmatrix} , \quad \Pi_2 = \begin{bmatrix} 0.554 & -0.497 \\ -0.497 & 0.446\end{bmatrix},$
+    
+    avec une information mutuelle comprise dans l'intervalle $I(\rho, \Pi) \in [0.1348, 0.1349]$, et un temps de calcul de 300 secondes.
+
+    % On voit bien avec ces deux exemples l'augmentation radicale du temps de calcul quand on passe d'un problème simple, même orthogonal, à un problème plus compliqué.
+
+\end{document}

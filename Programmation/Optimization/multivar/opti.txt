@@ -1,0 +1,9 @@
+Variables 
+    m1a[2] in ([-2, 2] ; [-2, 2]);
+
+Minimize
+    -mi(m1a)
+
+Constraints
+    m1a(1)^2 + m1a(2)^2 = 1; 
+end
