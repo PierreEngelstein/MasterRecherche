@@ -1,0 +1,68 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{amsthm}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{gensymb}
+\usepackage{tikz}
+\usepackage{qcircuit}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{appendix}
+\usepackage{hyperref}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{titlesec}
+\usepackage{cleveref}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{amssymb}
+\DeclareMathOperator{\tr}{tr}
+
+\newtheorem{definition}{Définition}
+\newtheorem{pb}{Problème}
+\newtheorem{rem}{Remarque}
+\newtheorem{ex}{Exemple}
+\newtheorem{prop}{Propriété}
+
+\title{}
+\date{}
+\begin{document}
+\begin{align}
+    H(\alpha) &= -\alpha \log(\alpha) \\
+    E_C &= H(p_{11}) + H(p_{12}) + H(p_{21}) + H(p_{22}) \nonumber\\
+    &= -p_{22}log(p_{22})-p_{21}log(p_{21})-p_{12}log(p_{12})-p_{11}log(p_{11})\\
+    E_X &= H(p_{11} + p_{12}) + H(p_{21} + p_{22}) \nonumber\\
+    &= (-p_{22}-p_{21})log(p_{22}+p_{21})+(-p_{12}-p_{11})log(p_{12}+p_{11}) \\
+    E_Y &= H(p_{11} + p_{21}) + H(p_{12} + p_{22})\nonumber\\
+    &= (-p_{22}-p_{12})log(p_{22}+p_{12})+(-p_{21}-p_{11})log(p_{21}+p_{11}) \\
+    I &= E_C-E_X-E_Y\nonumber\\
+    &= (p_{22}+p_{21})log(p_{22}+p_{21})+(p_{22}+p_{12})log(p_{22}+p_{12}) \nonumber\\
+    &-p_{22}log(p_{22})+(p_{21}+p_{11})log(p_{21}+p_{11})-p_{21}log(p_{21})\nonumber\\
+    &+(p_{12}+p_{11})log(p_{12}+p_{11})-p_{12}log(p_{12})-p_{11}log(p_{11}) \\
+    \frac{\partial ^2 I}{ \partial p_{11}^2} &= \frac{1}{p_{21}+p_{11}} + \frac{1}{p_{12}+p_{11}} - \frac{1}{p_{11}} \\
+    \frac{\partial ^2 I}{ \partial p_{12}^2} &= \frac{1}{p_{22}+p_{12}} + \frac{1}{p_{12}+p_{11}} - \frac{1}{p_{12}} \label{eq:diff_p12}\\
+    \frac{\partial ^2 I}{ \partial p_{21}^2} &= \frac{1}{p_{22}+p_{21}} + \frac{1}{p_{21}+p_{11}} - \frac{1}{p_{21}} \\
+    \frac{\partial ^2 I}{ \partial p_{22}^2} &= \frac{1}{p_{22}+p_{21}} + \frac{1}{p_{22}+p_{12}} - \frac{1}{p_{22}}
+\end{align}
+
+Négativité de \ref{eq:diff_p12} : 
+
+\begin{align}
+    & \frac{1}{p_{22}+p_{12}} + \frac{1}{p_{12}+p_{11}} - \frac{1}{p_{12}} < 0 \\
+    & \frac{1}{p_{22}+p_{12}} + \frac{1}{p_{12}+p_{11}} < \frac{1}{p_{12}} \\
+    & \frac{p_{12} + p_{11} + p_{22} + p_{12}}{(p_{22} + p_{12})(p_{12}+p_{11})} < \frac{1}{p_{12}} \\
+    & \frac{p_{12}(2p_{12} + p_{11} + p_{22})}{p_{12}(p_{22} + p_{12})(p_{12}+p_{11})} < \frac{(p_{22} + p_{12})(p_{12}+p_{11})}{p_{12}(p_{22} + p_{12})(p_{12}+p_{11})} \\
+    & p_{12}(2p_{12} + p_{11} + p_{22}) < (p_{22} + p_{12})(p_{12}+p_{11}) \\
+    & 2p_{12}^2 + p_{12}p_{11} + p_{12}p_{22} < p_{12}^2 + p_{12}p_{11} + p_{12}p_{22} + p_{22}p_{11} \\
+    & p_{12}^2 < p_{22}p_{11} \\
+    & p_{12} < \sqrt{p_{22}p_{11}}
+\end{align}
+Et même raisonnement pour les 3 autres dérivées secondes \dots
+\end{document}

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using IntSharp;
 using IntSharp.Types;
+using Math = System.Math;
 
 namespace IntervalEval
 {
@@ -15,119 +19,12 @@ namespace IntervalEval
     public static class Optimizer
     {
         public static readonly TypeListener<int> OptimizationIterations = new();
-        
-        /*
-        private static void Optimize(IEnumerable<Interval> variables, OptimizationType optimizationType = OptimizationType.Minimization, double precision=1e-07)
-        {
-            var vars = new List<IEnumerable<Interval>>();
-        
-            vars.Add(variables);
-            for (int iter = 0; iter < 2; iter++)
-            {
-                Console.WriteLine($"Iteration {iter}");
-                var stopwatchGlobal = new Stopwatch();
-                stopwatchGlobal.Start();
-                var newVar = new List<IEnumerable<Interval>>();
-                var stopwatch = new Stopwatch();
-                foreach (var variableList in vars)
-                {
-                    var bisectLeft = new List<Interval>();
-                    var bisectRight = new List<Interval>();
-                    foreach (var interval in variableList)
-                    {
-                        var (left, right) = interval.Bisect();
-                        bisectLeft.Add(left);
-                        bisectRight.Add(right);
-                    }
-                    newVar.Add(bisectLeft);
-                    newVar.Add(bisectRight);
-                }
-                vars.Clear();
-                
-                var res = CartesianProduct(Transpose(newVar));
-                Console.WriteLine($"res.length = {res.Count()}");
-                Console.WriteLine("****");
-                foreach (var enumerable in res)
-                {
-                    Print(enumerable);
-                }
-                Console.WriteLine("****");
-                
-                var correct = new List<IEnumerable<Interval>>();
-                var mutex = new Mutex();
-                stopwatch.Restart();
-                Parallel.ForEach(res, enumerable =>
-                {
-                    var resultConstraints = Constraint(enumerable);
-                    if (!resultConstraints)
-                    {
-                        mutex.WaitOne();
-                        Console.Write("Not correct: ");
-                        Print(enumerable);
-                        mutex.ReleaseMutex();
-                    }
-                    mutex.WaitOne();
-                    if (resultConstraints && !Contains(correct, enumerable))
-                    {
-                        correct.Add(enumerable);
-                    }
-                    mutex.ReleaseMutex();
-                });
-                stopwatch.Stop();
-                Console.WriteLine($"Correct.size = {correct.Count()}");
-                Console.WriteLine($"Delta time Constraints: {stopwatch.ElapsedMilliseconds}");
-        
-                var keep = new List<IEnumerable<Interval>>();
-                var previous = correct.Count;
-        
-                stopwatch.Restart();
-                // Parallel evaluation of function to remove upper / lower bounded values (depending on min or max)
-                Parallel.For(0, correct.Count, i =>
-                {
-                    var valueFunctionI = Function(correct[i]);
-                    var ok = true;
-                    var mutexOk = new Mutex();
-                    Parallel.For(0, correct.Count, (j, state) =>
-                    {
-                        var valueFunctionJ = Function(correct[j]);
-                        if (i == j) return;
-                        mutexOk.WaitOne();
-                        switch (optimizationType)
-                        {
-                            case OptimizationType.Minimization:
-                                if (valueFunctionI.Infimum > valueFunctionJ.Supremum) ok = false;
-                                break;
-                            case OptimizationType.Maximization:
-                                if (valueFunctionI.Supremum < valueFunctionJ.Infimum) ok = false;
-                                break;
-                        }
-                        mutexOk.ReleaseMutex();
-                        if (!ok) state.Break();
-                    });
-                    mutexOk.Close();
-        
-                    mutex.WaitOne();
-                    if(ok && !Contains(keep, correct[i])) keep.Add(correct[i]);
-                    mutex.ReleaseMutex();
-                });
-                mutex.Close();
-                stopwatch.Stop();
-                Console.WriteLine($"Delta time Function Eval: {stopwatch.ElapsedMilliseconds}");
-        
-                correct.Clear();
-                vars = keep;
-                Console.WriteLine($"vars.Count = {vars.Count}");
-                Console.WriteLine($"Eliminated box amount = {previous - vars.Count}");
-                stopwatchGlobal.Stop();
-                Console.WriteLine($"Delta time Total: {stopwatchGlobal.ElapsedMilliseconds}");
-                Console.WriteLine("==========");
-                
-            }
-            
-            Console.WriteLine(vars.Count);
-        }
-        */
-        
+        public static readonly TypeListener<double> PrecisionF = new();
+        public static readonly TypeListener<double> IntervalFMinimum = new();
+        public static readonly TypeListener<double> IntervalFMaximum = new();
+        public static readonly TypeListener<List<double>> EvolutionBoxesAmount = new();
+        public static readonly TypeListener<List<Dictionary<int, double>>> EvolutionVolumeBoxesByCategory = new();
+
         /// <summary>
         /// Launches an optimization operation.
         /// </summary>
@@ -137,109 +34,201 @@ namespace IntervalEval
         /// <param name="optimizationType">Are we maximizing or minimizing ? Defaults to minimization</param>
         /// <param name="iterations">Number of iterations for the optimization. Defaults to 1</param>
         /// <param name="debug">If true, prints additional debug information to console.</param>
+        /// <param name="additionalArguments">Additional arguments passed to the evaluation function if needed</param>
         /// <param name="token">Cancels the running optimization if asked.</param>
         /// <returns>List of reduced intervals as solution</returns>
-        public static IEnumerable<IEnumerable<Interval>> Optimize(
+        public static IEnumerable<OptimizerSolution> Optimize(
             IEnumerable<Interval> variables, 
-            Func<IEnumerable<Interval>, Interval> function,
-            Func<IEnumerable<Interval>, bool> constraints,
+            Func<OptimizerSolution, List<object>, Tuple<Interval, bool, int, IEnumerable<Interval>>> function,
+            Func<OptimizerSolution, bool> constraints,
             OptimizationType optimizationType = OptimizationType.Minimization, 
-            int iterations = 1, 
+            int iterations = 1,
             bool debug = false,
+            List<object> additionalArguments = null,
             CancellationToken token = default
             )
         {
+            EvolutionBoxesAmount.Value = new List<double>();
+            EvolutionVolumeBoxesByCategory.Value = new List<Dictionary<int, double>>();
             if(debug) Console.WriteLine(optimizationType == OptimizationType.Minimization ? "Min" : "Max");
             var enumerable = variables as Interval[] ?? variables.ToArray();
             // List of current leaves to be processed
-            var currentList = new List<IEnumerable<Interval>> {enumerable};
-
+            var currentList = new List<OptimizerSolution> {new(enumerable, false, -1, null)};
+            var sw = new Stopwatch();
             for (OptimizationIterations.Value = 0; OptimizationIterations.Value <= iterations; OptimizationIterations.Value++)
             {
-                if (token.IsCancellationRequested) return new List<IEnumerable<Interval>>(); // Cancel operation if asked
+                if (token.IsCancellationRequested) return new List<OptimizerSolution>(); // Cancel operation if asked
                 if(debug) Console.WriteLine($"Iteration {OptimizationIterations.Value}");
                 // New list of leaves
-                var nextList = new List<IEnumerable<Interval>>();
+                var nextList = new List<OptimizerSolution>();
+                // List of leaves that are uncertain (ex: have thrown an IntervalEvalException, meaning we don't treat them and just bisect and treat their children
+                var uncertainList = new List<OptimizerSolution>();
                 var listImages = new List<Interval>();
-                // Process each leaf in the list
-                foreach (var intervals in currentList)
+                var listImagesMedium = new List<Interval>();
+                
+                sw.Restart();
+                // Process each leaf in the list (parallelized, gains a lot of time) 
+                var tokenCancelled = false;
+                Parallel.ForEach(currentList, (intervals, state) =>
                 {
-                    if (token.IsCancellationRequested) return new List<IEnumerable<Interval>>(); // Cancel operation if asked
+                    if (token.IsCancellationRequested)
+                    {
+                        tokenCancelled = true;
+                        state.Break();
+                    }
                     // Bisect the leaf, and check constraints. If the resulting intervals matches constraints,
                     // add them to the new list of leaves, otherwise throw them out.
                     var (leftIt, rightIt) = intervals.Bisect();
                     if (constraints(leftIt))
                     {
-                        nextList.Add(leftIt);
-                        // Compute image of leaf
-                        listImages.Add(function(leftIt));
-                    }
-                    else
-                    {
-                        if(debug) Console.Write("Removing out-constrained interval ");
-                        if(debug) IntervalHelpers.Print(leftIt);
-                    }
-                    if (constraints(rightIt))
-                    {
-                        nextList.Add(rightIt);
-                        // Compute image of leaf
-                        listImages.Add(function(rightIt));
-                    }
-                    else
-                    {
-                        if(debug) Console.Write("Removing out-constrained interval ");
-                        if(debug) IntervalHelpers.Print(rightIt);
-                    }
-                }
-                var correctList = new List<IEnumerable<Interval>>();
-                // Remove out of bounds leaves 
-                for (var i = 0; i < nextList.Count; i++)
-                {
-                    if (token.IsCancellationRequested) return new List<IEnumerable<Interval>>(); // Cancel operation if asked
-                    var ok = true;
-                    var valueFunctionI = listImages[i];
-                    // Check if leaf valueFunctionI has any leaf strictly superior to it (minimization) or
-                    // strictly inferior to it (maximization). If so, discard it.
-                    for (var j = 0; j < nextList.Count; j++)
-                    {
-                        if (i != j)
+                        // Compute image of left bisected box
+                        try
                         {
-                            var valueFunctionJ = listImages[j];
-                            switch (optimizationType)
+                            var (interval, isGradient, gradientSolution, gradient) = function(leftIt, additionalArguments);
+                            var (middle, _, _, _) = function(leftIt.Middle(), additionalArguments);
+                            lock (nextList) lock(listImages) lock(listImagesMedium)
                             {
-                                case OptimizationType.Minimization:
-                                    if (valueFunctionI.Infimum > valueFunctionJ.Supremum) ok = false;
-                                    break;
-                                case OptimizationType.Maximization:
-                                    if (valueFunctionI.Supremum < valueFunctionJ.Infimum) ok = false;
-                                    break;
-                                default:
-                                    if(debug) Console.WriteLine($"Warning: incorrect optimization type {optimizationType}");
-                                    break;
+                                nextList.Add(new OptimizerSolution(leftIt.Solutions, isGradient, gradientSolution, gradient, leftIt.RespectedConstraints));
+                                listImages.Add(interval);
+                                listImagesMedium.Add(middle);
                             }
+                            // Console.WriteLine("RIGHT IS OK !!!!");
                         }
-                        if (!ok) break;
+                        catch (IntervalEvalException e)
+                        {
+                            // Console.WriteLine("LEFT UNCERTAIN");
+                            uncertainList.Add(new OptimizerSolution(leftIt.Solutions, leftIt.GradientTagged, leftIt.GradientSolution, leftIt.Gradient, leftIt.RespectedConstraints));
+                        }
+                    }
+                    else
+                    {
+                        if(debug) Console.Write("Removing out-constrained interval ");
+                        if(debug) IntervalHelpers.Print(leftIt.Solutions);
                     }
                     
-                    // If not out of bounds, keep it
-                    if (ok) correctList.Add(nextList[i]);
+                    
+                    if (constraints(rightIt))
+                    {
+                        // Compute image of right bisected box
+                        try
+                        {
+                            var (interval, isGradient, gradientSolution, gradient) = function(rightIt, additionalArguments);
+                            var (middle, _, _, _) = function(rightIt.Middle(), additionalArguments);
+                            lock (nextList) lock(listImages) lock(listImagesMedium)
+                            {
+                                nextList.Add(new OptimizerSolution(rightIt.Solutions, isGradient, gradientSolution, gradient, rightIt.RespectedConstraints));
+                                listImages.Add(interval);
+                                listImagesMedium.Add(middle);
+                            }
+                            // Console.WriteLine("RIGHT IS OK !!!!");
+                        }
+                        catch (IntervalEvalException e)
+                        {
+                            // Console.WriteLine("RIGHT UNCERTAIN");
+                            uncertainList.Add(new OptimizerSolution(rightIt.Solutions, rightIt.GradientTagged, rightIt.GradientSolution, rightIt.Gradient, rightIt.RespectedConstraints));
+                        }
+                    }
                     else
                     {
-                        if(debug) Console.Write("Removing outbound interval ");
-                        if(debug) IntervalHelpers.Print(nextList[i]);
+                        if(debug) Console.Write("Removing out-constrained interval ");
+                        if(debug) IntervalHelpers.Print(rightIt.Solutions);
+                    }
+                });
+                sw.Stop();
+                if(tokenCancelled) return new List<OptimizerSolution>(); // Cancel operation if asked
+                Console.WriteLine($"Leaf Processing: {sw.ElapsedMilliseconds} ms");
+                
+                var correctList = new List<OptimizerSolution>();
+                if(listImages.Count != 0)
+                {
+                    IntervalFMinimum.Value = listImages[0].Infimum;
+                    IntervalFMaximum.Value = listImages[0].Supremum;
+                }
+                else
+                {
+                    IntervalFMinimum.Value = IntervalFMaximum.Value = 0;
+                }
+                // Remove out of bounds leaves
+
+                // Get highest middle point
+                // Corresponds to sup([f]([x]) <= f(a) => x* not solution.
+                // We choose f(a) as the highest f([x].mid) (for max, or lowest for min)
+                sw.Restart();
+                var indexBestMiddle = 0;
+                for (var i = 0; i < nextList.Count; i++)
+                {
+                    switch (optimizationType)
+                    {
+                        case OptimizationType.Minimization:
+                            if (listImagesMedium[i].Mid() < listImagesMedium[indexBestMiddle])
+                                indexBestMiddle = i;
+                            break;
+                        case OptimizationType.Maximization:
+                            if (listImagesMedium[i].Mid() > listImagesMedium[indexBestMiddle])
+                                indexBestMiddle = i;
+                            break;
+                        default:
+                            if(debug) Console.WriteLine($"Warning: incorrect optimization type {optimizationType}");
+                            break;
                     }
                 }
+
+                for (var i = 0; i < nextList.Count; i++)
+                {
+                    switch (optimizationType)
+                    {
+                        case OptimizationType.Minimization:
+                            if(!(listImages[i].Infimum > listImagesMedium[indexBestMiddle])) correctList.Add(nextList[i]);
+                            break;
+                        case OptimizationType.Maximization:
+                            if(!(listImages[i].Supremum < listImagesMedium[indexBestMiddle])) correctList.Add(nextList[i]);
+                            break;
+                        default:
+                            if(debug) Console.WriteLine($"Warning: incorrect optimization type {optimizationType}");
+                            break;
+                    }
+                }
+                sw.Stop();
+                if(debug) Console.WriteLine($"Removed {nextList.Count - correctList.Count} / {nextList.Count} boxes in {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"Out of bounds removal: {sw.ElapsedMilliseconds} ms");
+                PrecisionF.Value = Math.Abs(IntervalFMaximum.Value - IntervalFMinimum.Value);
                 // Assign new list of leaves to the current one, and follow with new processing
                 currentList.Clear();
                 currentList = correctList;
+                currentList.AddRange(uncertainList);
+                Console.WriteLine($"correct: {correctList.Count} ; uncertain: {uncertainList.Count}");
 
-                if(debug) {
+                var currentEvolutionBoxesAmount = EvolutionBoxesAmount.Value;
+                currentEvolutionBoxesAmount.Add(currentList.Count + uncertainList.Count);
+                EvolutionBoxesAmount.Value = currentEvolutionBoxesAmount;
+                var currentEvolutionVolume = EvolutionVolumeBoxesByCategory.Value;
+                var dictionnary = new Dictionary<int, double>();
+                foreach (var optimizerSolution in currentList)
+                {
+                    if(optimizerSolution == null) continue;
+                    if (dictionnary.ContainsKey(optimizerSolution.RespectedConstraints))
+                    {
+                        // dictionnary[optimizerSolution.RespectedConstraints] += optimizerSolution.Volume();
+                        dictionnary[optimizerSolution.RespectedConstraints] += 1;
+                    }
+                    else
+                    {
+                        // dictionnary.Add(optimizerSolution.RespectedConstraints, optimizerSolution.Volume());
+                        dictionnary.Add(optimizerSolution.RespectedConstraints, 1);
+                    }
+                        
+                }
+                currentEvolutionVolume.Add(dictionnary);
+                EvolutionVolumeBoxesByCategory.Value = currentEvolutionVolume;
+
+                if (!debug) continue;
+                {
                     foreach (var intervals in currentList)
                     {
-                        IntervalHelpers.Print(intervals);
+                        IntervalHelpers.Print(intervals.Solutions);
                     }
+                    Console.WriteLine("==========");
                 }
-                if(debug) Console.WriteLine("==========");
             }
 
             return currentList;

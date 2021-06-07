@@ -1,0 +1,16 @@
+{
+    "Iso3D": {
+        "Description": ["Models Intersection by Abderrahman Taha 20/02/2020"],
+        "Name": ["Models_Intersection"],
+        "Component": ["Schwarz","Plan"],
+        "Cnd": ["(x-y-(3/2)*z<0)",""],
+        "Fxyz": ["cos(x-4*sin(t*pi))+cos(y)+cos(z)","x-y-(3/2)*z-(1/100)"],
+        "Grid": ["30","20"],
+        "Xmax": ["4+4*sin(t*pi)","6"],
+        "Xmin": ["-4+4*sin(t*pi)","-6"],
+        "Ymax": ["4","6"],
+        "Ymin": ["-4","-6"],
+        "Zmax": ["4","6"],
+        "Zmin": ["-4","-6"]
+    }
+}

@@ -25,13 +25,19 @@
 \usepackage{amssymb}
 \DeclareMathOperator{\tr}{tr}
 
+\newtheorem{definition}{Définition}
+\newtheorem{pb}{Problème}
+\newtheorem{rem}{Remarque}
+\newtheorem{ex}{Exemple}
+\newtheorem{prop}{Propriété}
 
 \title{Information mutuelle pour la construction d'un détecteur quantique optimal}
 \date{}
 
 \begin{document}
     \maketitle
-
+    
+    \subsection*{Formulation du problème}
     Le problème de la détection d'état quantique porte sur un ensemble de $m$ états quantiques représentés par les opérateurs densité $\{\rho_i \; , \; 1 \leq i \leq m\}$ munis des probabilités préalables $\{p_i \geq 0 \; , \; 1 \leq i \leq m \}$. L'objectif est d'obtenir un ensemble de $m$ opérateurs de mesure $\{\Pi_j \; , \; 1 \leq i \leq m\}$ permettant de mesurer le mieux possible par rapport aux probabilités les états d'entrée qui nous arrivent.
 
     Les opérateurs $\rho_i$ et $\Pi_i$ sont des matrices Hermitiennes semi-définies positives, de la forme $\begin{bmatrix}a & b+ic \\ b-ic & d \end{bmatrix}$.
@@ -109,19 +115,77 @@
 
     La contrainte \ref{eq:contrainte_sdp} correspond à la semi-définition positive des opérateurs de mesure $\Pi_j$. Enfin, la contrainte \ref{eq:contrainte_somme_id} permet d'obtenir des opérateurs de mesure cohérents pour que les probabilités de mesure $p(j) = \tr (\rho \Pi_j)$ soient positives et se somment à 1.
 
-    On est en présence d'une fonction convexe, et les contraintes engendrent un ensemble admissible convexe. C'est le cas idéal lors d'une minimisation, mais le problème est une maximisation, donc concave, on ne peut donc pas juste faire une descente de gradient pour le résoudre. On peut utiliser un certain nombre de méthodes approximatives, nous utilisons le calcul par intervalle afin d'obtenir un résultat sûr dans un intervalle.
+    On est en présence d'une fonction convexe, et les contraintes engendrent un ensemble admissible convexe. C'est le cas idéal lors d'une minimisation, mais le problème est une maximisation, de même difficulté qu'une minimisation concave, on ne peut donc pas juste faire une descente de gradient pour le résoudre. On peut utiliser un certain nombre de méthodes approximatives, nous utilisons le calcul par intervalle afin d'obtenir un résultat sûr dans un intervalle.
+
+    \subsection*{Convexité de l'information mutuelle}
+    Davies considère en 1978 que l'information mutuelle pour ce problème peut être considérée comme étant convexe, simplifiant la résolution du problème en ayant à chercher le maximum sur les bords. On s'intéresse ici à l'étude de cette convexité.
+    
+    Dans son article, Davies regroupe les traces et probabilités sous une seule variable $P_{ij} = p_i \tr(\rho_i \Pi_j)$. Ces coefficients $P_{ij}$ forment une matrice des probabilités, telle que :
+
+    \begin{align}
+        \displaystyle \sum_{ij} P_{ij} = 1, \\
+        \displaystyle \sum_{i}  P_{ij} = p_i.
+    \end{align}
+    L'information mutuelle s'écrit donc :
+
+    \begin{align}
+        I(P) = \displaystyle \sum_{i} H(\displaystyle \sum_{j}P_{ij}) + \displaystyle \sum_{j} H(\displaystyle \sum_{i}P_{ij}) -  \displaystyle \sum_{ij} H(P_{ij}) 
+    \end{align}
+
+    La fonction $H(x) = -x \log(x)$ est convexe, et donc $I$ est convexe par rapport à la matrice des probabilités $P$. La figure \ref{fig:mi_convex} illustre cette fonction en fixant $p_1 = 0.3$ et $p_2 = 0.7$.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.2]{MI_convex.png}
+        \caption{Information mutuelle par rapport à la matrice de probabilités}
+        \label{fig:mi_convex}
+    \end{figure}
+    
+    La convexité semble bien vraie par rapport à $P$, mais on cherche à optimiser les matrices $\Pi_j$. La matrice $P$ comporte les traces de la multiplication $\rho_i \Pi_j$, qui est linéaire par rapport aux coefficients de $\Pi_j$. Si la fonction $I(P)$ est convexe par rapport à $P$, alors elle l'est par rapport aux $\Pi_j$, grace à la linéarité.
 
     \medbreak
 
+    \subsection*{Formulation des contraintes}
+
     La définition du problème permet de résoudre notament les cas immédiats des opérateurs de densité orthogonaux, mais la résolution devient très lente lorsqu'on passe à d'autres cas non orthogonaux. On rajoute des conditions au problème pour accélérer la résolution.
-    
+
     Le premier élément à simplifier est l'expression de l'entropie marginale de $X=\rho_i$. En effet, nous l'avons exprimé en fonction de la trace de la multiplication matricielle, mais on peut reprendre la définition donnée lors du cas classique qui indique que $ H(X) = -\displaystyle \sum_{x \in X} p(x) \log(p(x))$. Le problème nous indique que nous connaissons les probabilités préalables des états d'entrée, on peut donc directement exprimer cette entropie en fonction de ces données et donc sans les variables de sortie $\Pi_i$.
 
     Ensuite, on sait que les opérateurs de mesure se somment à l'identité. Cela signifie d'une part qu'on peut passer d'un problème à $m$ matrices à un problème à $m-1$ matrices pour $m \geq 2$. Les matrices étant carrées de dimension $n$, on passe de $m \times n^2$ variables à $(m - 1) \times n^2$ variables, ce qui est non négligeable.
 
-    Enfin, le problème et les contraintes sont symmétriques, on peut intervertir les $\Pi_j$ sans influencer le résultat de la fonction coût. Cela nous permet de couper le problème au moins en deux pour réduire à nouveau le temps de calcul. Du fait de la somme à l'identité, on peut ajouter en condition que $\Pi_{1_{1, 1}} \leq \frac{1}{m}$ pour $m$ opérateurs de mesure, puis $\Pi_{2_{1, 1}} \leq \frac{1}{m-1}$, etc.
+    De plus, le problème et les contraintes sont symmétriques, on peut intervertir les $\Pi_j$ sans influencer le résultat de la fonction coût. Cela nous permet de couper le problème au moins en deux pour réduire à nouveau le temps de calcul. Du fait de la somme à l'identité, on peut ajouter en contrainte que $\Pi_{1_{1, 1}} \leq \frac{1}{m}$ pour $m$ opérateurs de mesure, puis $\Pi_{2_{1, 1}} \leq \frac{1}{m-1}$, etc.
+
+    Enfin, pour rappel, les opérateurs de mesure sont des opérateurs densité, qui ne sont pas necessairement purs. Pour qu'ils soient purs, il faudrait entre autre que $\tr(\Pi_i) = 1$. On peut considérer qu'on restreint le problème à un cas purs, et dans ce cas rajouter la contrainte que la somme des éléments diagonaux des opérateurs de mesure doit sommer à 1. Cela permet soit de retirer une variable par matrice densité au problème, en l'exprimant par $x_{n+1} = 1 - \displaystyle \sum_{i}^{n} x_i$ avec les $x_i$ éléments diagonaux de l'opérateur densité, ce qui nécessite une reformulation du problème, soit l'ajout de la contrainte.
 
     \medbreak
+
+    % L'ensemble de ces contraintes posées, on peut définir la méthode pour éliminer les boites hors des contraintes, en faisant apparaître les gradients de la fonction à optimiser et des contraintes.
+
+    % \begin{prop}{3 conditions pour éliminer des boites supplémentaires}
+    %     \begin{itemize}
+    %         \begin{equation}\label{eq:cond1} (0, 0, 0) \notin [df]([x]) \texttt{ et } [x] \subset A \Rightarrow x^* \notin [x];\end{equation} 
+    %         \begin{equation}\label{eq:cond2} sup([f]([x])) \leq f(a) \Rightarrow x^* \notin [x];\end{equation}
+    %         \begin{equation} \label{eq:cond3}
+    %             \left\{
+    %             \begin{array}[h]{l}
+    %               0 \in g_j([x]) \\
+    %               \forall i \not = j, 0 \not \in  g_i([x]) \\
+    %               dg_j \texttt{ et } df \texttt{ indépendants }  \\
+    %               0 \not \in [df]([x])
+    %             \end{array}
+    %             \right.
+    %            \Rightarrow x^* \not \in [x].
+    %         \end{equation}
+    %     \end{itemize}
+    % \end{prop}
+
+    % La première condition \ref{eq:cond1} indique que si le gradient de la fonction à optimiser ne contient pas le vecteur nul et que la solution est complètement admissible (on est pas au bord de l'espace) alors la solution peut être rejetée.
+
+    % La seconde condition \ref{eq:cond2} permet d'éliminer toutes les boites dont on est sûr via l'évaluation par intervalle qu'elles ne peuvent pas contenir l'optimum: on choisi un meilleur $a$ (par exemple celui correspondant à la plus haute image des milieu des intervalles solutions potentiels) et tout ceux qui ont leur borne supérieur strictement inferieure à l'image de cette valeur peuvent être supprimés.
+    
+    % Enfin, la dernière condition \ref{eq:cond3} permet d'éliminer des boites si les gradients des contraintes sont indépendants (parallèles) du gradient de la fonction à optimiser, que ce gradient ne contient pas le vecteur nul, et que seule une des contraintes contient 0.
+
+    \subsection*{Résolution avec \texttt{ibex}}
 
     Pour la résolution de ce problème, utilisons la librairie \texttt{ibex} permettant de faire du calcul par intervale, et possède entre autres un outil d'optimisation, \texttt{ibexopt}. Le problème est formulé avec un langage dédié, \texttt{minibex}. Nous avons eu besoin de définir un opérateur additionnel à ceux présents, l'opérateur \texttt{xlog} permettant d'effectuer l'opération $x \times \log(x)$ en redéfinissant $0 \times \log(0) = 0$ pour que les intervalles ne tombent pas à l'infiniquand ils contiennent 0. De plus, \texttt{minibex} ne considère que des problèmes de minimisation, on ré-écrit le problème en prenant la fonction coût opposée : $\max f(x) \Leftrightarrow \min -f(x)$.
     \medbreak
@@ -129,14 +193,223 @@
 
     $\Pi_1 = \begin{bmatrix} 0 & 0 \\ 0 & 1\end{bmatrix} , \quad \Pi_2 = \begin{bmatrix} 1 & 0 \\ 0 & 0\end{bmatrix},$
 
-    qui correspondent bien à deux opérateurs de mesure orthogonaux. Dans ce cas, l'information mutuelle est comprise dans l'intervalle $I(\rho, \Pi) \in [0.3250, 0.3254]$, avec un temps de calcul de 24 millisecondes.
+    qui correspondent bien à deux opérateurs de mesure orthogonaux. Dans ce cas, l'information mutuelle est comprise dans l'intervalle $I(\rho, \Pi) \in [0.3250, 0.3254]$, avec un temps de calcul de 8.6 millisecondes.
 \medbreak
     Le deuxième cas qu'on peut présenter est le suivant: $\ket{\psi_1} = \ket{0}$ et $\ket{\psi_1} = \ket{+}$ avec comme probabilité respectives $p_1 = 0.1$ et $p_2 = 0.9$. Le résultat théorique n'est pas donné, et on obtient avec \texttt{ibex} le résultat suivant:
 
-    $\Pi_1 = \begin{bmatrix} 0.446 & 0.497 \\ 0.497 & 0.554\end{bmatrix} , \quad \Pi_2 = \begin{bmatrix} 0.554 & -0.497 \\ -0.497 & 0.446\end{bmatrix},$
-    
-    avec une information mutuelle comprise dans l'intervalle $I(\rho, \Pi) \in [0.1348, 0.1349]$, et un temps de calcul de 300 secondes.
+    $\Pi_1 = \begin{bmatrix} 0.445 & 0.497 \\ 0.497 & 0.555\end{bmatrix} , \quad \Pi_2 = \begin{bmatrix} 0.555 & -0.497 \\ -0.497 & 0.445\end{bmatrix},$
+
+    avec une information mutuelle comprise dans l'intervalle $I(\rho, \Pi) \in [0.1348, 0.1349]$, et un temps de calcul de 0.79 secondes.
 
     % On voit bien avec ces deux exemples l'augmentation radicale du temps de calcul quand on passe d'un problème simple, même orthogonal, à un problème plus compliqué.
+
+    En revanche, ibex ralentit fortement dès qu'on sort des cas simples présentés si-dessus, et notament quand on retire la restriction des opérateurs de mesure à des opérateurs densité purs (de trace unitaire). Deux éléments importants sont à l'origine du problème. Tout d'abord, en analysant l'utilisation des ressources cpu lors de la résolution d'un problème, on voit qu'un seul thread est utilisé par \texttt{ibexopt}. Les algorithmes d'optimisation peuvent être parallélisés, et dans le cas de processeurs à plusieurs c\oe urs on pourrait avoir un gain de performance conséquent. Le deuxième élément est en lien avec la convexité de la fonction coût évoqué précédement. On eut alors se limiter aux extremités de la fonction coût pour réduire le nombre de calculs à effectuer. Il faudrait alors implémenter la condition $0 \in [\texttt{grad}]([f])$, ce qui n'est pas prévu de base dans \texttt{ibexopt}.
+
+    \subsection*{Algorithme d'optimisation}
+    On met en place un algorithme d'optimisation utilisant le calcul par intervalle pour obtenir un encadrement garanti de la solution à notre problème.
+
+    La figure \ref{fig:algomaxim} présente l'algorithme utilisé pour ce problème de maximisation (la logique étant la même pour une minimisation). Quatre éléments sont important à comprendre dans cet algorithme.
+
+    La première étape est de bisecter l'ensemble des boites composant notre liste. Tout d'abord, la bisection d'un intervalle seul s'effectue simplement en prenant $[x] \longrightarrow {[\underline{x}; (\overline{x} + \underline{x}) . 0.5], [(\overline{x} + \underline{x}) . 0.5; \overline{x}]}$ en coupant l'intervalle voulu au milieu. On peut aussi envisager de le bisecter plus près de la borne inférieure ou de la borne supérieure. Pour une boite - extension d'un intervalle à plusieurs dimensions - on bisecte suivant la dimensions comportant l'intervalle le plus grand. La figure \ref{fig:bisect} illustre la bisection sur des boites en deux dimensions, avec une alternance de bisection verticale et horizontale.
+
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[scale=0.2]{bisect_0.png}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[scale=0.2]{bisect_1.png}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[scale=0.2]{bisect_2.png}
+        \end{subfigure}
+        \caption{Bisection de boites en deux dimensions}
+        \label{fig:bisect}
+    \end{figure}
+
+    La deuxième étape est d'évaluer un encadrement de la fonction coût pour une boite d'entrée. Dans le cadre du calcul par intervalle, on dispose de la notion de fonction d'inclusion. Le principe est de fournir un encadrement garanti de l'image de la fonction:
+
+    \begin{definition}
+        Soit une fonction $f : \mathbb{R}^n \mapsto \mathbb{R}^m $. La fonction d'inclusion correspondante est définie par :
+
+        \begin{align}\forall[x] \in \mathbb{R}^n , f([x]) \subset [f]([x])\end{align}
+    \end{definition}
+    
+    La figure \ref{fig:sinx} illustre la fonction d'inclusion pour la fonction $ f : x \mapsto sin(x)$. On note que l'encadrement peut être plus ou moins optimiste, en laissant plus ou moins d'espace entre les bornes inférieures ou supérieures et les valeurs réelles.
+
+    % Fonction de coût
+
+    Les fonctions d'inclusion peuvent aussi être combinées sans perdre la garantie d'encadrement de l'image, par exemple avec la figure \ref{fig:sinx_sqrx} pour la fonction $f : x \mapsto sin(x) \times x^2$.
+
+    On peut donc construire une fonction d'inclusion pour l'information mutuelle définie à l'équation \ref{eq:mi}. Il faut noter dans cette fonction la présence récurrente de l'élément $f : x \mapsto x \times \log(x)$. Cette fonction n'est définie que sur $[0, +\infty]$ et mathématiquement $\displaystyle \lim_{x \to 0} x\times\log(x) = 0$ . On ne peut donc en théorie pas avoir une entrée négative ou nulle. En revanche, en pratique le problème peut amener à se retrouver avec des valeurs négatives ou nulles comme entrées de cette fonction, et les langages informatiques ne définissent pas le logarithme hors des bornes, en renvoyant une exception en général. Pour les librairies de calcul par intervalle, suivant les implémentations on peut se retrouver soit avec une exception, soit avec une borne de l'intervalle infinie. Il est donc nécessaire de ré-implémenter spécifiquement cette fonction avec un opérateur distinct, en gérant les cas de bord. On choisi de définir $ \forall x \in [-\infty, 0], x \times \log(x) = 0$ et donc $\forall [x] \leq 0 , [x]\times[log]([x]) = [0, 0]$, comme illustré à la figure \ref{fig:xlog}.
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[h]{0.3\textwidth}
+            \centering
+            \includegraphics[scale=0.1]{sinx.png}
+            \caption{$y = sin(x)$}
+            \label{fig:sinx}
+        \end{subfigure}
+        \begin{subfigure}[h]{0.3\textwidth}
+            \centering
+            \includegraphics[scale=0.1]{sinx_sqrx.png}
+            \caption{$y = sin(x) \times x^2$}
+            \label{fig:sinx_sqrx}
+        \end{subfigure}
+        \begin{subfigure}[h]{0.3\textwidth}
+            \centering
+            \includegraphics[scale=0.14]{xlog.png}
+            \caption{$y = x\times\log(x)$}
+            \label{fig:xlog}
+        \end{subfigure}
+        \caption{Fonctions d'inclusion}
+    \end{figure}
+
+    \medbreak
+    % Elimination des boites garanties sans max
+    Une fois établie l'évaluation de la fonction, on voit que pour récupérer l'optimal de la fonction, il suffit de trouver les plus hautes boites de l'ensemble obtenu.
+
+    \begin{prop}
+        Le maximum d'une fonction d'inclusion peut être trouvé en éliminant les boites suivant la formule suivante : 
+
+        \begin{align}
+            sup([f]([x])) \leq f(a) \Rightarrow x* \notin [x]
+        \end{align}
+    \end{prop}
+
+    Il s'agit alors de trouver un critère $a$ satisfaisant cette propriété. Par exemple, on peut prendre la borne inférieure des intervalles, et donc on considère que tout les intervalles ayant leur borne supérieure strictement inférieure aux autres peuvent être éliminés. Un exemple plus utile et permettant l'élimination de plus de boites est de prendre $f(a) = f(\frac{\underline{x} + \overline{x}}{2})$, plus haute image des milieux des intervalles.
+
+    \begin{ex}
+        En reprenant la fonction $f : x \mapsto sin(x)\times x^2$, on voit avec la figure \ref{fig:sinx_sqrx_optim} que toutes les boites ayant leur borne supérieure strictement inférieure à la ligne rouge sont garantit comme ne contenant pas l'optimum. On peut donc garder les deux boites verte et rouge, et éliminer le reste des boites.
+
+        \begin{figure}[h]
+            \centering
+            \includegraphics[scale=0.2]{sinx_sqrx_optim.png}
+            \caption{$y = sin(x) \times x^2$}
+            \label{fig:sinx_sqrx_optim}
+        \end{figure}
+    \end{ex}
+
+    Enfin, le dernier élément à traiter dans cet algorithme est la gestion des contraintes. Le problème qu'on souhaite traiter possède un certain nombre de contraintes, dont les bornes des variables d'entrées. On considère l'ensemble des contraintes $\{g_j([x])\}$ formant un espace admissible $A$. Pour qu'une boite soit acceptée, il faut qu'elle soit comprise dans cet espace admissible. Spécifiquement, on a vu que la fonction d'information mutuelle est (\textit{à prouver}) convexe. Cela simplifie le problème puisqu'il nous suffit de chercher le maximum sur les bords de la fonction. Formellement, cela correspond à deux conditions :
+
+    \begin{prop}
+        Deux conditions pour éliminer des boites
+
+        \begin{equation}\label{eq:cond1} (0, 0, 0) \notin [df]([x]) \texttt{ et } [x] \subset A \Rightarrow x^* \notin [x];\end{equation}
+        \begin{equation} \label{eq:cond3}
+            \left\{
+            \begin{array}[h]{l}
+                0 \in g_j([x]) \\
+                \forall i \not = j, 0 \not \in  g_i([x]) \\
+                dg_j \texttt{ et } df \texttt{ indépendants }  \\
+                0 \not \in [df]([x])
+            \end{array}
+            \right.
+            \Rightarrow x^* \not \in [x].
+        \end{equation}
+    \end{prop}
+
+    La première condition indique qu'il faut être sur le bord des contraintes: on cherche à optimiser, donc l'intérieur de l'espace admissible ne contiendra pas la solution. La deuxième condition indique que les gradients des fonctions contraintes et de la fonction coût doivent être indépendant (géométriquement parallèles, algébriquement de produit scalaire nul).
+
+    \textit{illustration gradient contrainte / coût parallèle ?}
+
+
+    On vois qu'il suffit de répéter les étapes précédentes sur les boites restantes, ce qui va nous faire tendre vers une inclusion de plus en plus précise de l'optimum du problème. L'algorithme détaillé est présent avec la figure \ref{fig:algomaxim}. On peut noter entre autres que la première boucle, pour la bisection, est facilement parallélisable et donc accélère considérablement les calculs. La section de suppression des boites ne l'est en revanche pas facilement.
+
+    \begin{figure}[H]
+        \begin{algorithm}[H]
+            \SetAlgoLined
+            \KwData{
+              $[I_{init}]$ initial search box;
+              $\epsilon$ stop criterion;
+              $f$ cost function;
+              $g$ constraints function;
+            }
+            \KwOut{
+              $[f]$ bounds of best solution; $[I]$ solution box
+            }
+            \Begin{
+              $\texttt{solutions}$ list of solution boxes\;
+              Add $[I_{init}]$ to $\texttt{solutions}$\;
+              $[f_{c}]$ current bounds of solutions\;
+              \While{$\overline{f_{c}} - \underline{f_{c}} \geq \epsilon$}{
+                  $\texttt{currentSolutions}$ empty list of boxes\;
+                  \tcc{Bisect, evaluate cost, manage constraints}
+                  \ForAll{$\texttt{sol}$ in $\texttt{solutions}$}{
+                        $[\texttt{left}], [\texttt{right}] \longleftarrow \texttt{bisect}(\texttt{sol})$\;
+                        \If{$\texttt{g}([\texttt{left}])$ is valid}{
+                            Add $[\texttt{left}]$ to $\texttt{currentSolutions}$\;
+                        }
+                        \If{$\texttt{g}([\texttt{right}])$ is valid}{
+                            Add $[\texttt{right}]$ to $\texttt{currentSolutions}$\;
+                        }
+                  }
+                  \tcc{Remove boxes certified not to contain maximum}
+                  Evaluate $[f]$ for all $[\texttt{currentSolutions}]$\;
+                  $f_{best}$ best $f(\texttt{sol}.\texttt{mid})$ in all $[f]$ \;
+                  Remove all $[\texttt{sol}]$ in $[\texttt{currentSolutions}]$ where $sup([f]([sol])) \leq f_{best}$\;
+                  $\texttt{solutions} \longleftarrow \texttt{currentSolutions}$
+              }
+              \Return{$\texttt{solutions}, [f_{c}]$}
+            }
+          \end{algorithm}
+
+        \caption{Algorithme de maximisation par le calcul par intervalle}
+        \label{fig:algomaxim}
+    \end{figure}
+
+    \subsection*{Exemple}
+
+    Prenons le cas de deux états quantiques:
+
+    \begin{align}
+        \ket{\psi_1} = \begin{bmatrix}\frac{1}{3} \\ \frac{2 \sqrt{2}}{3}\end{bmatrix} , \quad \ket{\psi_2} = \begin{bmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{bmatrix},
+    \end{align}
+    avec les probabilités préalables 
+    \begin{align}
+        p(\ket{\psi_1}) = 0.1, \quad p(\ket{\psi_2}) = 0.9.
+    \end{align}
+
+    Ces deux états peuvent être réécris sous la forme d'opérateurs densité $\rho_1 = \begin{bmatrix}\frac{1}{9} && \frac{2 \sqrt{2}}{9} \\ \frac{2 \sqrt{2}}{9} && \frac{8}{9} \end{bmatrix}$ et $\rho_2 = \begin{bmatrix}\frac{1}{2} && \frac{1}{2} \\ \frac{1}{2} && \frac{1}{2} \end{bmatrix}$.
+
+    Le problème est de trouver les deux opérateurs densité optimaux au sens de l'information mutuelle. On considère le problème comme ne possédant pas de termes complexes sur les antidiagonaux, et l'équation \ref{eq:contrainte_somme_id} nous permet de réduire le problème à trois variables seulement $\{a_1, b_1, d_1\}$ :
+
+    \begin{align}
+        \Pi_1 &= \begin{bmatrix}a_1 && b_1 + ic_1 \\ b_1 - ic_1 && d_1\end{bmatrix} = \begin{bmatrix}a_1 && b_1 \\ b_1 && d_1\end{bmatrix} \\
+        \Pi_2 &= I - \Pi_1 = \begin{bmatrix}1 - a_1 && -b_1 \\ -b_1 && 1 - d_1\end{bmatrix}
+    \end{align}
+
+    On pose ensuite les contraintes sur ces variables. Tout d'abord, ces variables sont définies sur ces bornes spécifiques: $a_1 \in [0, 0.5]$, $b_1 \in [-1, 1]$, $d_1 \in [0, 1]$. La détermination de la semi-définition positive passe par les diagnonales et le déterminant strictement positifs, d'une part avec les bornes précédentes et d'autre part avec deux nouvelles contraintes sur les 3 variables.
+    Le problème s'écrit donc :
+
+    \begin{align}
+        \max\limits_{a_1, b_1, d_1} I(a_1, b_1, d_1) , \nonumber
+    \end{align}
+    tel que :
+    \begin{align}
+        &a_1 \in [0, 0.5] , b_1 \in [-1, 1] , d_1 \in [0, 1] , \nonumber \\
+        &a_1 * d_1 - b_1^2 \geq 0 , \nonumber \\
+        &(1-a_1) * (1-d_1) - b_1^2 \geq 0. \nonumber
+    \end{align}
+
+    La résolution avec \texttt{ibex} ou avec notre solveur donne les deux opérateurs de mesure suivants: 
+
+    \begin{align}
+        \Pi_1 = \begin{bmatrix}0.456 && -0.498 \\ -0.498 && 0.544\end{bmatrix}, \quad \Pi_2 = \begin{bmatrix}0.544 && 0.498 \\ 0.498 && 0.456\end{bmatrix},
+    \end{align}
+
+    Avec une information mutuelle $I(a_1, b_1, d_1) = 0.04723$. Notre solveur résout le problème en $6.4$ secondes pour une précision sur $I$ de $1 \times 10^{-5}$, et \texttt{ibexopt} résout en $88.3$ secondes pour une précision sur $I$ de $4\times 10^{-5}$.
+
+    % \subsection*{Création d'un solveur}
+    % La résolution avec \texttt{ibex} est déjà performante avec les contraintes posées, mais on se confronte à [...] problèmes. Premièrement, ibex n'est pas multithreadé,
+
+
+    \subsection*{Inconvénients de la résolution par intervalles}
+    La résolution de ce problème avec le calcul par intervalles permet certes de garantir une solution, mais on se retrouve très rapidement bloqué quand on veut augmenter la dimension du problème. On peut déjà le voir en passant du cas de deux états orthogonaux à deux états non orthogonaux les temps de calculs augmentent considérablement, même si on est avec seulement 3 variables. Quand on veut passer à trois états, donc 6 variables, en revanche, la résolution devient impossible dans un temps et utilisation mémoire raisonnables. 
 
 \end{document}

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using IntervalEval;
 using IntSharp.Types;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
@@ -34,6 +36,12 @@ namespace IntSharp
         public static bool In(this Interval i, double a)
         {
             return i.Infimum <= a && i.Supremum >= a;
+        }
+        
+        public static IntervalBoolean In(this Interval lhs, Interval rhs)
+        {
+            if (lhs.Disjoint(rhs)) return IntervalBoolean.False;
+            return lhs.Subset(rhs) ? IntervalBoolean.True : IntervalBoolean.Indeterminate;
         }
 
         /// <summary>
@@ -225,6 +233,15 @@ namespace IntSharp
 
             return new Tuple<Interval, Interval>(l,r);
         }
+        
+        public static Tuple<Interval, Interval> Bisect(this Interval i, double percent)
+        {
+            var middle = i.Infimum + percent * (i.Supremum - i.Infimum);
+            var l = Interval.FromInfSup(i.Infimum, middle);
+            var r = Interval.FromInfSup(middle, i.Supremum);
+
+            return new Tuple<Interval, Interval>(l,r);
+        }
 
         /// <summary>
         /// Returns the intersection of the two intervals: The interval that both intervals have in common.
@@ -237,6 +254,25 @@ namespace IntSharp
             var supremum = System.Math.Min(i.Supremum, otherInterval.Supremum);
 
             return Interval.FromInfSup(infimum, supremum);
+        }
+        
+        /// <summary>
+        /// Cuts the input interval into n intervals of same width.
+        /// </summary>
+        /// <param name="input">Interval to be cut</param>
+        /// <param name="n">Number of resulting intervals</param>
+        public static List<Interval> Cut(this Interval input, int n)
+        {
+            var delta = input.Diam() / (double)n;
+            var current = input.Infimum;
+            var intervals = new List<Interval>();
+            while (current + delta <= input.Supremum)
+            {
+                intervals.Add(Interval.FromInfSup(current, current + delta));
+                current += delta;
+            }
+
+            return intervals;
         }
     }
 }

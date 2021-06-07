@@ -50,15 +50,15 @@ namespace IntSharp.Types
                 sup = inf;
                 inf = tmp;
             }
-            // Filter [+inf,+inf] and [-inf,-inf].
-            if (double.IsPositiveInfinity(inf) && double.IsPositiveInfinity(sup))
-                throw new Exception("[ +inf , +inf ] is an invalid interval.");
-            if (double.IsNegativeInfinity(inf) && double.IsNegativeInfinity(sup))
-                throw new Exception("[ +inf , +inf ] is an invalid interval.");
-
-            // Filter NaN.
-            if (double.IsNaN(inf)) throw new Exception("double.NaN is an invalid infimum.");
-            if (double.IsNaN(sup)) throw new Exception("double.NaN is an invalid supremum.");
+            // // Filter [+inf,+inf] and [-inf,-inf].
+            // if (double.IsPositiveInfinity(inf) && double.IsPositiveInfinity(sup))
+            //     throw new Exception("[ +inf , +inf ] is an invalid interval.");
+            // if (double.IsNegativeInfinity(inf) && double.IsNegativeInfinity(sup))
+            //     throw new Exception("[ +inf , +inf ] is an invalid interval.");
+            //
+            // // Filter NaN.
+            // if (double.IsNaN(inf)) throw new Exception("double.NaN is an invalid infimum.");
+            // if (double.IsNaN(sup)) throw new Exception("double.NaN is an invalid supremum.");
 
             return new Interval(inf, sup);
         }

@@ -28,3 +28,8 @@ https://www.researchgate.net/publication/323694558_Optimal_measurement_strategie
 
 https://minlp.com/baron
    -> Une alternative à IbexOpt, payante...
+
+"A ‘Pretty Good’ Measurement for Distinguishing Quantum States" https://www.tandfonline.com/doi/abs/10.1080/09500349414552221
+   -> 1994
+   -> Utilise le gradient de l'information mutuelle => qd proche de 0 on est aux alentours d'un optimum. En revanche, on peut être dans un optimum local et pas garanti qu'on soit sur un maximum (un minimum aura les mêmes propriétés)
+"Blahut–Arimoto algorithm" => algo de maximisation de l'information mutuelle mais pas garanti...

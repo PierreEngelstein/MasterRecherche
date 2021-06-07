@@ -17,7 +17,7 @@ namespace IntervalEval
             set
             {
                 _value = value;
-                OnChange.Invoke(this, _value); // Fire event when value changed
+                OnChange?.Invoke(this, _value); // Fire event when value changed
             }
         }
     }
