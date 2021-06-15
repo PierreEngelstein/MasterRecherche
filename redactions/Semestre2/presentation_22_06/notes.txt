@@ -1,0 +1,104 @@
+diapo 1:
+lieu de la presentation (gdr isis), la date exacte de la pres (22 juin 2021), adresses mail, logo univ angers + laris
+
+diapo 2: 
+calcul par intervalleS (s a rajouter)
+
+diapo 3:
+definir operateur densité en général avec les contraintes sur la matrice puis le cas pur avec rho * rho^T
+3 blocs: opérateur densité en général - cas particulier état pur - exemple
+
+diapo 4:
+Titre de bloc 1 : "Définition" "Une mesure projective est définie ...". Mettre "mesure projective" en italique
+
+Titre de bloc 2 : "Définition: Mesure généralisée...". On généralise [la notion de] ... d'opérateurs de mesure {\Pi_n} vérifiant \displaystyle \sum_n \Pi_n = I_N. Pr\{\Pi_n\} = ...
+Indiquer signification de POVM (positive operator valued measurement)
+
+diapo 5:
+Soit un ensemble d'états quantiques \{\rho_i\} avec leur probas \{p_i\} (rajouter _i)
+Considérons un ensemble de POVM \{\Pi_j\} ...
+On définit la \textit{matrice de probabilité} via:
+bloc "interprétation": P_ij correspond à la proba de mesurer \Pi_j en ayant \rho_i (a voir pour 'en ayant').
+
+diapo 6
+cf. refs 6, 7, 9, 10, 15 de davies => choisir 2 articles les plus impactants de ces references
+
+diapo 7 
+rajouter une def généraliste info mutuelle dans le cas général
+puis deuxième bloc déjà présent
+information mutuelle en italique
+
+diapo 8:
+"est défini comme l'ensemble ..." (enlever contenant)
+"produit cartésien des intervalles" 'rajouter l
+sur le schéma: x(rouge) * y(vert) (enlever box).
+Inkscape: rendu latex (extensions)
+
+diapo 9:
+changer gras vers italique + changer texte y=f(x) sur schéma en latex via extension
+
+diapo 10 (13):
+on définit (rajouter le t)
+on défini ensemble opérateurs ... (enlever unaires)
+
+diapo 12(15):
+soit a une solution admissible du problème max(f(x)) tq g(x) <=0 (contraintes) et x* la solution optimale, on a:
+
+Refaire les schémas sur inkscape. Rajouter 1 schéma disparition d'une seule boite entre la 1 et la 2.
+
+diapo 13(20):
+evaluation des contraintes sur les boites résultantes
+borner la fonction avec le calcul par intervalle
+choix d'un candidat
+
+diapo 14(21)
+On prends => Considérons
+rajouter \rho_1 et \rho_2 avant \Pi_1 et \Pi_2
+remttre la formulation du problème dans le cas particulier du cas considéré (spécialisation de la diapo 7)
+rajouter 1 diapo "avec Pi_1 et Pi_2 : + le reste diapo existante)
+Pour la partie complexe: comme \rho_1 et \rho_2 non complexes => les variables c1 et c1 seront tjs nulles / indep du résultat.
+contraintes à mettre en ligne si il y a la place. Rajouter "contraintes de Silvester" pour la semi-définition positive
+
+diapo 15(22)
+0.472... (rajouter \dots)
+
+diapo 16(23):
+enumerate a la place d'itemize
+
+
+------
+rajouter la convexité de la fonction coût et de l'espace de recherche (rajouter l'illustration juste après diapo 7. Bouger bloc 'problème' à droite et rajouter un bloc sans titre avec la convexité à gauche)
+
+------------------------
+notes diapos:
+On a un système quantique décrit par soit rho0 soit rho1 et decider de la façon la plus efficace possible lequel on a. Enoncer d'abord le problème puis les notions operateur densité / mesure => rajouter ce transparent très général sur le problème
+Peut etre enlever le sommaire et mettre a la place ce transparent général du problème
+
+il y a la préparation, probabilité, donc système est dans tel ou tel état => mettre en jeu les distributions de probas. Signal d'entrée: préparation d'un système quantique dans un des états quantiques \rho_j avec les probas a priori p_j. Problème est de retrouver la préparation, obtenir un ensemble de résultats (trace rho pi) en fonction des probas. Sert à définir un critère de performance pour la tache visée => quelle est la mesure quantique qui permet d'obtenir le maximum d'info sur l'entrée.
+
+Il faut bien présenter le signal d'entrée indépendament de la mesure. Puis contexte quantique donne naissance aux probas conditionnelles. On pondère avec les probas d'entrée pour fournir la loi de proba
+Décrire la préparation d'entrée puis l'effet de la mesure (conditionnelle trace rho pi) en fait...
+pas mesure mais critère de performance
+
+rho_i, p_i => 1
+conditionnelles trace => 2
+critère (erreur detection, info mutuelle, ...) => 3
+
+Appeler P distribution de proba conjointe entrée sortie
+Remplacer P_ij par P_jk
+Equation 6 à supprimer => garder que la 3
+Passer du temps sur ce qui se joue par la mesure: dépendance entre variable d'entrée X et la sortie Y => équation 2 à découpler : P(X=i, Y = j)=... (sortir équation dans un autre bloc)
+p_j=P(X=j); P(Y=k | X=j)
+
+Ajouter acolades autour des \Pi dans equation 3 page 7 (en dessous du max)
+
+information de holevo: https://en.wikipedia.org/wiki/Holevo%27s_theorem
+Nous on a la garantie que ce soit une borne atteignable
+
+page exemple concret: afficher le shannon max avec les p_1 et p_2
+
+Pour la soutenance master, indiquer le problème x*log(x) en proposant alternative au calcul par intervalle classique pour éviter les infini ou les NaN
+
+
+--------------
+rapport: annexe sur la construction de circuit

@@ -59,7 +59,7 @@
                 &= H(X) + H(Y) - H(X, Y).
     \end{align}
 
-    Avec $H(X)$ entropie marginale de $X$, $H(Y)$ entropie marginale de $Y$, $H(X|Y)$ entropie conditionelle de $X$ sachant $Y$ et enfin $H(X, Y)$ entropie jointe de $X$ et $Y$. On peut utiliser indifférement $\log_2$, $\log_{10}$ ou $\ln$ pour le logarithme, le changement étant à une constante près.
+    Avec $H(X)$ entropie marginale de $X$, $H(Y)$ entropie marginale de $Y$, $H(X|Y)$ entropie conditionelle de $X$ sachant $Y$ et enfin $H(X, Y)$ entropie jointe de $X$ et $Y$. On peut utiliser indifférement $\log_2$, $\log_{10}$ ou $\ln$ pour le logarithme, le changement étant à une constante près. On utilise par la suite le logarithme base exponentielle pour l'ensemble des calculs.
 
     Dans le cas classique, les entropies marginales, conditionnelles et jointes sont définies par: 
     
@@ -143,13 +143,15 @@
     
     La convexité semble bien vraie par rapport à $P$, mais on cherche à optimiser les matrices $\Pi_j$. La matrice $P$ comporte les traces de la multiplication $\rho_i \Pi_j$, qui est linéaire par rapport aux coefficients de $\Pi_j$. Si la fonction $I(P)$ est convexe par rapport à $P$, alors elle l'est par rapport aux $\Pi_j$, grace à la linéarité.
 
+    Quand on trace la même fonction mais par rapport aux variables $\Pi_{k_{ij}}$, en se fixant dans un espace 2 dimensions, on s'apperçoit que la fonction n'est pas correctement définie sur les bords. Ceci est dû au fait que $x\log(x)$ n'est pas définit pour $x < 0$, ce qui fausse ou bloque les calculs, suivant l'implémentation. Le détail de notre implémentation est expliqué en \ref{fig:xlog}. % TODO: change this to subsubsection reference !
+
     \medbreak
 
     \subsection*{Formulation des contraintes}
 
     La définition du problème permet de résoudre notament les cas immédiats des opérateurs de densité orthogonaux, mais la résolution devient très lente lorsqu'on passe à d'autres cas non orthogonaux. On rajoute des conditions au problème pour accélérer la résolution.
 
-    Le premier élément à simplifier est l'expression de l'entropie marginale de $X=\rho_i$. En effet, nous l'avons exprimé en fonction de la trace de la multiplication matricielle, mais on peut reprendre la définition donnée lors du cas classique qui indique que $ H(X) = -\displaystyle \sum_{x \in X} p(x) \log(p(x))$. Le problème nous indique que nous connaissons les probabilités préalables des états d'entrée, on peut donc directement exprimer cette entropie en fonction de ces données et donc sans les variables de sortie $\Pi_i$.
+    Le premier élément à simplifier est l'expression de l'entropie marginale de $X=\rho_i$. En effet, nous l'avons exprimé en fonction de la trace de la multiplication matricielle, mais on peut reprendre la définition donnée lors du cas classique qui dit que $ H(X) = -\displaystyle \sum_{x \in X} p(x) \log(p(x))$. Le problème nous indique que nous connaissons les probabilités préalables des états d'entrée, on peut donc directement exprimer cette entropie en fonction de ces données et donc sans les variables de sortie $\Pi_i$.
 
     Ensuite, on sait que les opérateurs de mesure se somment à l'identité. Cela signifie d'une part qu'on peut passer d'un problème à $m$ matrices à un problème à $m-1$ matrices pour $m \geq 2$. Les matrices étant carrées de dimension $n$, on passe de $m \times n^2$ variables à $(m - 1) \times n^2$ variables, ce qui est non négligeable.
 
@@ -245,7 +247,7 @@
 
     Les fonctions d'inclusion peuvent aussi être combinées sans perdre la garantie d'encadrement de l'image, par exemple avec la figure \ref{fig:sinx_sqrx} pour la fonction $f : x \mapsto sin(x) \times x^2$.
 
-    On peut donc construire une fonction d'inclusion pour l'information mutuelle définie à l'équation \ref{eq:mi}. Il faut noter dans cette fonction la présence récurrente de l'élément $f : x \mapsto x \times \log(x)$. Cette fonction n'est définie que sur $[0, +\infty]$ et mathématiquement $\displaystyle \lim_{x \to 0} x\times\log(x) = 0$ . On ne peut donc en théorie pas avoir une entrée négative ou nulle. En revanche, en pratique le problème peut amener à se retrouver avec des valeurs négatives ou nulles comme entrées de cette fonction, et les langages informatiques ne définissent pas le logarithme hors des bornes, en renvoyant une exception en général. Pour les librairies de calcul par intervalle, suivant les implémentations on peut se retrouver soit avec une exception, soit avec une borne de l'intervalle infinie. Il est donc nécessaire de ré-implémenter spécifiquement cette fonction avec un opérateur distinct, en gérant les cas de bord. On choisi de définir $ \forall x \in [-\infty, 0], x \times \log(x) = 0$ et donc $\forall [x] \leq 0 , [x]\times[log]([x]) = [0, 0]$, comme illustré à la figure \ref{fig:xlog}.
+    On peut donc construire une fonction d'inclusion pour l'information mutuelle définie à l'équation \ref{eq:mi}. Il faut noter dans cette fonction la présence récurrente de l'élément $f : x \mapsto x \times \log(x)$. Cette fonction n'est définie que sur $[0, +\infty]$ et mathématiquement $\displaystyle \lim_{x \to 0} x\times\log(x) = 0$ . On ne peut donc en théorie pas avoir une entrée négative. En revanche, en pratique le problème peut amener à se retrouver avec des valeurs négatives comme entrées de cette fonction, et les langages informatiques ne définissent pas le logarithme hors des bornes, en renvoyant une exception en général. Pour les librairies de calcul par intervalle, suivant les implémentations on peut se retrouver soit avec une exception, soit avec une borne de l'intervalle infinie. Il est donc nécessaire de ré-implémenter spécifiquement cette fonction avec un opérateur distinct, en gérant les cas de bord. On choisi de définir $ \forall x \in [-\infty, 0], x \times \log(x) = 0$ et donc $\forall [x] \leq 0 , [x]\times[log]([x]) = [0, 0]$, comme illustré à la figure \ref{fig:xlog}.
 
     \begin{figure}[H]
         \centering
@@ -295,7 +297,7 @@
         \end{figure}
     \end{ex}
 
-    Enfin, le dernier élément à traiter dans cet algorithme est la gestion des contraintes. Le problème qu'on souhaite traiter possède un certain nombre de contraintes, dont les bornes des variables d'entrées. On considère l'ensemble des contraintes $\{g_j([x])\}$ formant un espace admissible $A$. Pour qu'une boite soit acceptée, il faut qu'elle soit comprise dans cet espace admissible. Spécifiquement, on a vu que la fonction d'information mutuelle est (\textit{à prouver}) convexe. Cela simplifie le problème puisqu'il nous suffit de chercher le maximum sur les bords de la fonction. Formellement, cela correspond à deux conditions :
+    Enfin, le dernier élément à traiter dans cet algorithme est la gestion des contraintes. Le problème qu'on souhaite traiter possède un certain nombre de contraintes, dont les bornes des variables d'entrées. On considère l'ensemble des contraintes $\{g_j([x])\}$ formant un espace admissible $A$. Pour qu'une boite soit acceptée, il faut qu'elle soit comprise dans cet espace admissible. Spécifiquement, on a vu que la fonction d'information mutuelle est convexe. Cela simplifie le problème puisqu'il nous suffit de chercher le maximum sur les bords de la fonction. Formellement, tout cela correspond à deux conditions:
 
     \begin{prop}
         Deux conditions pour éliminer des boites
@@ -362,6 +364,8 @@
         \caption{Algorithme de maximisation par le calcul par intervalle}
         \label{fig:algomaxim}
     \end{figure}
+
+    L'algorithme \ref{fig:algomaxim} a été implémenté en C\# (dotnet 5) sur la base de la librairie \href{https://github.com/selmaohneh/IntSharp}{IntSharp} modifiée pour répondre à nos besoins (rajout de l'intervalle vide, de la fonction $x\log(x)$, des intervalles booléens, \dots). Une interface graphique basique utilisant Blazor a été mise en place pour faciliter la visualisation de l'optimisation et des différents problèmes rencontrés lors du développement.
 
     \subsection*{Exemple}
 

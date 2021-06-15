@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \usepackage{braket}
 \usepackage{amsthm}
+\usepackage{amsfonts}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[frenchb]{babel}
@@ -26,7 +27,9 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{titlesec}
 \usepackage{cleveref}
+\usepackage{float}
 \definecolor{gray75}{gray}{0.75}
+\DeclareMathOperator{\tr}{tr}
 \newcommand{\hsp}{\hspace{20pt}}
 \titleformat{\chapter}[display]
 {\normalfont%
@@ -66,6 +69,7 @@
 \newtheorem{pb}{Problème}
 \newtheorem{rem}{Remarque}
 \newtheorem{ex}{Exemple}
+\newtheorem{theoreme}{Théorème}
 
 \begin{document}
 \begin{titlepage}
@@ -83,7 +87,7 @@
       {\large Master Systèmes Dynamiques et Signaux}\\[0.5cm]
       {\large Mémoire de master}\\[0.5cm]
       \rule{\linewidth}{0.5mm} \\[0.4cm]
-      { \huge \bfseries Informatique Quantique \\[0.4cm] }
+      { \huge \bfseries Conception de détecteurs quantiques optimaux via le calcul par intervalles \\[0.4cm] }
       \rule{\linewidth}{0.5mm} \\[1.5cm]
       \noindent
       \begin{minipage}{0.4\textwidth}
@@ -133,16 +137,16 @@ Je remercie Dr. Nicolas Delanoue et Pr. François Chapeau-Blondeau pour leur enc
 
 \input{includes/chap-01-intro.tex}
 \input{includes/chap-02-elementsbase.tex}
-\input{includes/chap-03-miseenoeuvre.tex}
-\input{includes/chap-04-Algorithmes.tex}
-\input{includes/chap-05-perpectives.tex}
-\input{includes/chap-06-ouverture.tex}
+\input{includes/chap-03-calculintervale.tex}
+\input{includes/chap-04-pb.tex}
+% \input{includes/chap-05-perpectives.tex}
+% \input{includes/chap-06-ouverture.tex}
 \input{includes/chap-07-conclu.tex}
 
 \begin{appendix}
-\input{includes/app-01-DJ.tex}
-\input{includes/app-02-vazirani.tex}
-\input{includes/app-03-grover.tex}
+\input{includes/app-01-constrcircuit.tex}
+% \input{includes/app-02-vazirani.tex}
+% \input{includes/app-03-grover.tex}
 
 \end{appendix}
 % \input{includes/chap-06-QFT.tex}

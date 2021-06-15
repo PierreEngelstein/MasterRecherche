@@ -1,0 +1,21 @@
+\frametitle{Utilisation de D-Wave - 2}
+    Résolution directe de problème Ising et QUBO: utilisation des solvers D-Wave.
+    \begin{lstlisting}[style=CStyle, basicstyle=\tiny]
+import dimod
+import neal
+''' 2 QUBO problems '''
+Q1 = {('q1', 'q1'): 0.1, ('q2', 'q2'): 0.1, ('q1', 'q2'): -0.2}
+Q2 = {('q1', 'q1'): 0.5, ('q2', 'q2'): 0.5, ('q1', 'q2'): -1}
+''' 2 types of solvers: exact, and simulated annealing '''
+exact_sampler = dimod.ExactSolver()
+sa_sampler = neal.SimulatedAnnealingSampler()
+''' Solve using exact solver '''
+sample_set = exact_sampler.sample_qubo(Q1)
+print(sample_set)
+''' Solve using simulated annealing'''
+sample_set_1 = exact_sampler.sample_qubo(Q2)
+print(sample_set_1)
+
+\end{lstlisting}
+
+Formulation de problèmes NP sous forme d'Ising\footnote{Lucas, A., "Ising formulations of many NP problems", Frontiers in Physics, 2014}.

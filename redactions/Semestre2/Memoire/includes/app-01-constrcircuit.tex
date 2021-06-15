@@ -1,0 +1,185 @@
+\chapter{Création de circuits quantiques pour l’encodage de fonctions booléennes}
+\label{appendix:ConstructionCircuit}
+
+On étudie ici la problématique de pouvoir construire systématiquement une fonction booléenne avec un ordinateur quantique, présenté par Younes et Miller en 2003 \cite{Younes03}.
+
+En informatique classique, l'ensemble des fonctions booléennes peuvent être décrites à l'aide des opérateurs \textbf{NAND} et \textbf{NOR}. Il s'agit donc de pouvoir les transcrire en quantique, et de pouvoir établir un système de combinaison de ces portes, pour permettre l'élaboration des circuits.
+
+Dans ce modèle, on considère un registre de $n$ qubits composant l'entrée du système, un registre de $m$ qubits composant la sortie du système, et un registre de $k$ qubits auxiliaires pour certaines opérations intermédiaires.
+
+Pour cette construction, on se base sur la porte quantique \textbf{X} et ses équivalents composés \textbf{CNOT}, \textbf{CCNOT} (Toffoli), etc. On fourni alors un certain nombre de circuits de base pouvant être recomposés pour former des circuits plus complexes.
+
+La compilation d'une fonction booléenne passe alors par 4 étapes:
+
+\begin{enumerate}
+    \item \'Ecriture de la table de vérité,
+    \item Pour chaque sortie donnant 1, former une porte \textbf{NOT} controlée. Chaque entrée va servir de contrôle, par 1 si l'entrée est à 1, et par 0 si l'entrée est à 0,
+    \item Développer le circuit résultant pour n'avoir que des portes \textbf{NOT} controlées par 0,
+    \item Simplifier le circuit en éliminant les doublons.
+\end{enumerate}
+
+\subsection*{\'Etape 1: établissement des premières portes contrôlées}
+La figure \ref{fig:basic_control} représente une porte \textbf{NOT} contrôlée. On note que les qubits de contrôle sont indiqués par $\bullet$ (contrôle par 1) et par $\circ$ (contrôle par 0). Le dernier qubit est la cible (\textit{target}). On effectue l'opération \textbf{NOT} sur la cible si et seulement si les bits de contrôles respectent leur condition (si il sont à 1 pour ceux qui sont contrôlés par 1, et si ils sont à 0 pour ceux contrôlés par 0).
+
+\begin{figure}[H]
+    \centering
+    \centerline{
+        \Qcircuit @C=1em @R=.7em {
+            \lstick{ \ket{x_0}  } & \ctrlo{1} & \qw & \qw\\
+            \lstick{ \ket{x_1}  } & \ctrl{1} & \qw & \qw\\
+            \lstick{ \ket{x_2}  } & \ctrlo{1} & \qw & \qw\\
+            \lstick{ \ket{x_3} } & \targ\qw & \qw & \qw\\
+	    }
+    }
+    \caption{Porte \textbf{NOT} contrôlée}
+    \label{fig:basic_control}
+\end{figure}
+
+Cette porte en revanche ne peut pas être construite, on ne dispose en effet que des portes \textbf{NOT} contrôlées par 1 et pas de celles contrôlées par 0.
+
+\begin{ex}
+    Soit la fonction booléenne $f(x_1, x_2, x_3) = (x_1 \land x_2) \lor (x_3 \land \neg x_2) \lor (x_1 \land x_3)$. Sa table de vérité est la suivante:
+
+    \begin{displaymath}
+        \begin{array}{|c c c |c |}
+            \hline
+            x_1 & x_2 & x_3 & F(x_1, x_2, x_3)\\ \hline
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 1 \\
+            0 & 1 & 0 & 0 \\
+            0 & 1 & 1 & 0 \\
+            1 & 0 & 0 & 0 \\
+            1 & 0 & 1 & 1 \\
+            1 & 1 & 0 & 1 \\
+            1 & 1 & 1 & 1 \\ \hline
+        \end{array}
+    \end{displaymath}
+
+    On a quatre sorties à 1. La figure \ref{fig:circ_ex_1} représente donc le circuit initial qu'on obtient.
+
+    \begin{figure}[H]
+        \centering
+        \centerline{
+            \Qcircuit @C=1em @R=.7em {
+                \lstick{ \ket{x_1}} & \ctrlo{1} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \qw & \qw\\
+                \lstick{ \ket{x_2}} & \ctrlo{1} & \ctrlo{1} & \ctrl{1} & \ctrl{1} & \qw & \qw\\
+                \lstick{ \ket{x_3}} & \ctrl{1} & \ctrl{1} & \ctrlo{1} & \ctrl{1} & \qw & \qw\\
+                \lstick{ \ket{x_f}} & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \qw & \qw\\
+            }
+        }
+        \caption{Circuit quantique pour $f(x_1, x_2, x_3)$}
+        \label{fig:circ_ex_1}
+    \end{figure}
+\end{ex}
+
+\subsection*{\'Etape 2: Développement du circuit}
+La deuxième étape consiste à prendre le circuit obtenu précédemment et à le développer de façon à n'obtenir que des portes \textbf{NOT} contrôlées par 0. Dans le principe, une porte ayant un mélange de contrôle par 0 et par 1 va être équivalent à la combinaison des portes contrôlées par 0, qui vont avoir des contrôles de moins en combinaison sur les contrôles par 1. Un exemple est plus clair pour comprendre. Reprenons la porte de la figure \ref{fig:basic_control}. Elle est en fait équivalente au circuit \ref{fig:basic_control_dvlp} :
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \Qcircuit @C=1em @R=.7em {
+            \lstick{ \ket{x_0}  } & \ctrlo{1} & \qw & \qw\\
+            \lstick{ \ket{x_1}  } & \ctrl{1} & \qw & \qw\\
+            \lstick{ \ket{x_2}  } & \ctrlo{1} & \qw & \qw\\
+            \lstick{ \ket{x_3} } & \targ\qw & \qw & \qw\\
+        }
+        \label{fig:before_dvlpt}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.2\textwidth}
+        \centering
+        \begin{equation*}
+            \equiv
+        \end{equation*}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \Qcircuit @C=1em @R=.7em {
+            \lstick{ \ket{x_{0}}} & \ctrl{1} & \qw & \ctrl{1} & \qw & \qw & \qw\\
+            \lstick{ \ket{x_{1}}} & \ctrl{1} & \ctrl{1} & \ctrl{2} & \ctrl{2} & \qw & \qw\\
+            \lstick{ \ket{x_{2}}} & \ctrl{1} & \ctrl{1} & \qw & \qw & \qw & \qw\\
+            \lstick{ \ket{x_{3}}} & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \qw & \qw\\
+        }
+        \label{fig:after_dvlpt}
+    \end{subfigure}
+    \caption{\'Equivalent sans contrôles par 0}
+    \label{fig:basic_control_dvlp}
+\end{figure}
+
+\begin{ex}
+    On reprends notre exemple de fonction booléenne $f(x_1, x_2, x_3) = (x_1 \land x_2) \lor (x_3 \land \neg x_2) \lor (x_1 \land x_3)$. Une fois développée, son circuit équivalent est illustré à la figure \ref{fig:circ_ex_1_dvlp}
+
+    \begin{figure}[H]
+        \centering
+        \centerline{
+            \Qcircuit @C=1em @R=.7em {
+                \lstick{ \ket{x_{0}}} & \ctrl{1} & \qw & \ctrl{2} & \qw \barrier[0em]{3} & \qw & \ctrl{1} & \ctrl{2} \barrier[0em]{3} & \qw & \ctrl{1} & \ctrl{1} \barrier[0em]{3} & \qw & \ctrl{1} & \qw & \qw\\
+                \lstick{ \ket{x_{1}}} & \ctrl{1} & \ctrl{1} & \qw & \qw & \qw & \ctrl{1} & \qw & \qw & \ctrl{1} & \ctrl{2} & \qw & \ctrl{1} & \qw & \qw\\
+                \lstick{ \ket{x_{2}}} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \qw & \ctrl{1} & \ctrl{1} & \qw & \ctrl{1} & \qw & \qw & \ctrl{1} & \qw & \qw\\
+                \lstick{ \ket{x_{f}}} & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \qw & \targ\qw & \targ\qw & \qw & \targ\qw & \targ\qw & \qw & \targ\qw & \qw & \qw\\
+            }
+        }
+        \caption{Circuit quantique développé pour $f(x_1, x_2, x_3)$}
+        \label{fig:circ_ex_1_dvlp}
+    \end{figure}
+\end{ex}
+
+
+\subsection*{\'Etape 3: Simplification du circuit}
+La dernière étape permet d'obtenir un circuit comportant le moins de portes possibles, en se basant sur le principe suivant: lorsqu'un circuit (ici composé de \textbf{CNOT}) est entouré de deux mêmes \textbf{CNOT}, alors celles-ci s'annulent et on peut alors enlever la paire doublon sans changer le résultat. En effectuant ce raisonnement récursivement, on arrive à obtenir un circuit minimal.
+
+En reprenant l'exemple de la fonction booléenne précédente, on peut faire par étapes la simplification:
+
+\begin{figure}[H]
+\begin{subfigure}[H]{0.5\textwidth}
+    \centering
+    \centerline{
+        \Qcircuit @C=1em @R=.7em {
+            \lstick{ \ket{x_{0}}} & \qw & \ctrl{2} & \qw & \ctrl{1} & \ctrl{2} & \ctrl{1} & \ctrl{1} & \qw & \qw\\
+            \lstick{ \ket{x_{1}}} & \ctrl{1} & \qw & \qw & \ctrl{1} & \qw & \ctrl{1} & \ctrl{2} & \qw & \qw\\
+            \lstick{ \ket{x_{2}}} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \qw & \qw & \qw\\
+            \lstick{ \ket{x_{f}}} & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \qw & \qw\\
+        }
+    }
+    \caption{Première simplification}
+    \label{fig:circ_ex_1_simp_1}
+\end{subfigure}
+\begin{subfigure}[H]{0.5\textwidth}
+    \centering
+    \centerline{
+        \Qcircuit @C=1em @R=.7em {
+            \lstick{ \ket{x_{0}}} & \qw & \qw & \ctrl{1} & \ctrl{1} & \ctrl{1} & \qw & \qw\\
+            \lstick{ \ket{x_{1}}} & \ctrl{1} & \qw & \ctrl{1} & \ctrl{1} & \ctrl{2} & \qw & \qw\\
+            \lstick{ \ket{x_{2}}} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \ctrl{1} & \qw & \qw & \qw\\
+            \lstick{ \ket{x_{f}}} & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \targ\qw & \qw & \qw\\
+        }
+    }
+    \caption{Deuxième simplification}
+    \label{fig:circ_ex_1_simp_2}
+\end{subfigure}
+
+\medbreak
+
+\begin{subfigure}[H]{1\textwidth}
+    \centering
+    \centerline{
+        \Qcircuit @C=1em @R=.7em {
+            \lstick{ \ket{x_{0}} } & \qw & \qw & \ctrl{1} & \qw & \qw\\
+            \lstick{ \ket{x_{1}} } & \ctrl{1} & \qw & \ctrl{2} & \qw & \qw\\
+            \lstick{ \ket{x_{2}} } & \ctrl{1} & \ctrl{1} & \qw & \qw & \qw\\
+            \lstick{ \ket{x_{f}} } & \targ\qw & \targ\qw & \targ\qw & \qw & \qw\\
+        }
+    }
+    \caption{Dernière simplification}
+    \label{fig:circ_ex_1_simp_3}
+\end{subfigure}
+\caption{Simplifications successives pour $f(x_1, x_2, x_3)$}
+\end{figure}
+
+\subsection*{Extension à des circuits plus complexes}
+Avec cette méthode, il est facile de construire l'ensemble des fonctions booléennes à 2 bits, ainsi qu'a 3 bits. Pour construire des circuits plus complexes, on dispose alors de deux façons de procéder.
+
+Tout d'abord, on peut refaire ces étapes sur la fonction booléenne plus complexe, et trouver un circuit minimal étant composé de $n$ entrées, et d'un seul qubit auxiliaire pour la sortie.
+
+En revanche, si on ne veut pas établir la table de vérité avant la construction du circuit, on peut utiliser les fonctions élémentaires et construire un circuit a partir de la chaine de caractère représentant la fonction. Il est important de noter que la méthode présentée ici ne modifie pas les entrées de la fonction, on peut donc les réutiliser comme on le souhaite pour venir greffer des fonctions supplémentaires au circuit. Cette méthode s'apparente algrithmiquement à la compilation des fonctions sur les ordinateurs classiques. En revanche, par rapport au circuit minimal qu'on pourrait trouver, on aura ici un qubit auxiliaire par sous-circuit, et un nombre de portes bien plus important. Pour des considérations de limitations matérielles qui sont pour le moment importantes, cette deuxième façon de procéder peut ne pas donner des résultats implémentables pour de trop grosses fonctions.

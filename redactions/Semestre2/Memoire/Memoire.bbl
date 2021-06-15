@@ -1,4 +1,4 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{1}
 
 \bibitem{Nielsen00}
 M.~A. Nielsen and I.~L. Chuang, {\em Quantum Computation and Quantum
@@ -18,112 +18,12 @@ A.~Barenco, C.~H. Bennett, R.~Cleve, D.~P. DiVincenzo, N.~Margolus, P.~Shor,
 Y.~Shi, ``{Both Toffoli and Controlled-NOT need little help to do universal
   quantum computation},'' 2002.
 
-\bibitem{Deutsch85}
-D.~Deutsch, ``Quantum theory, the {C}hurch-{T}uring principle and the universal
-  quantum computer,'' {\em Proceedings of the Royal Society of London A},
-  vol.~400, pp.~97--117, 1985.
+\bibitem{Moore66}
+E.~Moore, R, ``Interval analysis,'' {\em Science}, vol.~158, no.~3799,
+  pp.~365--365, 1967.
 
-\bibitem{Igeta:88}
-K.~Igeta and Y.~Yamamoto, ``Quantum mechanical computers with single atom and
-  photon fields,'' in {\em International Conference on Quantum Electronics},
-  Optical Society of America, 1988.
-
-\bibitem{Zhu_2002}
-S.-L. Zhu and Z.~D. Wang, ``Implementation of universal quantum gates based on
-  nonadiabatic geometric phases,'' {\em Physical Review Letters}, vol.~89, Aug
-  2002.
-
-\bibitem{Zhu_13}
-J.~Zhu, S.~Kais, Q.~Wei, D.~Herschbach, and B.~Friedrich, ``Implementation of
-  quantum logic gates using polar molecules in pendular states,'' {\em The
-  Journal of Chemical Physics}, vol.~138, no.~2, p.~024104, 2013.
-
-\bibitem{1314241}
-F.~{Schmidt-Kaler}, H.~{Haffner}, M.~{Riebe}, S.~{Gulde}, C.~P.~T. {Lancaster},
-  T.~{Deuschle}, C.~{Becher}, C.~{Roos}, J.~{Eschner}, and R.~{Blatt},
-  ``{Realisation of the Cirac-Zoller controlled-NOT quantum gate},'' in {\em
-  2003 European Quantum Electronics Conference. EQEC 2003 (IEEE Cat
-  No.03TH8665)}, pp.~384--, 2003.
-
-\bibitem{Chuang1998ExperimentalIO}
-I.~Chuang, N.~Gershenfeld, and M.~Kubinec, ``Experimental implementation of
-  fast quantum searching,'' {\em Physical Review Letters}, vol.~80,
-  pp.~3408--3411, 1998.
-
-\bibitem{DiVincenzo_2000}
-D.~P. DiVincenzo, ``The physical implementation of quantum computation,'' {\em
-  Fortschritte der Physik}, vol.~48, p.~771–783, Sep 2000.
-
-\bibitem{MicrosoftQuantumDoc}
-Microsoft, ``Microsoft quantum documentation.''
-  \url{https://docs.microsoft.com/en-us/quantum/?view=qsharp-preview}.
-
-\bibitem{Qiskit}
-``Qiskit.'' \url{https://qiskit.org/}.
-
-\bibitem{cross2017open}
-A.~W. Cross, L.~S. Bishop, J.~A. Smolin, and J.~M. Gambetta, ``Open quantum
-  assembly language,'' 2017.
-
-\bibitem{Feynman82}
-R.~P. Feynman, ``Simulating physics with computers,'' {\em International
-  Journal of Theoretical Physics}, vol.~21(6-7), pp.~467--488, 1982.
-
-\bibitem{Buluta2009}
-I.~Buluta and F.~, Nori, ``Quantum simulators,'' {\em Science}, vol.~326,
-  pp.~108--111, 2009.
-
-\bibitem{Deutsch92}
-D.~Deutsch and R.~Jozsa, ``Rapid solution of problems by quantum computation,''
-  {\em Proceedings of the Royal Society of London A}, vol.~439, pp.~553--558,
-  1992.
-
-\bibitem{Bernstein97}
-E.~Bernstein and U.~Vazirani, ``Quantum complexity theory,'' {\em SIAM Journal
-  on Computing}, vol.~26, pp.~1411--1473, 1997.
-
-\bibitem{Grover96}
-L.~K. Grover, {\em A Fast Quantum Mechanical Algorithm for Database Search},
-  p.~212–219.
-\newblock STOC '96, New York, NY, USA: Association for Computing Machinery,
-  1996.
-
-\bibitem{borbely2007grover}
-E.~Borbely, ``Grover search algorithm,'' 2007.
-
-\bibitem{Shor97}
-P.~W. Shor, ``Polynomial-time algorithms for prime factorization and discrete
-  logarithms on a quantum computer,'' {\em SIAM Journal on Computing}, vol.~26,
-  pp.~1484--1509, 1997.
-
-\bibitem{RSA}
-R.~L. Rivest, A.~Shamir, and L.~Adleman, ``A method for obtaining digital
-  signatures and public-key cryptosystems,'' {\em Commun. ACM}, vol.~21,
-  p.~120–126, Feb. 1978.
-
-\bibitem{NFS-RSA220}
-S.~Bai, P.~Gaudry, A.~Kruppa, E.~Thom{\'e}, and P.~Zimmermann, ``{Factorisation
-  of RSA-220 with CADO-NFS}.'' May 2016.
-
-\bibitem{Vandersypen01}
-L.~Vandersypen, M.~Steffen, G.~Breyta, C.~Yannoni, M.~H. Sherwood, and I.~L.
-  Chuang, ``Experimental realization of {S}hor's quantum factoring algorithm
-  using nuclear magnetic resonance,'' {\em Nature}, vol.~414, pp.~883--887,
-  2001.
-
-\bibitem{Martin11}
-E.~Martín-López, A.~Laing, T.~Lawson, R.~Alvarez, X.~Zhou, and J.~O'Brien,
-  ``Experimental realisation of {S}hor's quantum factoring algorithm using
-  qubit recycling,'' {\em Nature Photonics}, vol.~6, pp.~773--776, 11 2011.
-
-\bibitem{gidney2019factor}
-C.~Gidney and M.~Ekerå, ``{How to factor 2048 bit RSA integers in 8 hours
-  using 20 million noisy qubits},'' 2019.
-
-\bibitem{anschuetz2018variational}
-E.~Anschuetz, J.~Olson, A.~Aspuru-Guzik, and Y.~Cao, ``Variational quantum
-  factoring,'' in {\em Quantum Technology and Optimization Problems} (S.~Feld
-  and C.~Linnhoff-Popien, eds.), (Cham), pp.~74--85, Springer International
-  Publishing, 2019.
+\bibitem{Younes03}
+A.~Younes and J.~Miller, ``Automated method for building cnot based quantum
+  circuits for boolean functions,'' 05 2003.
 
 \end{thebibliography}
