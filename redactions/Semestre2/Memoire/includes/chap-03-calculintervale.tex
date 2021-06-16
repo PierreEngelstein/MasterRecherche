@@ -88,6 +88,8 @@ On veut résoudre le problème $\max(f(x))$ tel que $g(x) \leq 0$, avec $f$ fonc
   \end{align}
 \end{theoreme}
 
+Cela nous permet d'éliminer directement de l'ensemble des solutions les boites dont la borne supérieure de l'image est inférieure à l'image de ce critère $a$, puisque garanties comme ne contenant pas l'optimum du problème. La figure \ref{fig:optim2} illustre cette élimination. \`A l'issue de cette étape, on voit qu'on obtient un ensemble plus restreint de boites garanties comme contenant la solution, et on peut itérer en choisissant au fur et à mesure un critère $a$ meilleur, et on arrive à un encadrement satisfaisant de la solution comme à la figure \ref{fig:optim3}.
+
 \begin{figure}[H]
   \centering
   \begin{subfigure}[h]{0.3\textwidth}
@@ -111,8 +113,13 @@ On veut résoudre le problème $\max(f(x))$ tel que $g(x) \leq 0$, avec $f$ fonc
   \caption{Optimisation naïve}
 \end{figure}
 
+Cette méthode d'optimisation, "naive", permet d'obtenir un résultat satisfaisant mais va être rapidement limitée si on veut des précisions plus élevées. En effet, on va avoir très rapidement un très grand nombre de boites à traiter. On peut remarquer entre autres qu'un certain nombre de boites vont être dans des "régions" globales pouvant être éliminées (par exemple, sur la figure \ref{fig:optim2} on a tout le bas de la fonction qui pourrait être éliminé d'un coup). Cela nous amène à un algorithme plus avancé, présenté en \ref{fig:algomaxim}.
 
-La figure \ref{fig:algomaxim} présente l'algorithme utilisé pour ce problème de maximisation (la logique étant la même pour une minimisation). Quatre éléments sont important à comprendre dans cet algorithme.
+Au lieu de découper directement l'espace des entrées en un très grand nombre de boites, on va bisecter l'espace en deux boites, suivant l'axe le plus grand. On obtient deux boites, dont l'axe le plus grand aura été coupé en faisant $[x] \longrightarrow {[\underline{x}; (\overline{x} + \underline{x}) . 0.5], [(\overline{x} + \underline{x}) . 0.5; \overline{x}]}$. On considère la bisection par le milieu, mais on pourrait aussi utiliser des bisections plus avancées permettant d'accélérer l'algorithme.
+
+Une fois obtenues ces deux boites, on peut évaluer la fonction d'inclusion et les contraintes, et décider de jeter les boites ne rentrant pas dans les contraintes. Sur l'ensemble des boites obtenues pour une itération, on effectue l'opération de recherche de critère décrit précédement, et on réitère sur les boites restantes. Cela permet d'éliminer rapidement les boites de grande dimension qui sont garanties ne comprenant pas l'optimum, et donc réduire considérablement le nombre de boites à traiter par la suite.
+
+On considère l'algorithme fini quand on a obtenu une précision suffisante sur l'encadrement de la fonction ou des variables d'entrée, ou alors quand un certain nombre d'itérations ont été effectuées.
 
 \begin{figure}[H]
     \begin{algorithm}[H]
@@ -145,7 +152,7 @@ La figure \ref{fig:algomaxim} présente l'algorithme utilisé pour ce problème 
               \tcc{Remove boxes certified not to contain maximum}
               Evaluate $[f]$ for all $[\texttt{currentSolutions}]$\;
               $f_{best}$ best $f(\texttt{sol}.\texttt{mid})$ in all $[f]$ \;
-              Remove all $[\texttt{sol}]$ in $[\texttt{currentSolutions}]$ where $sup([f]([sol])) \leq f_{best}$\;
+              Remove all $[\texttt{sol}]$ in $[\texttt{currentSolutions}]$ where $sup([f]([\texttt{sol}])) \leq f_{best}$\;
               $\texttt{solutions} \longleftarrow \texttt{currentSolutions}$
           }
           \Return{$\texttt{solutions}, [f_{c}]$}
@@ -156,4 +163,14 @@ La figure \ref{fig:algomaxim} présente l'algorithme utilisé pour ce problème 
     \label{fig:algomaxim}
 \end{figure}
 
+\section{Implémentation}
 
+L'algorithme \ref{fig:algomaxim} a été implémenté en C\# (dotnet 5) sur la base de la librairie \href{https://github.com/selmaohneh/IntSharp}{IntSharp} modifiée pour répondre à nos besoins (rajout de l'intervalle vide, de la fonction $x\log(x)$, des intervalles booléens, \dots). Une interface graphique basique utilisant Blazor a été mise en place pour faciliter la visualisation de l'optimisation et des différents problèmes rencontrés lors du développement. L'ensemble du projet est disponible sur \url{https://github.com/PierreEngelstein/IntervalEval}. La solution est organisée en plusieurs modules:
+
+\begin{itemize}
+  \item \texttt{IntervalEval} qui fourni la librairie de base pour le calcul par intervalle et l'optimisation;
+  \item \texttt{IntervalEval.Front} est l'interface web basique développée avec le framework Blazor Server;
+  \item \texttt{IntervalEval.Optimizer} est une interface en ligne de commande pour le problème spécifique détaillé dans ce rapport;
+  \item \texttt{IntervalEval.FrontConsole} est une interface en ligne de commande codée pour tester le problème à trois états quantiques d'entrée, pour tester les performances sur un problème en plus haute dimension;
+  \item \texttt{IntervalEval.Tests} fourni un ensemble de tests unitaires pour le bon fonctionnement de la librairie d'intervalle.
+\end{itemize}

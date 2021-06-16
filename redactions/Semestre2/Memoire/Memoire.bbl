@@ -9,18 +9,27 @@ M.~A. Nielsen and I.~L. Chuang, {\em Quantum Computation and Quantum
 D.~N. Mermin, {\em Quantum Computer Science: An introduction}.
 \newblock Cambridge: Cambridge University Press, 2007.
 
-\bibitem{Barenco95}
-A.~Barenco, C.~H. Bennett, R.~Cleve, D.~P. DiVincenzo, N.~Margolus, P.~Shor,
-  T.~Sleator, J.~A. Smolin, and H.~Weinfurter, ``Elementary gates for quantum
-  computation,'' {\em Physical Review A}, vol.~52, pp.~3457--3467, 1995.
-
-\bibitem{shi2002toffoli}
-Y.~Shi, ``{Both Toffoli and Controlled-NOT need little help to do universal
-  quantum computation},'' 2002.
-
 \bibitem{Moore66}
 E.~Moore, R, ``Interval analysis,'' {\em Science}, vol.~158, no.~3799,
   pp.~365--365, 1967.
+
+\bibitem{Eldar01}
+Y.~C. Eldar and G.~D. Forney, ``On quantum detection and the square-root
+  measurement,'' {\em IEEE Transactions on Information Theory}, vol.~47,
+  pp.~858--872, 2001.
+
+\bibitem{Eldar03c}
+Y.~C. Eldar, A.~Megretski, and G.~C. Verghese, ``Designing optimal quantum
+  detectors via semidefinite programming,'' {\em IEEE Transactions on
+  Information Theory}, vol.~49, pp.~1007--1012, 2003.
+
+\bibitem{Davies78}
+E.~B. Davies, ``Information and quantum measurement,'' {\em IEEE Transactions
+  on Information Theory}, vol.~24, pp.~596--599, 1978.
+
+\bibitem{Shannon48}
+C.~E. Shannon, ``A mathematical theory of communication,'' {\em The Bell System
+  Technical Journal}, vol.~27, no.~3, pp.~379--423, 1948.
 
 \bibitem{Younes03}
 A.~Younes and J.~Miller, ``Automated method for building cnot based quantum

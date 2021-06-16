@@ -1,16 +1,15 @@
 \chapter{Construction d'un détecteur optimal}
 
-Presentation problème + résolution
+On présente ici le détail du problème de la détection optimale quantique avec le critère de l'information mutuelle. 
 
 \section{Formulation du problème}
-Le problème de la détection d'état quantique porte sur un ensemble de $m$ états quantiques représentés par les opérateurs densité $\{\rho_i \; , \; 1 \leq i \leq m\}$ munis des probabilités préalables $\{p_i \geq 0 \; , \; 1 \leq i \leq m \}$. L'objectif est d'obtenir un ensemble de $m$ opérateurs de mesure $\{\Pi_j \; , \; 1 \leq i \leq m\}$ permettant de mesurer le mieux possible par rapport aux probabilités les états d'entrée qui nous arrivent.
+Le problème de la détection d'état quantique porte sur un ensemble de $m$ états quantiques représentés par les opérateurs densité $\{\rho_i \; , \; 1 \leq i \leq m\}$ munis des probabilités à priori $\{p_i \geq 0 \; , \; 1 \leq i \leq m \}$. L'objectif est d'obtenir un ensemble de $m$ opérateurs de mesure $\{\Pi_j \; , \; 1 \leq i \leq m\}$ permettant de mesurer le mieux possible par rapport aux probabilités les états d'entrée qui nous arrivent.
 
 Les opérateurs $\rho_i$ et $\Pi_i$ sont des matrices Hermitiennes semi-définies positives, de la forme $\begin{bmatrix}a & b+ic \\ b-ic & d \end{bmatrix}$.
 
-
-Plusieurs critères ont été proposés à optimiser afin de construire ces détecteurs optimaux. D'une part, on a la possibilité de travailler sur la minimisation de l'erreur de mesure (l'erreur moyenne ou l'erreur quadratique). D'autre part, et c'est ce sur quoi nous avons travaillé, on peut considérer le critère de l'information mutuelle comme critère à maximiser. Ce critère indique la dépendance de deux variables aléatoires entre elles, il permet dans notre cas de bien caractériser la quantité d'information qu'on peut retirer des états d'entrée en ayant les opérateurs de mesure
+Plusieurs critères ont été proposés à optimiser afin de construire ces détecteurs optimaux. D'une part, on a la possibilité de travailler sur la minimisation de l'erreur quadratique de mesure \cite{Eldar01} ou la maximisation de la probabilité de détection correcte \cite{Eldar03c}. D'autre part, et c'est ce sur quoi nous avons travaillé, on peut considérer le critère de l'information mutuelle comme critère à maximiser \cite{Davies78}. Ce critère indique la dépendance de deux variables aléatoires entre elles, il permet dans notre cas de bien caractériser la quantité d'information qu'on peut retirer des états d'entrée en ayant les opérateurs de mesure
 \medbreak
-L'information mutuelle de deux variables aléatoires $X$ et $Y$ est donnée par:
+L'information mutuelle de deux variables aléatoires $X$ et $Y$ a été formulée par Shannon en 1948 \cite{Shannon48}. Elle est donnée par:
 
 \begin{align}
     I(X;Y) = \displaystyle \sum_{y \in Y} \displaystyle \sum_{x \in X} p_{(X, Y)}(x, y) \log \big(\frac{p_{(X, Y)}(x, y)}{p_X(x) p_Y(y)}\big),
