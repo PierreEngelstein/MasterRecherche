@@ -1,6 +1,9 @@
-\chapter{Calcul par intervalle: éléments de base}
+\chapter{Calcul par intervalles: éléments de base}
 
-Le calcul par intervalle est décrit au départ dans les travaux de Ramon Moore \cite{Moore66}. L'utilité de ce mode de calcul vient des problèmes que représente le stockage des nombres réels dans nos ordinateurs via la norme \texttt{IEEE 754}. En effet, on sait avec cette norme facilement représenter une certaine quantité, finie de nombres réels tels que $0.5$, sous la forme $\text{signe} \times \text{base}^{exposant} \times (1 + mantisse)$. Il est en revanche impossible de représenter le reste des nombres réels, tels que $0.1$. De ce fait, lorsqu'on se place dans des contextes de calculs, il devient évident qu'on peut se retrouver à accumuler des erreurs de précision qui vont venir fausser les résultats. Quand on veut garantir des résultats, par exemple sur des problèmes d'optimisation, cela peut devenir pénalisant.
+Le calcul par intervalles est décrit au départ dans les travaux de Ramon Moore \cite{Moore66}. L'utilité de ce mode de calcul vient des problèmes que représente le stockage des nombres réels dans nos ordinateurs via la norme \texttt{IEEE 754}. En effet, on sait avec cette norme facilement représenter une certaine quantité, finie, de nombres réels tels que $0.5$, sous la forme $\texttt{signe} \times \texttt{base}^{\texttt{exposant}} \times (1 + \texttt{mantisse})$. Il est en revanche impossible de représenter exactement la plupart des nombres réels, tels que $0.1$. De ce fait, lorsqu'on se place dans des contextes de calculs, on peut se retrouver à accumuler des erreurs de précision qui vont venir fausser les résultats. Quand on veut garantir des résultats, par exemple sur des problèmes d'optimisation, cela peut devenir pénalisant.
+
+Le calcul par intervalles permet en outre de pouvoir caractériser l'ensemble des solutions d'un problème, d'en obtenir une caractérisation globale. Cela permet de garantir qu'on a bien l'optimum global sur tout l'ensemble des solutions admissibles d'un problème d'optimisation. Dans ce chapitre, on présente les notions formant la base du calcul par intervalle ainsi qu'un algorithme d'optimisation utilisant cette méthode de calcul.
+
 
 \section{Les intervalles}
 \subsection{Intervalle et boite}
@@ -12,12 +15,18 @@ Le calcul par intervalle est décrit au départ dans les travaux de Ramon Moore 
 On note par la suite plus généralement $[x] = [\underline{x}, \overline{x}]$.
 
 \begin{ex}
-  Si on veut représenter le nombre $\sqrt{2} = 1.4142\dots$, on peut dire: $1.4 \leq sqrt(2) \leq 1.5$, donc encadrer ce nombre par l'intervalle $[1.4, 1.5]$.
+  Si on veut représenter le nombre $\sqrt{2} = 1.4142\dots$, on peut dire: $1.4 \leq \sqrt{2} \leq 1.5$, donc encadrer ce nombre par l'intervalle $[1.4, 1.5]$.
 \end{ex}
 
-\subsection{Fonctions d'inclusion}
+On étend cette notion d'intervalle à plusieurs variables en prenant le produit cartésien de plusieurs intervalles pour former des boites en $n$ dimensions:
+
+\begin{definition}
+  Une \textit{boite} $[\textbf{x}]$ est le produit cartésien des intervalles qui composent la boite : $[\textbf{x}] = [x_1] \times [x_2] \times \dots \times [x_n]$.
+\end{definition}
+
+\subsection{Fonction d'inclusion}
 % Fonction d'inclusion naturelle
-Avec cette notion d'intervalle, on peut définir le comportement quand on applique une fonction. L'idée est de se dire que, pour un intervalle d'entrée $[x]$, l'intervalle image par une fonction $f$ doit contenir l'ensemble des images prises par la fonction $f$ pour tout les $x \in [x]$ :
+Avec cette notion d'intervalle, on peut définir le comportement quand on applique une fonction. L'idée est de se dire que, pour un intervalle ou une boite d'entrée $[x]$, l'intervalle image par une fonction $f$ doit contenir l'ensemble des images prises par la fonction $f$ pour tout les $x \in [x]$ :
 
 \begin{definition}
     Soit $f : \mathbb{R}^n \rightarrow \mathbb{R}^m$ une fonction, la fonction $[f] : \mathbb{R}^n \rightarrow \mathbb{R}^m$ est une \textbf{fonction d'inclusion} pour $f$ si
@@ -28,7 +37,7 @@ Avec cette notion d'intervalle, on peut définir le comportement quand on appliq
 \end{definition}
 
 \begin{ex}
-  La figure \ref{fig:fct2} montre l'encadrement d'une fonction $y = f(x)$ quelconque. La boite bleue est le produit cartésien de $[x]$ et de $[y]$.
+  La figure \ref{fig:fct2} montre l'encadrement d'une fonction $y = f(x)$ quelconque.
 
   \begin{figure}[H]
     \centering
@@ -38,11 +47,27 @@ Avec cette notion d'intervalle, on peut définir le comportement quand on appliq
   \end{figure}
 \end{ex}
 
-L'encadrement nécessite la connaissance précise de la forme de la fonction pour pouvoir l'encadrer correctement. Ceci peut se révéler compliquer pour des fonctions non évidentes, typiquement quand on monte en dimension. Pour cela, on peut combiner les fonctions d'inclusion sans perdre la garantie d'inclusion, comme indiqué dans le théorème \ref{def:circ}.
+Les fonctions d'inclusion nous intéressant ici sont celles convergentes, c'est-à-dire celles dont la taille de la boite image tend vers 0 quand la taille de la boite d'entrée tend vers 0.
+
+\begin{definition}
+  Une fonction d'inclusion $[f]$ de $f$ est dite \textbf{convergente} si 
+
+  \begin{align}
+    w([x]) \rightarrow 0 \Rightarrow w([f]([x])) \rightarrow 0,
+  \end{align}
+
+  Avec $w([x])$ fonction diamètre de la boite $[x]$.
+\end{definition}
+
+% On impose également que la fonction d'inclusion $[f]$ vérifie $[f]({x}) = {f(x)}$, c'est-à-dire qu'elle soit convergente. On impose ainsi que la fonction $[f]$ soit continue au voisinage de ces intervalles "points". 
+
+\medbreak
+
+L'encadrement nécessite la connaissance précise de la forme de la fonction pour pouvoir l'encadrer correctement. Ceci peut se révéler compliqué pour des fonctions non-évidentes, typiquement quand on monte en dimension. Pour cela, on peut combiner les fonctions d'inclusion sans perdre la garantie d'inclusion \cite{neumaier91, Delanoue18} , comme indiqué dans le Théorème \ref{def:circ}.
 
 \begin{theoreme}
   \label{def:circ}
-  si $[f]$ et $[g]$ sont des fonctions d'inclusion respectives pour $f$ et $g$, alors $[f] \circ [g]$ est une fonction d'inclusion pour $f \circ g$.
+  Si $[f]$ et $[g]$ sont des fonctions d'inclusion respectives pour $f$ et $g$, alors $[f] \circ [g]$ est une fonction d'inclusion pour $f \circ g$.
 \end{theoreme}
 
 Cela permet en pratique de construire des fonctions d'inclusions élémentaires puis de les combiner. En effectuant cette opération, on peut en revanche perdre de la précision sur l'encadrement comme le montre la figure \ref{fig:fct3}.
@@ -58,27 +83,26 @@ Cela permet en pratique de construire des fonctions d'inclusions élémentaires 
 
 \subsection{Arithmétique élémentaire}
 
-Comme dit précédement, on peut construire les fonctions d'inclusions des fonctions necessaires pour n'importe quel problème en calcul par intervalle. Spécifiquement, il est utile de définir un certain nombre de fonctions de base permettant de former les blocs de construction pour la formation de fonctions plus complexes. On peut ainsi définir les opérateurs binaires (l'addition, la soustraction, la multiplication, \dots) ainsi que les opérateurs unaires (l'exponentielle, la puissance, le sinus, \dots).
+Comme dit précédemment, on peut construire les fonctions d'inclusions des fonctions nécessaires pour n'importe quel problème en calcul par intervalle. Spécifiquement, il est utile de définir un certain nombre de fonctions de base permettant de former les briques de construction pour la formation de fonctions composées. On peut ainsi définir les opérateurs binaires (l'addition, la soustraction, la multiplication, \dots) ainsi que les opérateurs unaires (l'exponentielle, la puissance, le sinus, \dots).
 
 \begin{ex}
   
-  Un certain nombre de fonctions arithmétiques élémentaires peuvent être formulées :
+  Un certain nombre de fonctions arithmétiques élémentaires peuvent être formulées , avec $[x_1] = [\underline{x_1}, \overline{x_1}]$ et $[x_2] = [\underline{x_2}, \overline{x_2}]$:
   \begin{itemize}
     \item $[x_1] + [x_2] = [\underline{x_1} + \underline{x_2}, \overline{x_1} + \overline{x_2}]$
     \item $[x_1] - [x_2] = [\underline{x_1} - \overline{x_2}, \overline{x_1} - \underline{x_2}]$
     \item $[x_1] \times [x_2] = [\text{min}(\underline{x_1}\underline{x_2}, \underline{x_1}\overline{x_2}, \overline{x_1}\underline{x_2}, \overline{x_1}\overline{x_2}), \text{max}(\underline{x_1}\underline{x_2}, \underline{x_1}\overline{x_2}, \overline{x_1}\underline{x_2}, \overline{x_1}\overline{x_2})]$
-    \item $[x]^2 = [0, \text{max}(\underline{x}^2, \overline{x}^2)]$
     \item $e^{[x]} = [e^{\underline{x}}, e^{\overline{x}}]$
     \item \dots
   \end{itemize}
 \end{ex}
 
-On peut étendre ces définitions à l'ensemble des fonctions strictements monotones: il est évident de se dire que, si une fonction $f(x)$ est strictement croissante, alors $[f]([x]) = [f(\underline{x}), f(\overline{x})]$, et de même pour une fonction décroissante. On peut alors construire des fonctions plus complexes, comme $f : x \mapsto x^3$ en découpant la définition de la fonction par morceaux.
+On peut étendre ces définitions à l'ensemble des fonctions strictement monotones: il est évident de se dire que, si une fonction $f(x)$ est strictement croissante, alors $[f]([x]) = [f(\underline{x}), f(\overline{x})]$ est une fonction d'inclusion pour $f$. On peut alors construire des fonctions moins évidentes, comme $f : x \mapsto x^3$ en découpant la définition de la fonction par morceaux monotones.
 
 \section{Optimisation avec les intervalles}
 On met en place un algorithme d'optimisation utilisant le calcul par intervalle pour obtenir un encadrement garanti de la solution à notre problème.
 
-On veut résoudre le problème $\max(f(x))$ tel que $g(x) \leq 0$, avec $f$ fonction coût et $g$ ensemble des contraintes. Avec le calcul par intervalle, on cherche à avoir un encadrement \textit{garanti} de la solution au problème. Le principe de base est de découper l'ensemble des entrées en un certain nombre de boites, dépendant de la précision que l'on veut, comme à la figure \ref{fig:optim1}. On choisit ensuite un $a$ solution admissible du problème suivant le théorème \ref{thm:solutionsup}.
+On veut résoudre le problème $\max(f(x))$ tel que $g(x) \leq 0$, avec $f$ fonction coût et $g$ un ensemble des contraintes. Avec le calcul par intervalles, on cherche à avoir un encadrement \textit{garanti}, \textit{global} de la solution au problème. Le principe de base est de découper l'ensemble des entrées en un certain nombre de boites, dépendant de la précision que l'on veut, comme à la figure \ref{fig:optim1}. On choisit ensuite un $a$ solution admissible du problème suivant le théorème \ref{thm:solutionsup}.
 
 \begin{theoreme}
   \label{thm:solutionsup}
@@ -88,7 +112,7 @@ On veut résoudre le problème $\max(f(x))$ tel que $g(x) \leq 0$, avec $f$ fonc
   \end{align}
 \end{theoreme}
 
-Cela nous permet d'éliminer directement de l'ensemble des solutions les boites dont la borne supérieure de l'image est inférieure à l'image de ce critère $a$, puisque garanties comme ne contenant pas l'optimum du problème. La figure \ref{fig:optim2} illustre cette élimination. \`A l'issue de cette étape, on voit qu'on obtient un ensemble plus restreint de boites garanties comme contenant la solution, et on peut itérer en choisissant au fur et à mesure un critère $a$ meilleur, et on arrive à un encadrement satisfaisant de la solution comme à la figure \ref{fig:optim3}.
+Cela nous permet d'éliminer directement de l'ensemble des solutions les boites dont la borne supérieure de l'image est inférieure à l'image de ce candidat $a$, puisque garanties comme ne contenant pas l'optimum du problème. La figure \ref{fig:optim2} illustre cette élimination. \`A l'issue de cette étape, on voit qu'on obtient un ensemble plus restreint de boites garanties comme contenant la solution, et on peut itérer en choisissant au fur et à mesure un candidat $a$ meilleur, et on arrive à un encadrement satisfaisant de la solution comme à la figure \ref{fig:optim3} avec l'intervalle $[x]^*$.
 
 \begin{figure}[H]
   \centering
@@ -113,13 +137,26 @@ Cela nous permet d'éliminer directement de l'ensemble des solutions les boites 
   \caption{Optimisation naïve}
 \end{figure}
 
-Cette méthode d'optimisation, "naive", permet d'obtenir un résultat satisfaisant mais va être rapidement limitée si on veut des précisions plus élevées. En effet, on va avoir très rapidement un très grand nombre de boites à traiter. On peut remarquer entre autres qu'un certain nombre de boites vont être dans des "régions" globales pouvant être éliminées (par exemple, sur la figure \ref{fig:optim2} on a tout le bas de la fonction qui pourrait être éliminé d'un coup). Cela nous amène à un algorithme plus avancé, présenté en \ref{fig:algomaxim}.
+Cette méthode d'optimisation, "naïve", permet d'obtenir un résultat satisfaisant, mais va être rapidement limitée si on veut des précisions plus élevées. En effet, on va avoir très rapidement un très grand nombre de boites à traiter. On peut remarquer entre autres qu'un certain nombre de boites vont être dans des "régions" globales pouvant être éliminées (par exemple, sur la figure \ref{fig:optim2}, on a tout le bas de la fonction qui pourrait être éliminé d'un coup). Cela nous amène à un algorithme plus avancé, présenté en \ref{fig:algomaxim}.
 
-Au lieu de découper directement l'espace des entrées en un très grand nombre de boites, on va bisecter l'espace en deux boites, suivant l'axe le plus grand. On obtient deux boites, dont l'axe le plus grand aura été coupé en faisant $[x] \longrightarrow {[\underline{x}; (\overline{x} + \underline{x}) . 0.5], [(\overline{x} + \underline{x}) . 0.5; \overline{x}]}$. On considère la bisection par le milieu, mais on pourrait aussi utiliser des bisections plus avancées permettant d'accélérer l'algorithme.
+Au lieu de découper directement l'espace des entrées en un très grand nombre de boites, on va bisecter l'espace en deux boites, suivant l'axe le plus grand. On obtient deux boites, dont l'axe le plus grand aura été coupé en faisant $[x] \longrightarrow \{[\underline{x}; (\overline{x} + \underline{x}) . 0.5], [(\overline{x} + \underline{x}) . 0.5; \overline{x}]\}$. On considère la bissection par le milieu, mais on pourrait aussi utiliser des bissections plus avancées permettant d'accélérer l'algorithme.
 
-Une fois obtenues ces deux boites, on peut évaluer la fonction d'inclusion et les contraintes, et décider de jeter les boites ne rentrant pas dans les contraintes. Sur l'ensemble des boites obtenues pour une itération, on effectue l'opération de recherche de critère décrit précédement, et on réitère sur les boites restantes. Cela permet d'éliminer rapidement les boites de grande dimension qui sont garanties ne comprenant pas l'optimum, et donc réduire considérablement le nombre de boites à traiter par la suite.
+Une fois ces deux boites obtenues, on peut évaluer la fonction d'inclusion et les contraintes, et décider de supprimer les boites ne rentrant pas dans les contraintes. Sur l'ensemble des boites obtenues pour une itération, on effectue l'opération de recherche de critère décrit précédemment, et on réitère sur les boites restantes. Cela permet d'éliminer rapidement les boites de plus grande taille qui sont garanties ne contenant pas l'optimum, et donc réduire considérablement le nombre de boites à traiter par la suite.
 
 On considère l'algorithme fini quand on a obtenu une précision suffisante sur l'encadrement de la fonction ou des variables d'entrée, ou alors quand un certain nombre d'itérations ont été effectuées.
+
+\section{Implémentation}
+
+L'algorithme \ref{fig:algomaxim} a été implémenté en C\# (dotnet 5) sur la base de la librairie \href{https://github.com/selmaohneh/IntSharp}{IntSharp} modifiée pour répondre à nos besoins (rajout de l'intervalle vide, de la fonction $x \longrightarrow x\log(x)$, des intervalles booléens, \dots). Une interface graphique basique utilisant Blazor a été mise en place pour faciliter la visualisation de l'optimisation et des différents problèmes rencontrés lors du développement. L'ensemble du projet est disponible sur \url{https://github.com/PierreEngelstein/IntervalEval}. La solution est organisée en plusieurs modules:
+
+\begin{itemize}
+  \item \texttt{IntervalEval} qui fourni la librairie de base pour le calcul par intervalle et l'optimisation;
+  \item \texttt{IntervalEval.Front} est l'interface web basique développée avec le framework Blazor Server;
+  \item \texttt{IntervalEval.Optimizer} est une interface en ligne de commande pour le problème spécifique détaillé dans ce rapport;
+  \item \texttt{IntervalEval.FrontConsole} est une interface en ligne de commande codée pour tester le problème à trois états quantiques d'entrée, pour tester les performances sur un problème en plus haute dimension;
+  \item \texttt{IntervalEval.Tests} fournit un ensemble de tests unitaires pour le bon fonctionnement de la librairie d'intervalle.
+\end{itemize}
+
 
 \begin{figure}[H]
     \begin{algorithm}[H]
@@ -159,18 +196,6 @@ On considère l'algorithme fini quand on a obtenu une précision suffisante sur 
         }
       \end{algorithm}
 
-    \caption{Algorithme de maximisation par le calcul par intervalle}
+    \caption{Algorithme de maximisation par le calcul par intervalles}
     \label{fig:algomaxim}
 \end{figure}
-
-\section{Implémentation}
-
-L'algorithme \ref{fig:algomaxim} a été implémenté en C\# (dotnet 5) sur la base de la librairie \href{https://github.com/selmaohneh/IntSharp}{IntSharp} modifiée pour répondre à nos besoins (rajout de l'intervalle vide, de la fonction $x\log(x)$, des intervalles booléens, \dots). Une interface graphique basique utilisant Blazor a été mise en place pour faciliter la visualisation de l'optimisation et des différents problèmes rencontrés lors du développement. L'ensemble du projet est disponible sur \url{https://github.com/PierreEngelstein/IntervalEval}. La solution est organisée en plusieurs modules:
-
-\begin{itemize}
-  \item \texttt{IntervalEval} qui fourni la librairie de base pour le calcul par intervalle et l'optimisation;
-  \item \texttt{IntervalEval.Front} est l'interface web basique développée avec le framework Blazor Server;
-  \item \texttt{IntervalEval.Optimizer} est une interface en ligne de commande pour le problème spécifique détaillé dans ce rapport;
-  \item \texttt{IntervalEval.FrontConsole} est une interface en ligne de commande codée pour tester le problème à trois états quantiques d'entrée, pour tester les performances sur un problème en plus haute dimension;
-  \item \texttt{IntervalEval.Tests} fourni un ensemble de tests unitaires pour le bon fonctionnement de la librairie d'intervalle.
-\end{itemize}

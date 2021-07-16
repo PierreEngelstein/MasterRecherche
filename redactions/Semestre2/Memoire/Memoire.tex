@@ -1,9 +1,3 @@
-% Plan:
-% 1 - Théorie info quantique
-%   -> Rappels formalisme + précisions sur POVM
-% 2 - Optimisation non linéaire sous contraintes avec analyse par intervalle
-% 3 - Mesure optimale quantique - information mutuelle
-
 \documentclass[12pt,a4paper]{report}
 
 \usepackage{mathtools}
@@ -13,7 +7,7 @@
 \usepackage{amsfonts}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
-\usepackage[frenchb]{babel}
+\usepackage[french]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{subcaption}
 \usepackage{caption}
@@ -39,6 +33,37 @@
     }
 \usetikzlibrary{angles,quotes}
 % \usepackage{a4wide}
+
+\definecolor{main-color}{rgb}{0.6627, 0.7176, 0.7764}
+\definecolor{back-color}{rgb}{0.95,0.95,0.92}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{string-color}{rgb}{0.3333, 0.5254, 0.345}
+\definecolor{key-color}{rgb}{0.8, 0.47, 0.196}
+
+\lstdefinestyle{CStyle}{
+  language = C++,
+  basicstyle=\tiny,
+  backgroundcolor = {\color{back-color}},
+  commentstyle=\color{mGreen},
+  stringstyle = {\color{string-color}},
+  keywordstyle = {\color{key-color}},
+  keywordstyle = [2]{\color{blue}},
+  keywordstyle = [3]{\color{gray}},
+  otherkeywords = {;,<<,>>,++},
+  morekeywords = [2]{function,end,Constants,Variables,Minimize,Constraints},
+  morekeywords = [3]{tr,EntropyM,EntropyP,EntropyMP,MutualInformation,I,xlog},
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2,
+}
+
 
 \makeatletter
 \newcommand\frontmatter{
@@ -76,18 +101,22 @@
     \begin{center}
       \begin{figure}[!tbp]
         \centering
-        \begin{minipage}[b]{0.4\textwidth}
+        \begin{subfigure}[b]{0.3\textwidth}
           \includegraphics[width=\textwidth]{Polytech_Angers.png}
-        \end{minipage}
+        \end{subfigure}
         \hfill
-        \begin{minipage}[b]{0.4\textwidth}
+        \begin{subfigure}[b]{0.3\textwidth}
           \includegraphics[width=\textwidth]{LogoUnivAngers.png}
-        \end{minipage}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.2\textwidth}
+          \includegraphics[width=\textwidth]{LogoLARIS.png}
+        \end{subfigure}
       \end{figure}
       {\large Master Systèmes Dynamiques et Signaux}\\[0.5cm]
       {\large Mémoire de master}\\[0.5cm]
       \rule{\linewidth}{0.5mm} \\[0.4cm]
-      { \huge \bfseries Conception de détecteurs quantiques optimaux via le calcul par intervalles \\[0.4cm] }
+      { \huge \bfseries Conception de détecteurs quantiques optimaux \\ via le calcul par intervalles \\[0.4cm] }
       \rule{\linewidth}{0.5mm} \\[1.5cm]
       \noindent
       \begin{minipage}{0.4\textwidth}
@@ -116,8 +145,8 @@
       \end{tabular}
 
       \vspace{2cm}
-      
-      Version du \\ \today
+
+      % Version du \\ \today
       % {2020-2021}
     \end{center}
 \end{titlepage}
@@ -144,12 +173,10 @@ Je remercie Dr. Nicolas Delanoue et Pr. François Chapeau-Blondeau pour leur enc
 \input{includes/chap-07-conclu.tex}
 
 \begin{appendix}
+\input{includes/app-03-dynamic.tex}
 \input{includes/app-01-constrcircuit.tex}
-% \input{includes/app-02-vazirani.tex}
-% \input{includes/app-03-grover.tex}
-
+\input{includes/app-02-ibex.tex}
 \end{appendix}
-% \input{includes/chap-06-QFT.tex}
 
 
 \clearpage
@@ -163,10 +190,10 @@ Je remercie Dr. Nicolas Delanoue et Pr. François Chapeau-Blondeau pour leur enc
 \vspace*{\fill}
 \noindent\rule[2pt]{\textwidth}{0.5pt}\\
 {\textbf{Résumé ---}}
-Ce rapport bibliographique présente les différents éléments de base nécessaires à la compréhension de l'informatique quantique. On y présente en premier les concepts fondateurs de l'informatique quantique: le qubit, les mécanismes d'évolution des systèmes quantiques et enfin la mesure projective. On y montre ensuite trois algorithmes fondateurs en illustrant les problèmes résolus et leur fonctionnement. Ces trois algorithmes permettent de montrer l'apport de l'informatique quantique, ils permettent en effet d'obtenir des performances de traitement de l'information inaccessibles en classique.
+Ce mémoire s'intéresse à la question de la détection optimale quantique. On dispose d'un ensemble d'états quantiques que l'on veut détecter le plus efficacement possible par le biais d'un ensemble d'opérateurs de mesure. Plusieurs critères de performance existent tels que l'erreur de mesure ou l'erreur quadratique. On étudie ici le critère de l'information mutuelle, en y appliquant les techniques de calcul par intervalles pour obtenir un résultat global garanti.
 
 {\textbf{Mots clés :}}
-Informatique quantique, qubit, mesure projective, Deutsch-Jozsa, Grover, Shor, parallélisation.
+Informatique quantique, détection optimale, opérateur de mesure, information mutuelle, calcul par intervalles.
 \\
 \noindent\rule[2pt]{\textwidth}{0.5pt}
 
@@ -174,10 +201,10 @@ Informatique quantique, qubit, mesure projective, Deutsch-Jozsa, Grover, Shor, p
 \vspace*{\fill}
 \noindent\rule[2pt]{\textwidth}{0.5pt}\\
 {\textbf{Abstract ---}}
-This bibliographic report presents the fundamental aspects of quantum computing. We firstly show 3 concepts required to understand quantum computing: the notion of qubit, the mechanisms of evolution of quantum systems and the projective measurement of qubits. We then show three major quantum algorithms (Deustch-Jozsa, Grover and Shor), explaining the problems they solve and how they work. With this report, we understand how quantum computing improves the solving of a certain category of problems, via parallelism. 
+This report presents the problem of optimal quantum detection. We are provided with a set of quantum states with prior probabilities, and we want to build the set of quantum measurement operators to have an optimal measure. Multiple performance criterion exist, such as the probability of error of detection, or the square root error. We use the mutual information, using interval analysis to provide a global guaranteed solution. 
 
 {\textbf{Keywords :}}
-Quantum computing, qubit, projective measurement, Deutsch-Jozsa, Grover, Shor, parallelism.
+Quantum computing, quantum optimal detection, measurement operator, mutual information, interval analysis.
 \\
 \noindent\rule[2pt]{\textwidth}{0.5pt}
 

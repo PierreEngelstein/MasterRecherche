@@ -1,0 +1,12 @@
+slope(f, a , b) = { p = (f(x) - f(a)) / (x-a) tel que x in [a,b]}
+
+
+f(x)=x²
+f(1)=1
+f(2) \in f(1) + slope(f, 1, 2) * (2-1)
+
+
+slope(f, 1, 2) => s = (f(x)-1)/(x-1) tq x \in [1, 2]
+		    = [2, 3]
+
+f(2) \in 1 + [2, 3] = [3, 4]

@@ -1,5 +1,21 @@
 \chapter{Conclusion}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Leo vel orci porta non. Tincidunt ornare massa eget egestas purus viverra accumsan in nisl. Tristique senectus et netus et malesuada fames ac turpis egestas. Varius quam quisque id diam vel quam. Rhoncus urna neque viverra justo nec ultrices. Est velit egestas dui id ornare. Arcu non odio euismod lacinia. Ante metus dictum at tempor. Vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum. Non nisi est sit amet facilisis magna etiam. Quis commodo odio aenean sed adipiscing diam. Etiam erat velit scelerisque in. Tortor id aliquet lectus proin nibh nisl condimentum id. At auctor urna nunc id cursus metus aliquam.
+% Perspectives:
+% Etendre le problème à des entrées \{\rho_j\} inconnues => problème bruité. Pose problème de la mauvaise montée en dimension de l'algorithme, donc necessite probablement d'autres améliorations pour permettre résolution en temps correct.
+% Utiliser H(X) - H(X|Y). Necessite de coder la fonction H(X|Y) qui est de la forme x*log(y) avec x != y en général. Fonction 2D plus compliquée à formaliser en pratique. Mais réduirait le nombre de termes de la fonction donc possiblement le pessimisme. En revanche, cette fonction a des éléments complexes.
 
-Nec sagittis aliquam malesuada bibendum arcu vitae. Amet nisl purus in mollis. Ac tincidunt vitae semper quis lectus. Ac felis donec et odio pellentesque diam volutpat commodo sed. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Tortor vitae purus faucibus ornare suspendisse sed nisi. Tristique risus nec feugiat in fermentum posuere urna nec tincidunt. Egestas purus viverra accumsan in nisl nisi scelerisque eu. Ac odio tempor orci dapibus ultrices. Molestie ac feugiat sed lectus vestibulum mattis ullamcorper velit. Interdum velit laoreet id donec ultrices. Donec adipiscing tristique risus nec feugiat in fermentum posuere urna. Porttitor leo a diam sollicitudin. Cras sed felis eget velit aliquet sagittis. Ut etiam sit amet nisl purus in. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam.
+On a ainsi pu voir comment répondre au problème de la détection optimale quantique en utilisant un critère différent de ceux utilisés, l'information mutuelle. Une approche par intervalle, nouvelle pour cette question, a été appliquée pour obtenir un encadrement garanti d'une part du maximum atteint par le critère et d'autre part de la mesure optimale.
+
+\medbreak
+
+Deux implémentations sont proposées, la première en utilisant un optimiseur existant, \texttt{ibexopt}, nécessitant certaines modifications pour s'adapter au problème posé. Un deuxième est proposé, en C\#, améliorant entre autres la vitesse de résolution par rapport à \texttt{ibexopt}.
+
+\medbreak
+
+Les implémentations proposées ne traitent que du cas avec deux états d'entrée et deux opérateurs de mesure, le tout sans termes complexe, et la résolution n'est déjà pas immédiate. En testant sur déjà trois états d'entrée et trois opérateurs de mesure (code \texttt{ibexopt} en annexe \ref{appendix:ibex_3}), les temps de résolution deviennent bien trop important. Il y a donc du travail à faire de ce côté si on veut augmenter en nombre d'états à détecter ou nombre d'opérateurs de mesure à construire. 
+
+% Par exemple, il serait intéressant de coder la fonction $x \times \log(y)$ pour pouvoir utiliser la forme $H(X) - H(X | Y)$ de l'information mutuelle, qui pourrait présenter moins de redondance des variables d'entrées au travers des logarithmes et donc réduire le pessimisme de l'évaluation. Cette fonction est en 2 dimensions, donc moins évidente à représenter correctement par intervalles que la fonction simple $x \times \log(x)$.
+
+\medbreak
+
+Ce problème de détection optimale n'a en revanche été traité que dans son cas le plus simple, en considérant un système "parfait" où aucun bruit n'apparaît. Il serait intéressant de voir plus loin en considérant les états d'entrée bruités. Le problème serait alors de trouver la meilleure configuration états d'entrée - opérateurs de mesure pour que, en présence de bruit, on obtienne une communication optimale.

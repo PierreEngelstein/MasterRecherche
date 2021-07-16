@@ -1,0 +1,34 @@
+\chapter{Dynamique des systèmes quantiques}
+\label{appendix:dynamic}
+
+Comme n'importe quel système physique, on peut faire évoluer un système quantique dans le temps. L'évolution d'un système quantique est effectuée via une évolution linéaire de son vecteur d'état. Cette évolution linéaire est représentée par un opérateur linéaire sur $\mathcal{H}$, donc par une matrice a partir du moment où une base de référence a été choisie. Cette évolution linéaire doit également rester en accord avec le premier principe \ref{postulat:1}, c'est-à-dire conserver la norme unité du vecteur d'état. La matrice d'évolution doit donc également être unitaire.
+
+% Tout d'abord, il découle du premier postulat \ref{postulat:1} que la dynamique d'un système quantique doit conserver la norme unité. En effet, un état quantique doit, pour être valide, avoir une norme de 1, et donc l'évolution d'un système quantique d'un premier état vers un autre doit conserver cette unitarité. Cela veut dire que la matrice représentant l'évolution du système quantique doit respecter la propriété suivante:
+
+% \begin{equation}
+%     U^{\dagger}U = UU^{\dagger} = I,
+% \end{equation}
+
+% avec $U$ la matrice d'évolution du système, $U^{\dagger}$ la matrice conjuguée transposée, ou adjointe, de $U$, et $I$ l'identité.
+
+% Une deuxième propriété est également posée, ne découlant pas des deux postulats précédents. La dynamique d'un système quantique doit être aussi linéaire. Ainsi, on pourrait penser que n'importe quelle évolution unitaire serait valable, mais l'expérience nous montre que non, il faut en plus qu'elle soit linéaire.
+
+\medbreak
+
+En pratique, ces évolutions de systèmes quantiques peuvent être réalisées par des portes logiques de façon similaire à la logique booléenne classique. Ces portes quantiques sont complètement caractérisées par la façon dont elles transforment les états quantiques dans la base canonique. On peut alors utiliser des tables de vérité pour les définir, de la même façon qu'en informatique classique:
+
+\begin{enumerate}
+    \item La porte de Hadamard $H$. Elle permet de passer un qubit d'un état de base $\ket{0}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, ou de l'état de base $\ket{1}$ à l'état superposé $\frac{1}{\sqrt{2}}\ket{0} - \frac{1}{\sqrt{2}}\ket{1}$. Elle est très utilisée en début de circuit pour préparer les qubits entrants dans un état permettant l'évaluation parallèle de toutes les entrées;
+    \item Les portes de Pauli $X$, $Y$ et $Z$ permettant d'effectuer des rotations aux états des qubits;
+    \item La porte de Toffoli, similaire d'un \texttt{NON} booléen à 3 qubit (il effectue un \texttt{NON} sur le dernier qubit quand les deux premiers sont à $\ket{1}$), est une porte universelle quantique \cite{shi2002toffoli}. Elle permet donc de construire l'ensemble des autres portes faisables.
+\end{enumerate}
+
+Avec ces portes, on vient construire des circuits quantiques permettant de réaliser des algorithmes. L'annexe \ref{appendix:ConstructionCircuit} montre un exemple de technique de réalisation de circuits. En algorithmes majeurs, on peut citer:
+
+\begin{enumerate}
+    \item L'algorithme de Deutsch-Jozsa \cite{Deutsch92} qui permet de résoudre en une opération le problème de différentiation entre une fonction booléenne constante et une fonction booléenne équilibrée. Il faut classiquement $2^n -1$ opérations pour résoudre ce problème.
+    \item L'algorithme de Grover \cite{Grover96} qui permet de résoudre en $\mathcal{O}(\sqrt{N})$ opérations le problème de recherche dans une liste non triée. Il faut classiquement au pire $N$ opérations pour effectuer une recherche dans une liste non triée.
+    \item L'algorithme de Shor \cite{Shor97} qui permet de résoudre le problème de factorisation en nombres premiers. C'est un problème classiquement très difficile à résoudre, de complexité exponentielle.
+\end{enumerate}
+
+Ces trois algorithmes montrent les gains de performance que permet d'obtenir le calcul quantique, qui sont inacessibles avec les technologies d'informatique classique.

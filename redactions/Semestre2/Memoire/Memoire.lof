@@ -2,16 +2,20 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Fonction d'inclusion\relax }}{6}{figure.caption.4}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Fonction d'inclusion composée de moindre qualité\relax }}{6}{figure.caption.5}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Optimisation naïve\relax }}{8}{figure.caption.6}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Algorithme de maximisation par le calcul par intervalle\relax }}{9}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Fonction d'inclusion\relax }}{7}{figure.caption.4}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Fonction d'inclusion composée de moindre qualité\relax }}{8}{figure.caption.5}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Optimisation naïve\relax }}{9}{figure.caption.6}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Algorithme de maximisation par le calcul par intervalles\relax }}{11}{figure.caption.7}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Information mutuelle par rapport à la matrice de probabilités\relax }}{14}{figure.caption.8}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Information mutuelle par rapport à la matrice de probabilités\relax }}{16}{figure.caption.8}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Interface web de visualisation de l'optimisation\relax }}{21}{figure.caption.9}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Temps d'optimisation en fonction de l'angle entre $\rho _1$ et $\rho _2$\relax }}{22}{figure.caption.10}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Porte \textbf {NOT} contrôlée\relax }}{21}{figure.caption.9}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Circuit quantique pour $f(x_1, x_2, x_3)$\relax }}{21}{figure.caption.10}%
-\contentsline {figure}{\numberline {A.3}{\ignorespaces \'Equivalent sans contrôles par 0\relax }}{22}{figure.caption.11}%
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Circuit quantique développé pour $f(x_1, x_2, x_3)$\relax }}{22}{figure.caption.12}%
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Simplifications successives pour $f(x_1, x_2, x_3)$\relax }}{23}{figure.caption.13}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Porte \textbf {NOT} contrôlée\relax }}{27}{figure.caption.11}%
+\contentsline {figure}{\numberline {B.2}{\ignorespaces Circuit quantique pour $f(x_1, x_2, x_3)$\relax }}{27}{figure.caption.12}%
+\contentsline {figure}{\numberline {B.3}{\ignorespaces \'Equivalent sans contrôles par 0\relax }}{28}{figure.caption.13}%
+\contentsline {figure}{\numberline {B.4}{\ignorespaces Circuit quantique développé pour $f(x_1, x_2, x_3)$\relax }}{28}{figure.caption.14}%
+\contentsline {figure}{\numberline {B.5}{\ignorespaces Simplifications successives pour $f(x_1, x_2, x_3)$\relax }}{29}{figure.caption.15}%
+\addvspace {10\p@ }

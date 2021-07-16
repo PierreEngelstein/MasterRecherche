@@ -3,37 +3,61 @@
 
 Les notions de base d'informatique quantique sont décrites dans plusieurs ouvrages de référence, notamment dans \cite{Nielsen00, Mermin07}. On présente ici un résumé des notions fondamentales à connaître pour la suite du rapport.
 
-\section{Postulats de base}
+% \section{Postulats de base}
 
-On pose 3 postulats, servant de base aux raisonnements qui suivront. Ces postulats sont confirmés jusqu'à présent par les expériences.
+Il existe essentiellement trois principes, servant de base aux raisonnements qui suivront. Ces principes sont confirmés jusqu'à présent par les expériences.
 
-\subsection{Etat d'un système quantique}
-Un système quantique peut être représenté par un vecteur d'état, de la même manière qu'un système physique classique. On le représente par la notation de Dirac, notée de la forme $\ket{\psi}$. Ce vecteur d'état est nécessairement de norme 1 (la somme des modules au carré vaut 1). On peut distinguer deux types d'états pour un système quantique: les états de base, formant une base orthonormée d'un espace vectoriel complexe, et les états superposés. Ces états superposés correspondent à une combinaison linéaire des états de base. On peut écrire généralement un état quantique de la façon suivante:
+\section{\'Etat d'un système quantique}
+\label{postulat:1}
+Un système quantique peut être représenté par un vecteur d'état, de la même manière qu'un système physique classique. On le représente par la notation de Dirac, notée de la forme $\ket{\psi}$. Ce vecteur d'état est nécessairement de norme 1. On peut distinguer deux types d'états pour un système quantique: les états de base, formant une base orthonormée d'un espace vectoriel complexe, et les états superposés. Ces états superposés correspondent à une combinaison linéaire des états de base. On peut écrire généralement un état quantique de la façon suivante:
 
 \begin{equation}
-    \ket{\psi} = \displaystyle\sum_{i} c_i \ket{k_i},
+    \ket{\psi} = \displaystyle\sum_{j} c_j \ket{k_j}.
 \end{equation}
 
-avec les $\ket{k_i}$ états de base, et les $c_i$ respectant $ \displaystyle\sum_{i} |c_i|^2 = 1$ pour la normalisation du vecteur d'état.
+Algébriquement, les $\{\ket{k_j}\}$ forment une base orthonormée d'un espace vectoriel de Hilbert. Les coefficients $c_j$ sont des scalaires complexes respectant $ \displaystyle\sum_{j} |c_j|^2 = 1$.
+
+% avec les $\ket{k_j}$ états de base, et les $c_j$ respectant $ \displaystyle\sum_{j} |c_j|^2 = 1$ pour la normalisation du vecteur d'état.
 
 \medbreak
 
-Dans le cadre de l'informatique quantique, on utilise le système quantique le plus simple, appelé \textbf{qubit}. Ce système quantique est composé de deux états de base, $\ket{0}$ et $\ket{1}$, et des états superposés. Similairement à l'informatique classique, où on travaille sur le système physique le plus élémentaire - le bit - en quantique on travaille sur le système physique quantique élémentaire - le qubit. On dispose des mêmes états de base, mais l'informatique quantique apporte les états \textit{intermédiaires} superposés. Dans la base canonique $\{\ket{0}, \ket{1}\}$, on note un qubit de la façon suivante: $\ket{\psi} = \alpha \cdot \ket{0} + \beta \cdot \ket{1}$.
+L'état d'un système quantique peut être généralisé par une matrice densité, représentant un opérateur densité dans un espace de Hilbert de dimension $N$. Dans le cas d'un état pouvant être décrit par un vecteur d'état $\ket{\psi}$, état pur, l'opérateur densité $\rho$ correspondant sera donné par le produit extérieur $\rho = \ket{\psi} \bra{\psi}$. Dans le cas d'un système incertain, bruité, on ne peut pas forcément factoriser l'opérateur $\rho$ en fonction d'un $\ket{\psi}$ individuel, mais il faudra faire intervenir une distribution probabiliste de vecteurs d'état, on parle alors d'état melangé. 
 
-\subsection{Mesure projective}
-Que se passe-t-il quand on mesure un système quantique ? On a évoqué au dessus la notion de superposition des états. L'expérience montre que, lorsqu'on va mesurer un système quantique, on va mesurer au hasard un des états de base, avec comme probabilité le carré du coefficient correspondant.
+\medbreak
 
-Mathématiquement, la mesure effectue une projection de l'état du système sur un des états de base dont il est composé. Par exemple, si on a un qubit dans l'état $\ket{\psi} = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}$, alors la probabilité de mesurer 0, c'est-à-dire de projeter le système dans l'état de base $\ket{0}$ est $|\frac{1}{\sqrt{2}}|^2 = \frac{1}{2}$; et de même pour l'état de base $\ket{1}$. On a donc exactement la même probabilité de mesurer $\ket{0}$ que de mesurer $\ket{1}$.
+Dans le cadre de l'informatique quantique, on s'appuie sur le système quantique le plus simple, appelé \textbf{qubit}. Ce système quantique est composé de deux états de base, $\ket{0}$ et $\ket{1}$, et des états superposés. Similairement à l'informatique classique, où on travaille sur le support d'information le plus élémentaire - le bit - en quantique on travaille sur le support d'information quantique élémentaire - le qubit. On dispose des mêmes états de base, mais l'informatique quantique apporte les états \textit{intermédiaires} superposés. Dans la base canonique $\{\ket{0}, \ket{1}\}$, on note de façon générale l'état pur d'un qubit de la façon suivante: $\ket{\psi} = \alpha \cdot \ket{0} + \beta \cdot \ket{1}$ avec $|\alpha|^2 + |\beta|^2 = 1$
 
-Il faut noter que, lorsqu'on fait la mesure, on projette réellement le système quantique dans l'état de base. Concrètement, si on a un état superposé qu'on mesure, il se place dans l'état de base qu'on mesure, et toutes les mesures successives qu'on fera sur ce qubit donneront le même résultat. La mesure fait donc perdre l'état qu'on avait auparavant.
+\section{Mesure d'un système quantique}
 
-\subsection{Dynamique du système}
-Comme n'importe quel système physique, on peut faire évoluer un système quantique dans le temps. Ici apparaissent deux propriétés. Tout d'abord, il découle du premier postulat que la dynamique d'un système quantique doit conserver la norme unité. En effet, un état quantique doit, pour être valide, avoir une norme de 1, et donc l'évolution d'un système quantique d'un premier état vers un autre doit conserver cette unitarité. Cela veut dire que la matrice représentant l'évolution du système quantique doit respecter la propriété suivante:
+Ces systèmes quantiques, physiques, doivent pouvoir être mesurés afin d'avoir une utilité. On distingue deux types de mesures: des mesures projective, et des mesure généralisées (aussi appelée POVM, pour \textit{Positive Operator-Valued Measure}). La mesure d'un système quantique passe par l'utilisation d'opérateurs de mesure, qui sont des opérateurs linéaires sur l'espace des états.
 
-\begin{equation}
-    U^{\dagger}U = UU^{\dagger} = I,
-\end{equation}
+\subsection*{Mesure projective}
 
-avec $U$ la matrice d'évolution du système, $U^{\dagger}$ la matrice conjuguée transposée, ou adjointe, de $U$, et $I$ l'identité.
+Une mesure projective est la forme la plus simple, constituée par un ensemble de $N$ opérateurs de projection orthogonaux de rang 1 $\{\Pi\}$ avec $\Pi_k = \ket{k} \bra{k}$. Ces opérateurs doivent vérifier la somme à l'identité: $\displaystyle \sum_k \Pi_k = I_k$. 
 
-Une deuxième propriété est également posée, ne découlant pas des deux postulats précédents. La dynamique d'un système quantique doit être aussi linéaire. Ainsi, on pourrait penser que n'importe quelle évolution unitaire serait valable, mais l'expérience nous montre que non, il faut en plus qu'elle soit linéaire.
+Lors de cette mesure, la probabilité d'obtenir l'état $\Pi_k = \ket{k}\bra{k}$ en mesurant un état $\rho_j$ est donné par:
+
+\begin{align}
+    \Pr(\ket{k}) = \tr(\rho_j \Pi_k)
+\end{align}
+
+En dimension 2, on peut alors envisager la mesure d'un état quantique sur les états de base $\{\ket{0}, \ket{1}\}$. La probabilité de mesurer $\ket{0} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ en ayant $\ket{\psi} = \begin{pmatrix} \alpha \\ \beta \end{pmatrix}$ est alors donné par :
+
+\begin{align}
+    \Pr(\ket{0}) &= \tr\bigg(\begin{pmatrix}1 & 0 \\ 0 & 0\end{pmatrix} \begin{pmatrix}|\alpha|^2 & |\alpha| |\beta| \\ |\alpha| |\beta| & |\beta|^2 \end{pmatrix}\bigg) = \tr\begin{pmatrix}|\alpha|^2 & 0 \\ 0 & 0\end{pmatrix} \\
+    \Pr(\ket{0}) &= |\alpha|^2,
+\end{align}
+
+\subsection*{Mesure généralisée}
+
+Une mesure généralisée consiste similairement à un ensemble de $N$ opérateurs de mesure $\{\Pi\}$ se sommant à l'identité. En revanche, ces opérateurs de mesure, non nécessairement des projecteurs, peuvent être étendus à des opérateurs semi-défini positifs. De la même manière que les POVM sont la généralisation des opérateurs de projection, ils permettent de mesurer la généralisation des états quantiques qui ne sont alors pas nécessairement descriptibles par des vecteurs d'état. La différence avec les opérateurs de projection est qu'avec un POVM, le nombre de résultats de mesure peut différer de la dimension de l'espace de Hilbert des états.
+
+Comme pour les opérateurs de projection, la probabilité d'obtenir $\Pi_k$ en mesurant l'état quantique $\rho_j$ est donné par $\Pr(\Pi_k) = \tr(\rho_j \Pi_k)$. 
+
+\medbreak
+
+Il faut noter que, lorsqu'on fait la mesure, on projette réellement le système quantique dans l'état mesuré. Concrètement, si on a un état superposé qu'on mesure, il se place dans l'état mesuré qu'on mesure, et si on répète la même mesure on obtiendra systématiquement le même résultat. La mesure fait donc perdre l'état qu'on avait auparavant.
+
+\section{\'Evolution d'un système quantique}
+
+Entre la préparation d'un système quantique et une mesure, on peut souhaiter appliquer une série de transformations qui permettent de faire évoluer le système et donc potentiellement effectuer des calculs. Ces possibilités forment la base du traitement quantique de l'information et du calcul quantique (elles sont illustrées en annexe \ref{appendix:dynamic}). On peut noter également qu'une partie du premier mois de stage a été passé à effectuer des tests sur des processeurs quantiques réels accessibles via internet, ceux de D-Wave notamment.

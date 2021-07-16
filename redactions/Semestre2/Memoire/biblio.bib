@@ -1,6 +1,46 @@
 When updating this file, please respect its standard format as much as
 possible, in order to facilitate the merging of various *.BIB files.
 
+@phdthesis{Delanoue18,
+  author      = {Delanoue, N.},
+  title       = {Méthodes numériques garanties pour la classification de fonctions et le contrôle optimal},
+  school      = {Universit{\'{e}} d'Angers},
+  year        = {2018},
+  type = {Habilitation à diriger des Recherches}
+}
+
+@book{neumaier91, 
+  place={Cambridge}, 
+  series={Encyclopedia of Mathematics and its Applications}, 
+  title={Interval Methods for Systems of Equations}, 
+  DOI={10.1017/CBO9780511526473}, 
+  publisher={Cambridge University Press}, 
+  author={Neumaier, A.}, 
+  year={1991}, 
+  collection={Encyclopedia of Mathematics and its Applications}
+}
+
+@book{Cover91,
+  AUTHOR={Cover, T. M. and Thomas, J. A.},
+  TITLE={Elements of Information Theory},
+  PUBLISHER={Wiley}, 
+  address={New York},
+  YEAR={1991}
+}
+
+@misc{key,
+  author       = {},
+  title        = {},
+  howpublished = {},
+  year         = {}
+}
+
+@conference{engelstein21,
+  author          = {Engelstein, P. and Delanoue, N. and Chapeau-Blondeau, F.},
+  title           = {Conception de détecteurs quantiques optimaux via le calcul par intervalles},
+  note            = {Journée "Traitement du signal et applications quantiques" du GdR CNRS ISIS (Information Signal Image viSion). Prévue le 22 juin 2021 puis reportée.},
+}
+
 @ARTICLE{Shannon48,
   author={Shannon, C. E.},
   journal={The Bell System Technical Journal}, 
@@ -16,8 +56,9 @@ possible, in order to facilitate the merging of various *.BIB files.
 @article{Younes03,
 author = {Younes, Ahmed and Miller, Julian},
 year = {2003},
-month = {05},
-pages = {},
+month = {},
+pages = {562-565},
+journal = {In Proceeding of ICENCO2004},
 title = {Automated Method for Building CNOT Based Quantum Circuits for Boolean Functions}
 }
 
@@ -33,8 +74,12 @@ title = {Automated Method for Building CNOT Based Quantum Circuits for Boolean F
 	journal = {Science}
 }
 
-@string{PhysRev={Physical Review}}   % Lamport p143
-@string{PNAS={Proceedings of the National Academy of Sciences of the USA}}
+@string{
+  PhysRev={Physical Review}
+}   % Lamport p143
+@string{
+  PNAS={Proceedings of the National Academy of Sciences of the USA}
+}
 
 @misc{MicrosoftQuantumDoc,
   author={Microsoft},
@@ -2538,14 +2583,25 @@ numpages = {7},}
   volume={5},
   pages={10796,1-8}
 }
-@misc{shi2002toffoli,
-    title={{Both Toffoli and Controlled-NOT need little help to do universal quantum computation}},
-    author={Yaoyun Shi},
-    year={2002},
-    eprint={quant-ph/0205115},
-    archivePrefix={arXiv},
-    primaryClass={quant-ph}
+
+@article{shi2002toffoli,
+author = {Shi, Yaoyun},
+title = {Both Toffoli and Controlled-NOT Need Little Help to Do Universal Quantum Computing},
+year = {2003},
+issue_date = {January 2003},
+publisher = {Rinton Press, Incorporated},
+address = {Paramus, NJ},
+volume = {3},
+number = {1},
+issn = {1533-7146},
+abstract = {What additional gates are needed for a set of classical universal gates to do universal quantum computation? We prove that any single-qubit real gate suffices, except those that preserve the computational basis. The Gottesman-Knill Theorem implies that any quantum circuit involving only the Controlled-NOT and Hadamard gates can be efficiently simulated by a classical circuit. In contrast, we prove that Controlled-NOT plus any single-qubit real gate that does not preserve the computational basis and is not Hadamard (or its like) are universal for quantum computing. Previously only a generic gate, namely a rotation by an angle incommensurate with π, is known to be sufficient in both problems, if only one single-qubit gate is added.},
+journal = {Quantum Info. Comput.},
+month = jan,
+pages = {84–92},
+numpages = {9},
+keywords = {quantum circuit, universal basis, universal quantum computation, controlled-NOT, toffoli}
 }
+
 @article{Shor97,
   AUTHOR={Shor, P. W.},
   TITLE={Polynomial-Time Algorithms for Prime Factorization and Discrete 

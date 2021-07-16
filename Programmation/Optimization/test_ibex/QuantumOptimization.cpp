@@ -6,6 +6,7 @@
 #include <execution>
 #include <algorithm>
 
+# define M_PI           3.14159265358979323846
 
 #ifdef __IBEX_NO_LP_SOLVER__
 #error "You need a LP solver to run this example (use -DLP_LIB=... in cmake)"
@@ -333,23 +334,121 @@ std::string generate(int m_amount, bool symmetric, const std::vector<std::pair<i
 }
 
 
+std::string generate_2d_bench(const std::vector<std::pair<ibex::Matrix, double>>& input){
+    auto sum = 0.0;
+    for(auto& i: input){
+        sum += i.second;
+    }
+    if(std::abs(sum - 1) >= 0.001) {
+        println("Warning, sum of probabilities is != 1 (" << sum << ")");
+        return "";
+    }
+    std::ostringstream fileContent;
+    fileContent << "Constants\n"
+                   "  m_size = 2;\n"
+                   "  P1[m_size][m_size] = ((" << input[0].first[0][0]*input[0].second << ", " << input[0].first[0][1]*input[0].second<<"); ("<<input[0].first[1][0]*input[0].second<<", "<<input[0].first[1][1]*input[0].second<<"));\n"
+                   "  P2[m_size][m_size] = ((" << input[1].first[0][0]*input[1].second << ", " << input[1].first[0][1]*input[1].second<<"); ("<<input[1].first[1][0]*input[1].second<<", "<<input[1].first[1][1]*input[1].second<<"));\n"
+                   "\n"
+                   "// M: measurement operator\n"
+                   "// P: density operator\n"
+                   "function tr(M[m_size][m_size], P[m_size][m_size])\n"
+                   "  return P(1)(1) * M(1)(1) + 2*M(1)(2)*P(1)(2) + 2*M(2)(1)*P(2)(1) + M(2)(2)*P(2)(2);\n"
+                   "end\n"
+                   "\n"
+                   "function EntropyM(_M1[m_size][m_size], _M2[m_size][m_size], _P1[m_size][m_size], _P2[m_size][m_size])\n"
+                   "  sum_m1 = tr(_M1, _P1) + tr(_M1, _P2);\n"
+                   "  sum_m2 = tr(_M2, _P1) + tr(_M2, _P2);\n"
+                   "  return -xlog(sum_m1)-xlog(sum_m2);\n"
+                   "end\n"
+                   "\n"
+                   "function EntropyP(_M1[m_size][m_size], _M2[m_size][m_size], _P1[m_size][m_size], _P2[m_size][m_size])\n"
+                   "  sum_p1 = tr(_M1, _P1) + tr(_M2, _P1);\n"
+                   "  sum_p2 = tr(_M1, _P2) + tr(_M2, _P2);\n"
+                   "  return -xlog(sum_p1)-xlog(sum_p2);\n"
+                   "end\n"
+                   "\n"
+                   "function EntropyMP(_M1[m_size][m_size], _M2[m_size][m_size], _P1[m_size][m_size], _P2[m_size][m_size])\n"
+                   "  return -xlog(tr(_M1, _P1))-xlog(tr(_M1, _P2))-xlog(tr(_M2, _P1))-xlog(tr(_M2, _P2));\n"
+                   "end\n"
+                   "\n"
+                   "function MutualInformation(_M1[m_size][m_size], _M2[m_size][m_size], _P1[m_size][m_size], _P2[m_size][m_size])\n"
+                   "  return EntropyM(_M1, _M2, _P1, _P2) + ( -0.10 * ln(0.10) -0.90 * ln(0.90)) - EntropyMP(_M1, _M2, _P1, _P2);\n"
+                   "end\n"
+                   "\n"
+                   "function I(_P1[m_size][m_size], _P2[m_size][m_size], _m1a, _m1b, _m1c, _m1d)\n"
+                   "  _M1 = ((_m1a, _m1b); (_m1c, _m1d));\n"
+                   "  _M2 = ((1-_m1a, -_m1b); (-_m1c, 1-_m1d));\n"
+                   "  return MutualInformation(_M1, _M2, _P1, _P2);\n"
+                   "end\n"
+                   "\n"
+                   "Variables\n"
+                   "  M1_a in [0, 0.5],  M1_b in [-1, 1], M1_d in [0, 1];\n"
+                   "\n"
+                   "Minimize\n"
+                   "  -I(P1, P2, M1_a,  M1_b,  0, M1_d)\n"
+                   "\n"
+                   "Constraints\n"
+                   "  M1_a >= 0;\n"
+                   "  M1_a <= 0.5;\n"
+                   "  M1_d >= 0;\n"
+                   "  M1_a*M1_d - M1_b^2 >= 0;\n"
+                   "  (1-M1_a)*(1-M1_d) - (-M1_b)^2 >= 0;\n"
+                   "end";
+    return fileContent.str();
+
+}
+
 int main(int argc, char *argv[]){
-    std::vector<std::pair<ibex::Matrix, double>> in;
-
-    double p1[4] = {1, 0, 0, 0};
-    in.emplace_back(std::make_pair(ibex::Matrix(2, 2, p1), 0.1));
-
-//    double p2[4] = {0.5, 0.5, 0.5, 0.5};
-//    in.emplace_back(std::make_pair(ibex::Matrix(2, 2, p2), 0.9));
-
-    double p3[4] = {0, 0, 0, 1};
-    in.emplace_back(std::make_pair(ibex::Matrix(2, 2, p3), 0.9));
 
     auto symmetric = false;
     auto amount = 2;
-    auto mbCt = generate<2>(amount, symmetric, in);
-    // Remove double precision errors (for ex, 0.1 written as 0.1000001)
-    mbCt = std::regex_replace(mbCt, std::regex("0001"), "");
+    std::vector<double> durations;
+    std::vector<double> angles;
+    for(int i = 0; i <= 360; i++){
+        float angle = i * M_PI / 180;
+        angles.push_back(i);
+        println("angle: " << i << " degrees")
+        std::vector<std::pair<ibex::Matrix, double>> in;
+
+        double p1[4] = {1, 0, 0, 0};
+        in.emplace_back(std::make_pair(ibex::Matrix(2, 2, p1), 0.1));
+
+        double p3[4] = {std::cos(angle)*std::cos(angle), std::abs(std::cos(angle)*std::sin(angle)), 0, std::sin(angle)*std::sin(angle)};
+        in.emplace_back(std::make_pair(ibex::Matrix(2, 2, p3), 0.9));
+
+        auto mbCt = generate_2d_bench(in);
+        // Remove double precision errors (for ex, 0.1 written as 0.1000001)
+        mbCt = std::regex_replace(mbCt, std::regex("0001"), "");
+
+        std::ofstream outFile("opti_auto.txt");
+        outFile << mbCt;
+        outFile.close();
+
+        ibex::System sys("opti_auto.txt");
+        printvar(sys.goal->expr())
+        ibex::DefaultOptimizerConfig cfg(sys);
+        cfg.set_trace(0);
+        cfg.set_abs_eps_f(0.01);
+        cfg.set_inHC4(false);
+        ibex::Optimizer o(cfg);
+        auto now = clock();
+        o.optimize(sys.box);
+        double executionTime = ((double)(clock() - now)/1000000.0);
+        durations.push_back(executionTime);
+        println("nb_cells: " << o.get_nb_cells())
+        println("execution time: " << executionTime);
+        println("==========")
+    }
+
+    matplotlibcpp::title("Temps d'optimisation en fonction de l'angle entre rho_1 et rho_2, precision sur f=0.01");
+    matplotlibcpp::xlabel("Angle");
+    matplotlibcpp::ylabel("Temps d'optimisation (secondes)");
+    matplotlibcpp::plot(angles, durations);
+    matplotlibcpp::show();
+
+    return 1;
+
+
 
 //    std::ofstream outFile("opti_auto.txt");
 //    outFile << mbCt;

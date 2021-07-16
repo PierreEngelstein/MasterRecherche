@@ -7,7 +7,7 @@ En informatique classique, l'ensemble des fonctions booléennes peuvent être d�
 
 Dans ce modèle, on considère un registre de $n$ qubits composant l'entrée du système, un registre de $m$ qubits composant la sortie du système, et un registre de $k$ qubits auxiliaires pour certaines opérations intermédiaires.
 
-Pour cette construction, on se base sur la porte quantique \textbf{X} et ses équivalents composés \textbf{CNOT}, \textbf{CCNOT} (Toffoli), etc. On fourni alors un certain nombre de circuits de base pouvant être recomposés pour former des circuits plus complexes.
+Pour cette construction, on se base sur la porte quantique \textbf{X} et ses équivalents composés \textbf{CNOT}, \textbf{CCNOT} (Toffoli), etc. On fournit alors un certain nombre de circuits de base pouvant être recomposés pour former des circuits plus compliqués.
 
 La compilation d'une fonction booléenne passe alors par 4 étapes:
 
@@ -177,9 +177,9 @@ En reprenant l'exemple de la fonction booléenne précédente, on peut faire par
 \caption{Simplifications successives pour $f(x_1, x_2, x_3)$}
 \end{figure}
 
-\subsection*{Extension à des circuits plus complexes}
+\subsection*{Extension à des circuits plus compliqués}
 Avec cette méthode, il est facile de construire l'ensemble des fonctions booléennes à 2 bits, ainsi qu'a 3 bits. Pour construire des circuits plus complexes, on dispose alors de deux façons de procéder.
 
 Tout d'abord, on peut refaire ces étapes sur la fonction booléenne plus complexe, et trouver un circuit minimal étant composé de $n$ entrées, et d'un seul qubit auxiliaire pour la sortie.
 
-En revanche, si on ne veut pas établir la table de vérité avant la construction du circuit, on peut utiliser les fonctions élémentaires et construire un circuit a partir de la chaine de caractère représentant la fonction. Il est important de noter que la méthode présentée ici ne modifie pas les entrées de la fonction, on peut donc les réutiliser comme on le souhaite pour venir greffer des fonctions supplémentaires au circuit. Cette méthode s'apparente algrithmiquement à la compilation des fonctions sur les ordinateurs classiques. En revanche, par rapport au circuit minimal qu'on pourrait trouver, on aura ici un qubit auxiliaire par sous-circuit, et un nombre de portes bien plus important. Pour des considérations de limitations matérielles qui sont pour le moment importantes, cette deuxième façon de procéder peut ne pas donner des résultats implémentables pour de trop grosses fonctions.
+En revanche, si on ne veut pas établir la table de vérité avant la construction du circuit, on peut utiliser les fonctions élémentaires et construire un circuit a partir de la chaine de caractère représentant la fonction. Il est important de noter que la méthode présentée ici ne modifie pas les entrées de la fonction, on peut donc les réutiliser comme on le souhaite pour venir greffer des fonctions supplémentaires au circuit. Cette méthode s'apparente algorithmiquement à la compilation des fonctions sur les ordinateurs classiques. En revanche, par rapport au circuit minimal qu'on pourrait trouver, on aura ici un qubit auxiliaire par sous-circuit, et un nombre de portes bien plus important. Pour des considérations de limitations matérielles qui sont pour le moment importantes, cette deuxième façon de procéder peut ne pas donner des résultats implémentables pour de trop grosses fonctions.
